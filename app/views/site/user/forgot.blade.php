@@ -8,8 +8,8 @@
 
 {{-- Content --}}
 @section('content')
-<div class="page-header">
+<!-- <div class="page-header">
     <h1>{{{ Lang::get('user/user.forgot_password') }}}</h1>
-</div>
+</div> -->
 {{ Confide::makeForgotPasswordForm() }}
 @stop

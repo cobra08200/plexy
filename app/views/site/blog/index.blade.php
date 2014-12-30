@@ -2,6 +2,7 @@
 
 {{-- Content --}}
 @section('content')
+
 @foreach ($posts as $post)
 <div class="row">
 	<div class="col-md-8">

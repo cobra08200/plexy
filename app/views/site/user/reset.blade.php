@@ -8,8 +8,8 @@
 
 {{-- Content --}}
 @section('content')
-<div class="page-header">
+<!-- <div class="page-header">
 	<h1>Forgot Password</h1>
-</div>
+</div> -->
 {{ Confide::makeResetPasswordForm($token)->render() }}
 @stop

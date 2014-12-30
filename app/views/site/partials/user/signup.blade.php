@@ -1,38 +1,35 @@
-<form method="POST" action="{{{ URL::to('user') }}}" accept-charset="UTF-8">
-    <input type="hidden" name="_token" value="{{{ Session::getToken() }}}">
-    <fieldset>
-        <div class="form-group">
-            <label for="username">{{{ Lang::get('confide::confide.username') }}}</label>
-            <input class="form-control" placeholder="{{{ Lang::get('confide::confide.username') }}}" type="text" name="username" id="username" value="{{{ Input::old('username') }}}">
-        </div>
-        <div class="form-group">
-            <label for="email">{{{ Lang::get('confide::confide.e_mail') }}} <small>{{ Lang::get('confide::confide.signup.confirmation_required') }}</small></label>
-            <input class="form-control" placeholder="{{{ Lang::get('confide::confide.e_mail') }}}" type="text" name="email" id="email" value="{{{ Input::old('email') }}}">
-        </div>
-        <div class="form-group">
-            <label for="password">{{{ Lang::get('confide::confide.password') }}}</label>
-            <input class="form-control" placeholder="{{{ Lang::get('confide::confide.password') }}}" type="password" name="password" id="password">
-        </div>
-        <div class="form-group">
-            <label for="password_confirmation">{{{ Lang::get('confide::confide.password_confirmation') }}}</label>
-            <input class="form-control" placeholder="{{{ Lang::get('confide::confide.password_confirmation') }}}" type="password" name="password_confirmation" id="password_confirmation">
-        </div>
-
-        @if (Session::get('error'))
-            <div class="alert alert-error alert-danger">
-                @if (is_array(Session::get('error')))
-                    {{ head(Session::get('error')) }}
-                @endif
-            </div>
-        @endif
-
-        @if (Session::get('notice'))
-            <div class="alert">{{ Session::get('notice') }}</div>
-        @endif
-
-        <div class="form-actions form-group">
-          <button type="submit" class="btn btn-primary">{{{ Lang::get('confide::confide.signup.submit') }}}</button>
-        </div>
-
-    </fieldset>
-</form>
+<div class="container">
+	<div class="omb_login">
+		<h3 class="omb_authTitle"><a href="/user/login">Login</a> or Sign up</h3>
+		<div class="row omb_row-sm-offset-3">
+			<div class="col-xs-12 col-sm-6">    
+				<form class="form-horizontal" method="POST" action="{{ URL::to('user') }}" accept-charset="UTF-8">
+					<input type="hidden" name="_token" value="{{{ Session::getToken() }}}">
+					<fieldset>
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+							<input class="form-control" placeholder="{{{ Lang::get('confide::confide.username') }}}" type="text" name="username" id="username" value="{{{ Input::old('username') }}}">
+						</div>
+						<span class="help-block"></span>
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa fa-envelope fa-fw"></i></span>
+							<input class="form-control" placeholder="{{{ Lang::get('confide::confide.e_mail') }}}" type="text" name="email" id="email" value="{{{ Input::old('email') }}}">
+						</div>
+						<span class="help-block"></span>
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa fa-lock fa-fw"></i></span>
+							<input class="form-control" placeholder="{{{ Lang::get('confide::confide.password') }}}" type="password" name="password" id="password">
+						</div>
+						<span class="help-block"></span>
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa fa-lock fa-fw"></i></span>
+							<input class="form-control" placeholder="{{{ Lang::get('confide::confide.password_confirmation') }}}" type="password" name="password_confirmation" id="password_confirmation">
+						</div>
+						<span class="help-block"></span>
+						<button type="submit" class="btn btn-lg btn-primary btn-block">{{{ Lang::get('confide::confide.signup.submit') }}}</button>
+					</fieldset>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

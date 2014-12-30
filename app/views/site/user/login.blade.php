@@ -8,8 +8,8 @@
 
 {{-- Content --}}
 @section('content')
-<div class="page-header">
+<!-- <div class="page-header">
 	<h1>Login into your account</h1>
-</div>
+</div> -->
 {{ Confide::makeLoginForm()->render() }}
 @stop

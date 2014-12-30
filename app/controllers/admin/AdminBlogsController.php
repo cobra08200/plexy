@@ -223,7 +223,9 @@ class AdminBlogsController extends AdminController {
      */
     public function getData()
     {
-        $posts = Post::select(array('posts.id', 'posts.title', 'posts.id as comments', 'posts.created_at'));
+        $posts = DB::table('posts')
+            ->join('users', 'users.id', '=', 'posts.user_id')
+            ->select(array('posts.id as id', 'users.username', 'posts.user_id as user', 'posts.title', 'posts.id as comments', 'posts.created_at'));
 
         return Datatables::of($posts)
 
@@ -236,6 +238,17 @@ class AdminBlogsController extends AdminController {
         ->remove_column('id')
 
         ->make();
+    }
+
+    public function testing()
+    {
+
+        $username = DB::table('users')
+            ->join('posts', 'users.id', '=', 'posts.user_id')
+            ->select(array('users.username'));
+
+            return $username;
+
     }
 
 }

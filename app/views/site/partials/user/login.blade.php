@@ -1,45 +1,39 @@
-<form class="form-horizontal" method="POST" action="{{ URL::to('user/login') }}" accept-charset="UTF-8">
-    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-    <fieldset>
-        <div class="form-group">
-            <label class="col-md-2 control-label" for="email">{{ Lang::get('confide::confide.username_e_mail') }}</label>
-            <div class="col-md-10">
-                <input class="form-control" tabindex="1" placeholder="{{ Lang::get('confide::confide.username_e_mail') }}" type="text" name="email" id="email" value="{{ Input::old('email') }}">
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-md-2 control-label" for="password">
-                {{ Lang::get('confide::confide.password') }}
-            </label>
-            <div class="col-md-10">
-                <input class="form-control" tabindex="2" placeholder="{{ Lang::get('confide::confide.password') }}" type="password" name="password" id="password">
-            </div>
-        </div>
+<div class="container">
+	<div class="omb_login">
+		<h3 class="omb_authTitle">Login or <a href="/user/create">Sign up</a></h3>
+		<div class="row omb_row-sm-offset-3">
+			<div class="col-xs-12 col-sm-6">    
+				<form class="form-horizontal" method="POST" action="{{ URL::to('user/login') }}" accept-charset="UTF-8">
+					<input type="hidden" name="_token" value="{{ csrf_token() }}">
+					<fieldset>
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+							<input class="form-control" tabindex="1" placeholder="{{ Lang::get('confide::confide.username_e_mail') }}" type="text" name="email" id="email" value="{{ Input::old('email') }}">
+						</div>
+						<span class="help-block"></span>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <div class="checkbox">
-                    <label for="remember">{{ Lang::get('confide::confide.login.remember') }}
-                        <input type="hidden" name="remember" value="0">
-                        <input tabindex="4" type="checkbox" name="remember" id="remember" value="1">
-                    </label>
-                </div>
-            </div>
-        </div>
-
-        @if ( Session::get('error') )
-            <div class="alert alert-danger">{{ Session::get('error') }}</div>
-        @endif
-
-        @if ( Session::get('notice') )
-            <div class="alert">{{ Session::get('notice') }}</div>
-        @endif
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <button tabindex="3" type="submit" class="btn btn-primary">{{ Lang::get('confide::confide.login.submit') }}</button>
-                <a class="btn btn-default" href="forgot">{{ Lang::get('confide::confide.login.forgot_password') }}</a>
-            </div>
-        </div>
-    </fieldset>
-</form>
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa fa-lock fa-fw"></i></span>
+							<input type="password" class="form-control" tabindex="2" name="password" placeholder="{{ Lang::get('confide::confide.password') }}" id="password">
+						</div>
+						<span class="help-block"></span>
+						<button tabindex="3"class="btn btn-lg btn-primary btn-block" type="submit">{{ Lang::get('confide::confide.login.submit') }}</button>
+					</fieldset>
+				</form>
+			</div>
+		</div>
+		<div class="row omb_row-sm-offset-3">
+			<div class="col-xs-12 col-sm-3">
+				<label for="remember" class="checkbox">{{ Lang::get('confide::confide.login.remember') }}
+					<input type="hidden" name="remember" value="0">
+					<input tabindex="4" type="checkbox" name="remember" id="remember" value="1">
+				</label>
+			</div>
+			<div class="col-xs-12 col-sm-3">
+				<p class="omb_forgotPwd">
+					<a href="forgot">{{ Lang::get('confide::confide.login.forgot_password') }}</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>

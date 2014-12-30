@@ -79,6 +79,7 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth'), function()
  */
 
 // User reset routes
+Route::get('testing', 'AdminBlogsController@testing');
 Route::get('user/reset/{token}', 'UserController@getReset');
 // User password reset
 Route::post('user/reset/{token}', 'UserController@postReset');
@@ -103,9 +104,18 @@ Route::get('contact-us', function()
     return View::make('site/contact-us');
 });
 
-# Posts - Second to last set, match slug
-Route::get('{postSlug}', 'BlogController@getView');
-Route::post('{postSlug}', 'BlogController@postView');
+// PROTECTED
+Route::group(array('before' => 'auth'), function()
+{
+    # Posts - Second to last set, match slug
+    Route::get('{postSlug}', 'BlogController@getView');
+    Route::post('{postSlug}', 'BlogController@postView');
+    # Index Page - Last route, no matches
+    Route::get('/', array('before' => 'detectLang','uses' => 'BlogController@getIndex'));
+});
 
-# Index Page - Last route, no matches
-Route::get('/', array('before' => 'detectLang','uses' => 'BlogController@getIndex'));
+// AUTH FILTER
+Route::filter('auth', function()
+{
+    if (Auth::guest()) return Redirect::to('user/login');
+});
