@@ -131,6 +131,32 @@ class IssueController extends BaseController {
 		return Redirect::to($slug)->withInput()->withErrors($validator);
 	}
 
+
+	/**
+	 * Show a list of all the blog issues formatted for Datatables.
+	 *
+	 * @return Datatables JSON
+	 */
+	public function getDataAdmin()
+	{
+		// admin view all
+		$issues = DB::table('issues')
+		->join('users', 'users.id', '=', 'issues.user_id')
+		->select(array('issues.status as status', 'issues.id as id', 'users.username as username', 'issues.topic as topic', 'issues.id as comments', 'issues.created_at'));
+
+		return Datatables::of($issues)
+
+		->edit_column('comments', '{{ DB::table(\'comments\')->where(\'issue_id\', \'=\', $id)->count() }}')
+
+		->add_column('actions', '<a href="{{{ URL::to(\'admin/blogs/\' . $id . \'/edit\' ) }}}" class="btn btn-default btn-xs iframe" >{{{ Lang::get(\'button.edit\') }}}</a>
+			<a href="{{{ URL::to(\'admin/blogs/\' . $id . \'/delete\' ) }}}" class="btn btn-xs btn-danger iframe">{{{ Lang::get(\'button.delete\') }}}</a>
+			')
+
+		->remove_column('id')
+
+		->make();
+	}
+
 	/**
 	 * Show a list of all the blog issues formatted for Datatables.
 	 *

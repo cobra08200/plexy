@@ -15,11 +15,12 @@
 <table id="blogs" class="table table-striped table-hover">
 	<thead>
 		<tr>
-			<th class="col-md-1">{{{ Lang::get('admin/blogs/table.user') }}}</th>
-			<th class="col-md-4">{{{ Lang::get('admin/blogs/table.title') }}}</th>
-			<th class="col-md-1">{{{ Lang::get('admin/blogs/table.comments') }}}</th>
-			<th class="col-md-2">{{{ Lang::get('admin/blogs/table.created_at') }}}</th>
-			<th class="col-md-2">{{{ Lang::get('table.actions') }}}</th>
+			<th class="col-md-1">{{{ Lang::get('admin/issues/table.status') }}}</th>
+			<th class="col-md-1">{{{ Lang::get('admin/issues/table.user') }}}</th>
+			<th class="col-md-1">{{{ Lang::get('admin/issues/table.topic') }}}</th>
+			<th class="col-md-1">{{{ Lang::get('admin/issues/table.comments') }}}</th>
+			<th class="col-md-1">{{{ Lang::get('admin/issues/table.created_at') }}}</th>
+			<th class="col-md-1">{{{ Lang::get('table.actions') }}}</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -43,7 +44,7 @@
 			},
 			"bProcessing": true,
 			"bServerSide": true,
-			"sAjaxSource": "{{ URL::to('issues/data/all') }}",
+			"sAjaxSource": "{{ URL::to('issues/data/admin') }}",
 			"fnDrawCallback": function ( oSettings ) {
 				$(".iframe").colorbox({iframe:true, width:"80%", height:"80%"});
 			}

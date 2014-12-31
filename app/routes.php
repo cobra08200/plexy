@@ -115,7 +115,7 @@ Route::group(array('before' => 'auth'), function()
     # Index Page - Last route, no matches
 
     //this route is not protected by entrust - admin check
-    Route::get('issues/data/all', 'IssueController@getDataAll');
+    Route::get('issues/data/admin', 'IssueController@getDataAdmin');
 
     //return personal issue list
     Route::get('issues/data', 'IssueController@getData');
