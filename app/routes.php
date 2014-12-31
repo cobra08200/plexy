@@ -81,8 +81,10 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth'), function()
 // User reset routes
 Route::get('testing', 'AdminBlogsController@testing');
 Route::get('user/reset/{token}', 'UserController@getReset');
+
 // User password reset
 Route::post('user/reset/{token}', 'UserController@postReset');
+
 //:: User Account Routes ::
 Route::post('user/{user}/edit', 'UserController@postEdit');
 
@@ -111,7 +113,13 @@ Route::group(array('before' => 'auth'), function()
     Route::get('{postSlug}', 'BlogController@getView');
     Route::post('{postSlug}', 'BlogController@postView');
     # Index Page - Last route, no matches
-    Route::get('/', array('before' => 'detectLang','uses' => 'BlogController@getIndex'));
+
+    //this route is not protected by entrust - admin check
+    Route::get('issues/data/all', 'IssueController@getDataAll');
+
+    //return personal issue list
+    Route::get('issues/data', 'IssueController@getData');
+    Route::get('/', array('before' => 'detectLang','uses' => 'IssueController@getIndex'));
 });
 
 // AUTH FILTER

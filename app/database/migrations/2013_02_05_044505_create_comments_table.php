@@ -17,11 +17,13 @@ class CreateCommentsTable extends Migration {
             $table->engine = 'InnoDB';
 			$table->increments('id')->unsigned();
 			$table->integer('user_id')->unsigned()->index();
-			$table->integer('post_id')->unsigned()->index();
+			$table->integer('post_id')->nullable()->unsigned()->index();
+			$table->integer('issue_id')->nullable()->unsigned()->index();
 			$table->text('content');
 			$table->timestamps();
 			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 			$table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
+			$table->foreign('issue_id')->references('id')->on('issues')->onDelete('cascade');
 		});
 	}
 

@@ -1,8 +1,9 @@
 <?php
 
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePostsTable extends Migration {
+class CreateIssuesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -11,18 +12,14 @@ class CreatePostsTable extends Migration {
 	 */
 	public function up()
 	{
-		// Create the `Posts` table
-		Schema::create('posts', function($table)
+		Schema::create('issues', function($table)
 		{
 			$table->engine = 'InnoDB';
 			$table->increments('id')->unsigned();
 			$table->integer('user_id')->unsigned()->index();
-			$table->string('title');
-			$table->string('slug');
+			$table->enum('status', array('open', 'pending', 'closed'))->default('open');
+			$table->enum('topic', array('miscellaneous', 'movies', 'music', 'tv'));
 			$table->text('content');
-			$table->string('meta_title');
-			$table->string('meta_description');
-			$table->string('meta_keywords');
 			$table->timestamps();
 			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 		});
@@ -35,8 +32,7 @@ class CreatePostsTable extends Migration {
 	 */
 	public function down()
 	{
-		// Delete the `Posts` table
-		Schema::drop('posts');
+		Schema::drop('issues');
 	}
 
 }

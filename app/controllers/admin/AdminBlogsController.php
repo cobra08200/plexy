@@ -242,7 +242,6 @@ class AdminBlogsController extends AdminController {
 
     public function testing()
     {
-
         $username = DB::table('users')
             ->join('posts', 'users.id', '=', 'posts.user_id')
             ->select(array('users.username'));
