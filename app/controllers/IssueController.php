@@ -142,7 +142,7 @@ class IssueController extends BaseController {
 		// admin view all
 		$issues = DB::table('issues')
 		->join('users', 'users.id', '=', 'issues.user_id')
-		->select(array('issues.status as status', 'issues.id as id', 'users.username as username', 'issues.topic as topic', 'issues.id as comments', 'issues.created_at'));
+		->select(array('issues.status as status', 'issues.id as id', 'users.username as username', 'issues.topic as topic', 'issues.id as comments', 'issues.created_at as created_at'));
 
 		return Datatables::of($issues)
 
@@ -162,16 +162,19 @@ class IssueController extends BaseController {
 	 *
 	 * @return Datatables JSON
 	 */
-	public function getData()
+	public function getDataUser()
 	{
-		// admin view all
-		$posts = DB::table('posts')
-		->join('users', 'users.id', '=', 'posts.user_id')
-		->select(array('posts.id as id', 'users.username', 'posts.user_id as user', 'posts.title', 'posts.id as comments', 'posts.created_at'));
+		$id = Auth::id();
 
-		return Datatables::of($posts)
+		// user view all
+		$issues = DB::table('issues')
+		->where('users.id', '=', $id)
+		->join('users', 'users.id', '=', 'issues.user_id')
+		->select(array('issues.status as status', 'issues.id as id', 'issues.topic as topic', 'issues.id as comments', 'issues.created_at as created_at'));
 
-		->edit_column('comments', '{{ DB::table(\'comments\')->where(\'post_id\', \'=\', $id)->count() }}')
+		return Datatables::of($issues)
+
+		->edit_column('comments', '{{ DB::table(\'comments\')->where(\'issue_id\', \'=\', $id)->count() }}')
 
 		->add_column('actions', '<a href="{{{ URL::to(\'admin/blogs/\' . $id . \'/edit\' ) }}}" class="btn btn-default btn-xs iframe" >{{{ Lang::get(\'button.edit\') }}}</a>
 			<a href="{{{ URL::to(\'admin/blogs/\' . $id . \'/delete\' ) }}}" class="btn btn-xs btn-danger iframe">{{{ Lang::get(\'button.delete\') }}}</a>

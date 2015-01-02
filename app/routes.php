@@ -114,11 +114,11 @@ Route::group(array('before' => 'auth'), function()
     Route::post('{postSlug}', 'BlogController@postView');
     # Index Page - Last route, no matches
 
-    //this route is not protected by entrust - admin check
+    //this route should be protected by entrust - admin check
     Route::get('issues/data/admin', 'IssueController@getDataAdmin');
 
     //return personal issue list
-    Route::get('issues/data', 'IssueController@getData');
+    Route::get('issues/data/user', 'IssueController@getDataUser');
     Route::get('/', array('before' => 'detectLang','uses' => 'IssueController@getIndex'));
 });
 
