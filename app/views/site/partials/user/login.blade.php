@@ -24,9 +24,8 @@
 		</div>
 		<div class="row omb_row-sm-offset-3">
 			<div class="col-xs-12 col-sm-3">
-				<label for="remember" class="checkbox">{{ Lang::get('confide::confide.login.remember') }}
+				<label for="remember" class="checkbox">
 					<input type="hidden" name="remember" value="0">
-					<input tabindex="4" type="checkbox" name="remember" id="remember" value="1">
 				</label>
 			</div>
 			<div class="col-xs-12 col-sm-3">

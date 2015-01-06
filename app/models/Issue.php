@@ -35,9 +35,19 @@ class Issue extends Eloquent {
 	 *
 	 * @return User
 	 */
-	public function author()
+	public function owner()
 	{
 		return $this->belongsTo('User', 'user_id');
+	}
+
+	/**
+	 * Get the user specific tickets.
+	 *
+	 * @return User
+	 */
+	public function mine()
+	{
+		return $this->belongsTo('User', Auth::id());
 	}
 
 	/**

@@ -32,7 +32,7 @@ class IssueController extends BaseController {
 	 *
 	 * @return View
 	 */
-	public function getIndex()
+	public function getIndexOld()
 	{
 		$user = Auth::user();
 
@@ -43,6 +43,45 @@ class IssueController extends BaseController {
 
 		// Show the page
 		return View::make('site/pages/index', compact('issues', 'title', 'user'));
+	}
+
+	/**
+	 * Returns all the blog posts.
+	 *
+	 * @return View
+	 */
+	public function getIndex()
+	{
+
+		$search_url = Request::getQueryString();
+		parse_str($search_url, $search);
+
+		$users 		= User::all();
+		$user 		= Auth::user();
+		$id 		= Auth::id();
+
+		if($user->hasRole('admin'))
+		{
+			$issues  	= Issue::paginate(10);
+		}
+		else
+		{
+			$issues 	= Issue::where('user_id', '=', $id)->where('status', '=', 'open')->paginate(10);
+		};
+		if($user->hasRole('admin') && Input::get('status'))
+		{
+			$issues 	= Issue::where('status', Request::only('status'))->paginate(10);
+		}
+		if($user->hasRole('admin') && Input::get('topic'))
+		{
+			$issues 	= Issue::where('topic', Request::only('topic'))->paginate(10);
+		}
+		if($user->hasRole('admin') && Input::get('status') && Input::get('topic'))
+		{
+			$issues 	= Issue::where('status', Request::only('status'))->where('topic', Request::only('topic'))->paginate(10);
+		}
+
+		return View::make('site.pages.testing', compact('search', 'users', 'user', 'id', 'issues'));
 	}
 
 	/**
