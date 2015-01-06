@@ -39,7 +39,7 @@
 					<th>
 					<select class="form-control" id="topic">
 						<option>all topics</option>
-						<option>micellaneous</option>
+						<option>miscellaneous</option>
 						<option>movies</option>
 						<option>music</option>
 						<option>tv</option>
@@ -146,8 +146,89 @@
 @if(isset($search['status']))
 
 		@if($search['status'] === 'open')
-		<h1>open set</h1>
+		<?php
+		$a = URL::to('/');
+		$b = '';
+
+		if(isset($search['page']) && isset($search['status']) && isset($search['topic']))
+		{
+			$b = $a . '?page=' . $search['page'] . '?status=' . $search['status'] . '?topic=' . $search['topic'];
+		}
+
+		elseif(isset($search['page']) && isset($search['status']))
+		{
+			$b = $a . '?page=' . $search['page'] . '?status=' . $search['status'];
+		}
+
+		elseif(isset($search['status']) && isset($search['topic']))
+		{
+			$b = $a . '?status=' . $search['status'] . '?topic=' . $search['topic'];
+		}
+
+		elseif(isset($search['page']) && isset($search['topic']))
+		{
+			$b = $a . '?page=' . $search['page'] . '?topic=' . $search['topic'];
+		}
+
+		elseif(isset($search['page']))
+		{
+			$b = $a . '?page=' . $search['page'];
+		}
+
+		elseif(isset($search['status']))
+		{
+			$b = $a . '?status=' . $search['status'];
+		}
+
+		elseif(isset($search['topic']))
+		{
+			$b = $a . '?topic=' . $search['topic'];
+		}
+
+		echo $b;
+		?>
 		@else
+		<?php
+		$a = URL::to('/');
+		$b = '';
+
+		if(isset($search['page']) && isset($search['status']) && isset($search['topic']))
+		{
+			$b = $a . '?page=' . $search['page'] . '?status=' . $search['status'] . '?topic=miscellaneous';
+		}
+
+		elseif(isset($search['page']) && isset($search['status']))
+		{
+			$b = $a . '?page=' . $search['page'] . '?status=' . $search['status'];
+		}
+
+		elseif(isset($search['status']) && isset($search['topic']))
+		{
+			$b = $a . '?status=' . $search['status'] . '?topic=miscellaneous';
+		}
+
+		elseif(isset($search['page']) && isset($search['topic']))
+		{
+			$b = $a . '?page=' . $search['page'] . '?topic=miscellaneous';
+		}
+
+		elseif(isset($search['page']))
+		{
+			$b = $a . '?page=' . $search['page'];
+		}
+
+		elseif(isset($search['status']))
+		{
+			$b = $a . '?status=' . $search['status'];
+		}
+
+		elseif(isset($search['topic']))
+		{
+			$b = $a . '?topic=miscellaneous';
+		}
+
+		echo $b;
+		?>
 		@endif
 
 		@if($search['status'] === 'pending')
@@ -160,11 +241,115 @@
 		@else
 		@endif
 
+@else
+
+{{-- Status Not Set --}}
+{{-- Status Not Set --}}
+{{-- Status Not Set --}}
+{{-- Status Not Set --}}
+
+<h1>status else</h1>
+		<?php
+		$a = URL::to('/');
+		$b = '';
+
+		if(isset($search['page']) && isset($search['topic']))
+		{
+			$b = $a . '?page=' . $search['page'] . '?topic=' . $search['topic'];
+		}
+
+		elseif(isset($search['page']))
+		{
+			$b = $a . '?page=' . $search['page'];
+		}
+
+		elseif(isset($search['topic']))
+		{
+			$b = $a . '?topic=' . $search['topic'];
+		}
+
+		echo $b;
+		?>
+<br>
+		<?php
+		$a = URL::to('/');
+		$b = '';
+
+		if(isset($search['page']) && isset($search['topic']))
+		{
+			$b = $a . '?page=' . $search['page'] . '?topic=' . $search['topic'] . '?status=open';
+		}
+
+		elseif(isset($search['page']))
+		{
+			$b = $a . '?page=' . $search['page'] . '?status=open';
+		}
+
+		elseif(isset($search['topic']))
+		{
+			$b = $a . '?topic=' . $search['topic'] . '?status=open';
+		}
+
+		echo $b;
+		?>
+<br>
+		<?php
+		$a = URL::to('/');
+		$b = '';
+
+		if(isset($search['page']) && isset($search['topic']))
+		{
+			$b = $a . '?page=' . $search['page'] . '?topic=' . $search['topic'] . '?status=pending';
+		}
+
+		elseif(isset($search['page']))
+		{
+			$b = $a . '?page=' . $search['page'] . '?status=pending';
+		}
+
+		elseif(isset($search['topic']))
+		{
+			$b = $a . '?topic=' . $search['topic'] . '?status=pending';
+		}
+
+		echo $b;
+		?>
+<br>
+		<?php
+		$a = URL::to('/');
+		$b = '';
+
+		if(isset($search['page']) && isset($search['topic']))
+		{
+			$b = $a . '?page=' . $search['page'] . '?topic=' . $search['topic'] . '?status=closed';
+		}
+
+		elseif(isset($search['page']))
+		{
+			$b = $a . '?page=' . $search['page'] . '?status=closed';
+		}
+
+		elseif(isset($search['topic']))
+		{
+			$b = $a . '?topic=' . $search['topic'] . '?status=closed';
+		}
+
+		echo $b;
+		?>
+
 @endif
 
 	<hr>
 
+
+{{-- Topic Set --}}
+{{-- Topic Set --}}
+{{-- Topic Set --}}
+{{-- Topic Set --}}
+
 @if(isset($search['topic']))
+
+<h1>topic set</h1>
 
 		@if($search['topic'] === 'miscellaneous')
 		<?php
@@ -251,7 +436,7 @@
 		echo $b;
 		?>
 		@endif
-
+<br>
 		@if($search['topic'] === 'movies')
 		<?php
 		$a = URL::to('/');
@@ -337,7 +522,7 @@
 		echo $b;
 		?>
 		@endif
-
+<br>
 		@if($search['topic'] === 'music')
 		<?php
 		$a = URL::to('/');
@@ -423,7 +608,7 @@
 		echo $b;
 		?>
 		@endif
-
+<br>
 		@if($search['topic'] === 'tv')
 		<?php
 		$a = URL::to('/');
@@ -511,6 +696,12 @@
 		@endif
 
 @else
+
+{{-- Topic Not Set --}}
+{{-- Topic Not Set --}}
+{{-- Topic Not Set --}}
+{{-- Topic Not Set --}}
+
 <h1>topic else</h1>
 		<?php
 		$a = URL::to('/');
@@ -518,17 +709,39 @@
 
 		if(isset($search['page']) && isset($search['status']))
 		{
-			$b = $a . '?page=' . $search['page'] . '?status=' . $search['status'] . '?topic=micellaneous';
+			$b = $a . '?page=' . $search['page'] . '?status=' . $search['status'];
 		}
 
 		elseif(isset($search['page']))
 		{
-			$b = $a . '?page=' . $search['page'] . '?topic=micellaneous';
+			$b = $a . '?page=' . $search['page'];
 		}
 
 		elseif(isset($search['status']))
 		{
-			$b = $a . '?status=' . $search['status'] . '?topic=micellaneous';
+			$b = $a . '?status=' . $search['status'];
+		}
+
+		echo $b;
+		?>
+<br>
+		<?php
+		$a = URL::to('/');
+		$b = '';
+
+		if(isset($search['page']) && isset($search['status']))
+		{
+			$b = $a . '?page=' . $search['page'] . '?status=' . $search['status'] . '?topic=miscellaneous';
+		}
+
+		elseif(isset($search['page']))
+		{
+			$b = $a . '?page=' . $search['page'] . '?topic=miscellaneous';
+		}
+
+		elseif(isset($search['status']))
+		{
+			$b = $a . '?status=' . $search['status'] . '?topic=miscellaneous';
 		}
 
 		echo $b;
