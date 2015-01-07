@@ -2,6 +2,14 @@
 
 @section('content')
 
+<form name="cityselect">
+    <select name="menu" onChange="window.document.location.href=this.options[this.selectedIndex].value;" value="GO">
+        <option selected="selected">Select One</option>
+        <option value="http://www.leeds.com">Leeds</option>
+        <option value="http://www.manchester.com">Manchester</option>
+    </select>
+</form>
+
 <div class="row">
 	<div class="col-md-12">
 		<h1 class="text-center">
@@ -73,73 +81,49 @@
 
 	</div>
 
+
+@if(!empty($search))
+@else
+<h1>empty query</h1>
 		<?php
 		$a = URL::to('/');
-		$b = '';
-
-		if(isset($search['page']) && isset($search['status']) && isset($search['topic']))
-		{
-			$b = $a . '?page=' . $search['page'] . '?status=' . $search['status'] . '?topic=' . $search['topic'];
-		}
-
-		elseif(isset($search['page']) && isset($search['status']))
-		{
-			$b = $a . '?page=' . $search['page'] . '?status=' . $search['status'];
-		}
-
-		elseif(isset($search['status']) && isset($search['topic']))
-		{
-			$b = $a . '?status=' . $search['status'] . '?topic=' . $search['topic'];
-		}
-
-		elseif(isset($search['page']) && isset($search['topic']))
-		{
-			$b = $a . '?page=' . $search['page'] . '?topic=' . $search['topic'];
-		}
-
-		elseif(isset($search['page']))
-		{
-			$b = $a . '?page=' . $search['page'];
-		}
-
-		elseif(isset($search['status']))
-		{
-			$b = $a . '?status=' . $search['status'];
-		}
-
-		elseif(isset($search['topic']))
-		{
-			$b = $a . '?topic=' . $search['topic'];
-		}
-
+		$b = $a .'?status=open';
 		echo $b;
 		?>
-
-	<hr>
-
-@if(isset($search['page']))
-
-		@if($search['page'] === '1')
-		<h1>1 set</h1>
-		@else
-		@endif
-
-		@if($search['page'] === '2')
-		<h1>2 set</h1>
-		@else
-		@endif
-
-		@if($search['page'] === '3')
-		<h1>3 set</h1>
-		@else
-		@endif
-
-		@if($search['page'] === '4')
-		<h1>4 set</h1>
-		@else
-		@endif
+<br>
+		<?php
+		$b = $a .'?status=pending';
+		echo $b;
+		?>
+<br>
+		<?php
+		$b = $a .'?status=closed';
+		echo $b;
+		?>
+<br>
+		<?php
+		$b = $a .'?topic=miscellaneous';
+		echo $b;
+		?>
+<br>
+		<?php
+		$b = $a .'?topic=movies';
+		echo $b;
+		?>
+<br>
+		<?php
+		$b = $a .'?topic=music';
+		echo $b;
+		?>
+<br>
+		<?php
+		$b = $a .'?topic=tv';
+		echo $b;
+		?>
+<br>
 
 @endif
+
 
 	<hr>
 
@@ -847,4 +831,50 @@
 	// 	$("#topic").val(topic);
 	// });
 </script>
+@stop
+
+
+
+@section('graveyard')
+		<?php
+		$a = URL::to('/');
+		$b = '';
+
+		if(isset($search['page']) && isset($search['status']) && isset($search['topic']))
+		{
+			$b = $a . '?page=' . $search['page'] . '?status=' . $search['status'] . '?topic=' . $search['topic'];
+		}
+
+		elseif(isset($search['page']) && isset($search['status']))
+		{
+			$b = $a . '?page=' . $search['page'] . '?status=' . $search['status'];
+		}
+
+		elseif(isset($search['status']) && isset($search['topic']))
+		{
+			$b = $a . '?status=' . $search['status'] . '?topic=' . $search['topic'];
+		}
+
+		elseif(isset($search['page']) && isset($search['topic']))
+		{
+			$b = $a . '?page=' . $search['page'] . '?topic=' . $search['topic'];
+		}
+
+		elseif(isset($search['page']))
+		{
+			$b = $a . '?page=' . $search['page'];
+		}
+
+		elseif(isset($search['status']))
+		{
+			$b = $a . '?status=' . $search['status'];
+		}
+
+		elseif(isset($search['topic']))
+		{
+			$b = $a . '?topic=' . $search['topic'];
+		}
+
+		echo $b;
+		?>
 @stop
