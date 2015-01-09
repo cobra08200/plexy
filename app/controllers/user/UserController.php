@@ -174,7 +174,7 @@ class UserController extends BaseController {
         if ( Confide::confirm( $code ) )
         {
             return Redirect::to('user/login')
-                ->with( 'notice', Lang::get('confide::confide.alerts.confirmation') );
+                ->with( 'success', Lang::get('confide::confide.alerts.confirmation') );
         }
         else
         {
@@ -201,7 +201,7 @@ class UserController extends BaseController {
         if (Confide::forgotPassword(Input::get('email'))) {
             $notice_msg = Lang::get('confide::confide.alerts.password_forgot');
             return Redirect::to('user/forgot')
-                ->with('notice', $notice_msg);
+                ->with('success', $notice_msg);
         } else {
             $error_msg = Lang::get('confide::confide.alerts.wrong_password_forgot');
             return Redirect::to('user/login')
@@ -239,7 +239,7 @@ class UserController extends BaseController {
         if ($this->userRepo->resetPassword($input)) {
             $notice_msg = Lang::get('confide::confide.alerts.password_reset');
             return Redirect::to('user/login')
-                ->with('notice', $notice_msg);
+                ->with('success', $notice_msg);
         } else {
             $error_msg = Lang::get('confide::confide.alerts.wrong_password_reset');
             return Redirect::to('user/reset', array('token'=>$input['token']))

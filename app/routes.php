@@ -81,6 +81,9 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth'), function()
 // User reset routes
 Route::get('testing', 'AdminBlogsController@testing');
 Route::get('user/reset/{token}', 'UserController@getReset');
+Route::get('api', 'IssueController@api');
+Route::any('api/search/{q}', 'IssueController@movieSearch');
+Route::post('api/search/', ['as' => 'movies.search', 'uses' => 'IssueController@store']);
 
 // User password reset
 Route::post('user/reset/{token}', 'UserController@postReset');
@@ -118,6 +121,7 @@ Route::group(array('before' => 'auth'), function()
     Route::get('issues/data/admin', 'IssueController@getDataAdmin');
 
     //return personal issue list
+
     Route::get('issues/data/user', 'IssueController@getDataUser');
     Route::get('/', array('before' => 'detectLang','uses' => 'IssueController@getIndex'));
 });
@@ -127,3 +131,4 @@ Route::filter('auth', function()
 {
     if (Auth::guest()) return Redirect::to('user/login');
 });
+

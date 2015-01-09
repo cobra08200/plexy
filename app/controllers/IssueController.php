@@ -223,4 +223,18 @@ class IssueController extends BaseController {
 
 		->make();
 	}
+
+	public function api()
+	{
+
+		// return View::make('site/pages/api', compact('movie'));
+
+		return View::make('site/pages/api');
+	}
+
+	public function movieSearch($q)
+	{
+		return $q;
+
+	}
 }
