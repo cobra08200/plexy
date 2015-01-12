@@ -232,9 +232,8 @@ class IssueController extends BaseController {
 		return View::make('site/pages/api');
 	}
 
-	public function movieSearch($q)
+	public function postApi()
 	{
-		return $q;
-
+		return Input::all();
 	}
 }

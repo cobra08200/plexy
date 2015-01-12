@@ -83,7 +83,7 @@ Route::get('testing', 'AdminBlogsController@testing');
 Route::get('user/reset/{token}', 'UserController@getReset');
 Route::get('api', 'IssueController@api');
 Route::any('api/search/{q}', 'IssueController@movieSearch');
-Route::post('api/search/', ['as' => 'movies.search', 'uses' => 'IssueController@store']);
+Route::post('api/search/', ['as' => 'movies.search', 'uses' => 'IssueController@postApi']);
 
 // User password reset
 Route::post('user/reset/{token}', 'UserController@postReset');
