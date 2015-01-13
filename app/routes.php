@@ -82,6 +82,7 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth'), function()
 Route::get('testing', 'AdminBlogsController@testing');
 Route::get('user/reset/{token}', 'UserController@getReset');
 Route::get('api', 'IssueController@api');
+Route::get('api2', 'IssueController@api2');
 Route::any('api/search/{q}', 'IssueController@movieSearch');
 Route::post('api/search/', ['as' => 'movies.search', 'uses' => 'IssueController@postApi']);
 

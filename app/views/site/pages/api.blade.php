@@ -5,10 +5,6 @@
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.4/typeahead.bundle.min.js"></script>
 	
 	<style type="text/css">
-		@font-face {
-			font-family:"Prociono";
-			src: url("../font/Prociono-Regular-webfont.ttf");
-		}
 		html {
 			overflow-y: scroll;
 		}
@@ -117,37 +113,80 @@
 		.example-arabic .tt-dropdown-menu {
 			text-align: right;
 		}
+		#multiple-datasets .league-name {
+			margin: 0 20px 5px 20px;
+			padding: 3px 0;
+			border-bottom: 1px solid #ccc;
+		}
 	</style>
 </head>
 
 <body>
-	{{ Form::open(array('route' => 'movies.search')) }}
-	<input class="typeahead" placeholder="Movie Title Here" value="">
-	<br>
-	<input class="year" placeholder="Year Here" value="">
-	<input class="id" placeholder="Year ID" value="">
-	{{ Form::submit('go'); }}
-	{{ Form::close() }}
+	<div id="multiple-datasets">
+		{{ Form::open(array('route' => 'movies.search')) }}
+
+		{{ Form::text('title', 'Title', array('class' => 'typeahead')) }}
+		{{ Form::hidden('year', 'Year', array('id' => 'year')) }}
+		{{ Form::hidden('movieid', 'MovieID', array('id' => 'movieid')) }}
+		{{ Form::hidden('img', 'Image', array('id' => 'img')) }}
+		{{ Form::submit('go'); }}
+
+		{{ Form::close() }}
+	</div>
 </body>
+
 
 </html>
 
 <script>
-	var movies = new Bloodhound({
-		datumTokenizer: function (datum) {
+	var movies = new Bloodhound(
+	{
+		datumTokenizer: function (datum)
+		{
 			return Bloodhound.tokenizers.whitespace(datum.value);
 		},
 		queryTokenizer: Bloodhound.tokenizers.whitespace,
-		limit: 10,
-		remote: {
-			url: 'http://api.themoviedb.org/3/search/movie?api_key=470fd2ec8853e25d2f8d86f685d2270e&query=%QUERY&search_type=ngram',
+		limit: 5,
+		remote:
+		{
+			url: 'http://api.themoviedb.org/3/search/movie?api_key=470fd2ec8853e25d2f8d86f685d2270e&query=%QUERY&include_adult=false&search_type=ngram',
 			filter: function (movies) {
 			// Map the remote source JSON array to a JavaScript array
-			return $.map(movies.results, function (movie) {
-				return {
+			return $.map(movies.results, function (movie)
+			{
+				return
+				{
 					id: movie.id,
 					value: movie.original_title,
-					year: (movie.release_date.substr(0, 4) ? movie.release_date.substr(0, 4) : '')
+					year: (movie.release_date.substr(0, 4) ? movie.release_date.substr(0, 4) : ''),
+					poster_path: movie.poster_path
+				};
+			});
+		}
+	}
+});
+
+	var tv = new Bloodhound(
+	{
+		datumTokenizer: function (datum)
+		{
+			return Bloodhound.tokenizers.whitespace(datum.value);
+		},
+		queryTokenizer: Bloodhound.tokenizers.whitespace,
+		limit: 5,
+		remote:
+		{
+			url: 'http://api.themoviedb.org/3/search/tv?api_key=470fd2ec8853e25d2f8d86f685d2270e&query=%QUERY&include_adult=false&search_type=ngram',
+			filter: function (tv) {
+			// Map the remote source JSON array to a JavaScript array
+			return $.map(tv.results, function (movie)
+			{
+				return
+				{
+					id: tv.id,
+					value: tv.name,
+					year: (tv.release_date.substr(0, 4) ? tv.release_date.substr(0, 4) : ''),
+					poster_path: tv.poster_path
 				};
 			});
 		}
@@ -155,26 +194,57 @@
 });
 
 // Initialize the Bloodhound suggestion engine
-
 movies.initialize();
+tv.initialize();
 
 // Instantiate the Typeahead UI
-$('.typeahead').typeahead({
-	hint: true,
-	highlight: true
-}, {
-	displayKey: 'value',
-	source: movies.ttAdapter(),
-	templates: {
-		empty: [
-		'<div class="empty-message">',
-		'unable to find any Best Picture winners that match the current query',
-		'</div>'].join('\n'),
-		suggestion: Handlebars.compile('<p><strong>@{{value}}</strong> – @{{year}}</p>')
-	}
+$('#multiple-datasets .typeahead').typeahead({
+	{
+		hint: true,
+		highlight: true
+	},
+	{
+		name: 'movies',
+		displayKey: 'value',
+		source: movies.ttAdapter(),
+		templates:
+		{
+			header: '<h3 class="league-name">Movies</h3>',
+			empty: [
+			'<div class="empty-message">',
+			'no results',
+			'</div>'].join('\n'),
+			suggestion: Handlebars.compile('<p><strong>@{{value}}</strong> – @{{year}}</p>')
+		}
 
-}).bind("typeahead:selected", function (obj, datum, name) {
-	$('.year').val(datum.year);
-	$('.id').val(datum.id);
-});
+	}).bind("typeahead:selected", function (obj, datum, name)
+	{
+		$( '#year' ).val(datum.year);
+		$( '#movieid' ).val(datum.id);
+		$( '#img' ).val('http://image.tmdb.org/t/p/w500' + datum.poster_path);
+	},
+	{
+		name: 'tv',
+		displayKey: 'value',
+		source: tv.ttAdapter(),
+		templates:
+		{
+			header: '<h3 class="league-name">Movies</h3>',
+			empty: [
+			'<div class="empty-message">',
+			'no results',
+			'</div>'].join('\n'),
+			suggestion: Handlebars.compile('<p><strong>@{{value}}</strong> – @{{year}}</p>')
+		}
+
+	}).bind("typeahead:selected", function (obj, datum, name)
+	{
+		$( '#year' ).val(datum.year);
+		$( '#movieid' ).val(datum.id);
+		$( '#img' ).val('http://image.tmdb.org/t/p/w500' + datum.poster_path);
+	});
+
 </script>
+
+</body>
+</html>
