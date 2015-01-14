@@ -226,7 +226,7 @@ class IssueController extends BaseController {
 
 	public function api()
 	{
-		Auth::loginUsingId(1);
+		Auth::loginUsingId(2);
 		// return View::make('site/pages/api', compact('movie'));
 		return View::make('site/pages/api');
 	}
@@ -252,6 +252,14 @@ class IssueController extends BaseController {
 	public function tmdb()
 	{
 		$api = 'http://api.themoviedb.org/3/search/movie?api_key=470fd2ec8853e25d2f8d86f685d2270e&include_adult=false&search_type=ngram';
+	}
+
+	public function getIssueView($id)
+	{
+		Auth::loginUsingId(2);
+		$issue = Issue::findOrFail($id);
+
+		return View::make('site/pages/issues', compact('issue'));
 	}
 
 }

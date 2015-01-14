@@ -81,10 +81,12 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth'), function()
 // User reset routes
 Route::get('testing', 'AdminBlogsController@testing');
 Route::get('user/reset/{token}', 'UserController@getReset');
+
+// Add issue
 Route::get('api', 'IssueController@api');
-Route::get('api2', 'IssueController@api2');
-Route::any('api/search/{q}', 'IssueController@movieSearch');
 Route::post('api/search/', ['as' => 'movies.search', 'uses' => 'IssueController@postApi']);
+
+Route::get('issue/{id}', 'IssueController@getIssueView');
 
 // User password reset
 Route::post('user/reset/{token}', 'UserController@postReset');

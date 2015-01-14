@@ -117,12 +117,26 @@
 </head>
 
 <body>
-	<div id="multiple-datasets">
+
+{{ Form::select('topic', array('miscellaneous' => 'Miscellaneous', 'movies' => 'Movies', 'music' => 'Music', 'tv' => 'TV'), 'miscellaneous') }}
+
+	<div id="movie">
 		{{ Form::open(array('route' => 'movies.search')) }}
 
 		{{ Form::text('title', '', array('class' => 'typeahead' ,'placeholder' => 'Title')) }}
 
-		{{ Form::select('topic', array('miscellaneous' => 'Miscellaneous', 'movies' => 'Movies'), 'miscellaneous') }}
+		{{ Form::hidden('year', 'Year', array('id' => 'year')) }}
+		{{ Form::hidden('movieid', 'MovieID', array('id' => 'movieid')) }}
+		{{ Form::hidden('img', 'Image', array('id' => 'img')) }}
+		{{ Form::submit('go'); }}
+
+		{{ Form::close() }}
+	</div>
+
+	<div id="tv">
+		{{ Form::open(array('route' => 'movies.search')) }}
+
+		{{ Form::text('title', '', array('class' => 'typeahead' ,'placeholder' => 'Title')) }}
 
 		{{ Form::hidden('year', 'Year', array('id' => 'year')) }}
 		{{ Form::hidden('movieid', 'MovieID', array('id' => 'movieid')) }}
@@ -186,6 +200,32 @@ $('.typeahead').typeahead(
 	$( '#year' ).val(datum.year);
 	$( '#movieid' ).val(datum.movieid);
 	$( '#img' ).val('http://image.tmdb.org/t/p/w500' + datum.poster_path);
+});
+
+// custom div
+$(document).ready(function()
+{
+	$("select").change(function()
+	{
+		$( "select option:selected").each(function()
+		{
+			if($(this).attr("value")=="red")
+			{
+				$(".box").hide();
+				$(".red").show();
+			}
+			if($(this).attr("value")=="green")
+			{
+				$(".box").hide();
+				$(".green").show();
+			}
+			if($(this).attr("value")=="blue")
+			{
+				$(".box").hide();
+				$(".blue").show();
+			}
+		});
+	}).change();
 });
 
 </script>

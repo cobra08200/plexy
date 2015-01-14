@@ -1,8 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\URL;
+use Carbon\Carbon;
 
 class Issue extends Eloquent {
+
+	// protected $table = 'issues';
 
 	protected $fillable = array('status', 'topic', 'content', 'poster_url');
 
