@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\URL;
 
 class Issue extends Eloquent {
 
+	protected $fillable = array('status', 'topic', 'content', 'poster_url');
+
 	/**
 	 * Deletes a blog post and all
 	 * the associated comments.

@@ -226,12 +226,20 @@ class IssueController extends BaseController {
 
 	public function api()
 	{
+		Auth::loginUsingId(1);
 		// return View::make('site/pages/api', compact('movie'));
 		return View::make('site/pages/api');
 	}
 
 	public function postApi()
 	{
+		// return Input::all();
+		$issue = new Issue;
+		$issue->user_id = Auth::id();
+		$issue->content = Input::get('title') . ' - ' . Input::get('year');
+		$issue->topic = Input::get('topic');
+		$issue->poster_url = Input::get('img');
+		$issue->save();
 		return Input::all();
 	}
 

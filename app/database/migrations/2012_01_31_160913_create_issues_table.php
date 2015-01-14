@@ -20,6 +20,7 @@ class CreateIssuesTable extends Migration {
 			$table->enum('status', array('open', 'pending', 'closed'))->default('open');
 			$table->enum('topic', array('miscellaneous', 'movies', 'music', 'tv'));
 			$table->text('content');
+			$table->string('poster_url');
 			$table->timestamps();
 			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 		});
