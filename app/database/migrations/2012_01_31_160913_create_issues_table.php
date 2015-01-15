@@ -18,7 +18,7 @@ class CreateIssuesTable extends Migration {
 			$table->increments('id')->unsigned();
 			$table->integer('user_id')->unsigned()->index();
 			$table->enum('status', array('open', 'pending', 'closed'))->default('open');
-			$table->enum('topic', array('miscellaneous', 'movies', 'music', 'tv'));
+			// $table->enum('topic', array('miscellaneous', 'movies', 'music', 'tv'));
 			$table->text('content');
 			$table->string('poster_url');
 			$table->timestamps();

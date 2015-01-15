@@ -46,45 +46,6 @@ class IssueController extends BaseController {
 	}
 
 	/**
-	 * Returns all the blog posts.
-	 *
-	 * @return View
-	 */
-	public function getIndex()
-	{
-
-		$search_url = Request::getQueryString();
-		parse_str($search_url, $search);
-
-		$users 		= User::all();
-		$user 		= Auth::user();
-		$id 		= Auth::id();
-
-		if($user->hasRole('admin'))
-		{
-			$issues  	= Issue::paginate(10);
-		}
-		else
-		{
-			$issues 	= Issue::where('user_id', '=', $id)->where('status', '=', 'open')->paginate(10);
-		};
-		if($user->hasRole('admin') && Input::get('status'))
-		{
-			$issues 	= Issue::where('status', Request::only('status'))->paginate(10);
-		}
-		if($user->hasRole('admin') && Input::get('topic'))
-		{
-			$issues 	= Issue::where('topic', Request::only('topic'))->paginate(10);
-		}
-		if($user->hasRole('admin') && Input::get('status') && Input::get('topic'))
-		{
-			$issues 	= Issue::where('status', Request::only('status'))->where('topic', Request::only('topic'))->paginate(10);
-		}
-
-		return View::make('site.pages.testing', compact('search', 'users', 'user', 'id', 'issues'));
-	}
-
-	/**
 	 * View a blog post.
 	 *
 	 * @param  string  $slug
@@ -233,33 +194,61 @@ class IssueController extends BaseController {
 
 	public function postApi()
 	{
-		// return Input::all();
 		$issue = new Issue;
 		$issue->user_id = Auth::id();
 		$issue->content = Input::get('title') . ' - ' . Input::get('year');
-		$issue->topic = Input::get('topic');
+		//removed topics
+		// $issue->topic = Input::get('topic');
 		$issue->poster_url = Input::get('img');
 		$issue->save();
-		return Input::all();
-	}
 
-	public function api2()
-	{
-		// return View::make('site/pages/api', compact('movie'));
-		return View::make('site/pages/api2');
-	}
+		// send email
+		// nothing here yet
 
-	public function tmdb()
-	{
-		$api = 'http://api.themoviedb.org/3/search/movie?api_key=470fd2ec8853e25d2f8d86f685d2270e&include_adult=false&search_type=ngram';
+		//return to after form submit
+		return Redirect::back();
 	}
 
 	public function getIssueView($id)
 	{
-		Auth::loginUsingId(2);
+		// Auth::loginUsingId(2);
 		$issue = Issue::findOrFail($id);
 
 		return View::make('site/pages/issues', compact('issue'));
+	}
+
+	public function getIndex()
+	{
+
+		$search_url = Request::getQueryString();
+		parse_str($search_url, $search);
+
+		$users 		= User::all();
+		$user 		= Auth::user();
+		$id 		= Auth::id();
+
+		if($user->hasRole('admin'))
+		{
+			$issues  	= Issue::paginate(10);
+		}
+		else
+		{
+			$issues 	= Issue::where('user_id', '=', $id)->where('status', '=', 'open')->paginate(10);
+		};
+		// if($user->hasRole('admin') && Input::get('status'))
+		// {
+		// 	$issues 	= Issue::where('status', Request::only('status'))->paginate(10);
+		// }
+		// if($user->hasRole('admin') && Input::get('topic'))
+		// {
+		// 	$issues 	= Issue::where('topic', Request::only('topic'))->paginate(10);
+		// }
+		// if($user->hasRole('admin') && Input::get('status') && Input::get('topic'))
+		// {
+		// 	$issues 	= Issue::where('status', Request::only('status'))->where('topic', Request::only('topic'))->paginate(10);
+		// }
+
+		return View::make('site.pages.home', compact('search', 'users', 'user', 'id', 'issues'));
 	}
 
 }

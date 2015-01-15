@@ -37,39 +37,39 @@ Route::pattern('token', '[0-9a-z]+');
 Route::group(array('prefix' => 'admin', 'before' => 'auth'), function()
 {
 
-    # Comment Management
-    Route::get('comments/{comment}/edit', 'AdminCommentsController@getEdit');
-    Route::post('comments/{comment}/edit', 'AdminCommentsController@postEdit');
-    Route::get('comments/{comment}/delete', 'AdminCommentsController@getDelete');
-    Route::post('comments/{comment}/delete', 'AdminCommentsController@postDelete');
-    Route::controller('comments', 'AdminCommentsController');
+	# Comment Management
+	Route::get('comments/{comment}/edit', 'AdminCommentsController@getEdit');
+	Route::post('comments/{comment}/edit', 'AdminCommentsController@postEdit');
+	Route::get('comments/{comment}/delete', 'AdminCommentsController@getDelete');
+	Route::post('comments/{comment}/delete', 'AdminCommentsController@postDelete');
+	Route::controller('comments', 'AdminCommentsController');
 
-    # Blog Management
-    Route::get('blogs/{post}/show', 'AdminBlogsController@getShow');
-    Route::get('blogs/{post}/edit', 'AdminBlogsController@getEdit');
-    Route::post('blogs/{post}/edit', 'AdminBlogsController@postEdit');
-    Route::get('blogs/{post}/delete', 'AdminBlogsController@getDelete');
-    Route::post('blogs/{post}/delete', 'AdminBlogsController@postDelete');
-    Route::controller('blogs', 'AdminBlogsController');
+	# Blog Management
+	Route::get('blogs/{post}/show', 'AdminBlogsController@getShow');
+	Route::get('blogs/{post}/edit', 'AdminBlogsController@getEdit');
+	Route::post('blogs/{post}/edit', 'AdminBlogsController@postEdit');
+	Route::get('blogs/{post}/delete', 'AdminBlogsController@getDelete');
+	Route::post('blogs/{post}/delete', 'AdminBlogsController@postDelete');
+	Route::controller('blogs', 'AdminBlogsController');
 
-    # User Management
-    Route::get('users/{user}/show', 'AdminUsersController@getShow');
-    Route::get('users/{user}/edit', 'AdminUsersController@getEdit');
-    Route::post('users/{user}/edit', 'AdminUsersController@postEdit');
-    Route::get('users/{user}/delete', 'AdminUsersController@getDelete');
-    Route::post('users/{user}/delete', 'AdminUsersController@postDelete');
-    Route::controller('users', 'AdminUsersController');
+	# User Management
+	Route::get('users/{user}/show', 'AdminUsersController@getShow');
+	Route::get('users/{user}/edit', 'AdminUsersController@getEdit');
+	Route::post('users/{user}/edit', 'AdminUsersController@postEdit');
+	Route::get('users/{user}/delete', 'AdminUsersController@getDelete');
+	Route::post('users/{user}/delete', 'AdminUsersController@postDelete');
+	Route::controller('users', 'AdminUsersController');
 
-    # User Role Management
-    Route::get('roles/{role}/show', 'AdminRolesController@getShow');
-    Route::get('roles/{role}/edit', 'AdminRolesController@getEdit');
-    Route::post('roles/{role}/edit', 'AdminRolesController@postEdit');
-    Route::get('roles/{role}/delete', 'AdminRolesController@getDelete');
-    Route::post('roles/{role}/delete', 'AdminRolesController@postDelete');
-    Route::controller('roles', 'AdminRolesController');
+	# User Role Management
+	Route::get('roles/{role}/show', 'AdminRolesController@getShow');
+	Route::get('roles/{role}/edit', 'AdminRolesController@getEdit');
+	Route::post('roles/{role}/edit', 'AdminRolesController@postEdit');
+	Route::get('roles/{role}/delete', 'AdminRolesController@getDelete');
+	Route::post('roles/{role}/delete', 'AdminRolesController@postDelete');
+	Route::controller('roles', 'AdminRolesController');
 
-    # Admin Dashboard
-    Route::controller('/', 'AdminDashboardController');
+	# Admin Dashboard
+	Route::controller('/', 'AdminDashboardController');
 });
 
 
@@ -81,12 +81,6 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth'), function()
 // User reset routes
 Route::get('testing', 'AdminBlogsController@testing');
 Route::get('user/reset/{token}', 'UserController@getReset');
-
-// Add issue
-Route::get('api', 'IssueController@api');
-Route::post('api/search/', ['as' => 'movies.search', 'uses' => 'IssueController@postApi']);
-
-Route::get('issue/{id}', 'IssueController@getIssueView');
 
 // User password reset
 Route::post('user/reset/{token}', 'UserController@postReset');
@@ -108,30 +102,36 @@ Route::when('contact-us','detectLang');
 # Contact Us Static Page
 Route::get('contact-us', function()
 {
-    // Return about us page
-    return View::make('site/contact-us');
+	// Return about us page
+	return View::make('site/contact-us');
 });
 
 // PROTECTED
 Route::group(array('before' => 'auth'), function()
 {
-    # Posts - Second to last set, match slug
-    Route::get('{postSlug}', 'BlogController@getView');
-    Route::post('{postSlug}', 'BlogController@postView');
-    # Index Page - Last route, no matches
+	# Posts - Second to last set, match slug
+	Route::get('{postSlug}', 'BlogController@getView');
+	Route::post('{postSlug}', 'BlogController@postView');
+	# Index Page - Last route, no matches
 
-    //this route should be protected by entrust - admin check
-    Route::get('issues/data/admin', 'IssueController@getDataAdmin');
+	//this route should be protected by entrust - admin check
+	Route::get('issues/data/admin', 'IssueController@getDataAdmin');
 
-    //return personal issue list
+	//return personal issue list
 
-    Route::get('issues/data/user', 'IssueController@getDataUser');
-    Route::get('/', array('before' => 'detectLang','uses' => 'IssueController@getIndex'));
+	Route::get('issues/data/user', 'IssueController@getDataUser');
+	Route::get('/', array('before' => 'detectLang','uses' => 'IssueController@getIndex'));
+	// Add issue
+	Route::get('api', 'IssueController@api');
+	Route::post('api/search/', ['as' => 'movies.search', 'uses' => 'IssueController@postApi']);
+
+	// Route::get('issue/{id}', 'IssueController@getIssueView');
+	Route::get('issue/{id}', ['as' => 'issue.id', 'uses' => 'IssueController@getIssueView']);
 });
 
 // AUTH FILTER
 Route::filter('auth', function()
 {
-    if (Auth::guest()) return Redirect::to('user/login');
+	if (Auth::guest()) return Redirect::to('user/login');
 });
 
