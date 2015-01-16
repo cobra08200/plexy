@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'url' => 'http://localhost',
+	'url' => 'http://plexy.dev/',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -65,7 +65,7 @@ return array(
 	|
 	*/
 
-	'key' => 'jeZoVUG5R0LTqPC6x72eLzF242jUdyiL',
+	'key' => 'EfLfxIndunb1Hxw6x5oorOmRH0i3M5s3',
 
 	'cipher' => MCRYPT_RIJNDAEL_128,
 
