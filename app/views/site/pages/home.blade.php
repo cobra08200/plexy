@@ -31,15 +31,15 @@
 					<th>{{ Form::select('topic', array('miscellaneous' => 'Miscellaneous', 'movies' => 'Movies', 'music' => 'Music', 'tv' => 'TV'), 'miscellaneous') }}</th>
 					--}}
 					<th>{{ Form::text('title', '', array('class' => 'typeahead form-control','placeholder' => 'Title')) }}</th>
-					{{ Form::hidden('title', 'Title', array('id' => 'title')) }}
-					{{ Form::hidden('year', 'Year', array('id' => 'year')) }}
-					{{ Form::hidden('movieid', 'MovieID', array('id' => 'movieid')) }}
-					{{ Form::hidden('img', 'Image', array('id' => 'img')) }}
+					{{ Form::hidden('title', '', array('id' => 'title')) }}
+					{{ Form::hidden('year', '', array('id' => 'year')) }}
+					{{ Form::hidden('movieid', '', array('id' => 'movieid')) }}
+					{{ Form::hidden('img', '', array('id' => 'img')) }}
 					<th>{{ Form::submit('Add', array('class' => 'btn btn-primary')) }}</th>
 					{{ Form::close() }}
 				</tr>
 			</thead>
-
+{{--
 			<tbody>
 				@foreach($issues as $issue)
 				@if($issue->status === 'closed')
@@ -54,13 +54,22 @@
 					{{--
 					<td data-title="Topic">{{ $issue->topic }}</td>
 					--}}
+					{{--
 					<td data-title="Content">{{ $issue->content }}</td>
 					<td data-title="Created">{{ $issue->created_at->diffForHumans() }}</td>
 				</tr>
 				@endforeach
 			</tbody>
+--}}
 		</table>
 	</div>
+	@foreach(array_chunk($issues->all(), 4) as $issue_row)
+		<div class="row-fluid">
+			@foreach ($issue_row as $issue)
+				<img class="img-zoom" src="{{ $issue->poster_url }}" width="150">
+			@endforeach
+		</div>
+	@endforeach
 	{{ $issues->appends(Request::except('page'))->links() }}
 </div>
 
@@ -69,6 +78,7 @@
 @stop
 
 @section('scripts')
+
 <script>
 	jQuery(document).ready(function($) {
 		$(".clickableRow").click(function() {
@@ -126,6 +136,16 @@ $('.typeahead').typeahead(
 	$( '#year' ).val(datum.year);
 	$( '#movieid' ).val(datum.movieid);
 	$( '#img' ).val('http://image.tmdb.org/t/p/w500' + datum.poster_path);
+});
+
+
+$(document).ready(function(){
+	$('.img-zoom').hover(function() {
+		$(this).addClass('transition');
+
+	}, function() {
+		$(this).removeClass('transition');
+	});
 });
 
 </script>

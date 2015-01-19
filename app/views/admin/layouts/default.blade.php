@@ -50,12 +50,7 @@
 	 <link rel="stylesheet" href="{{asset('assets/css/wysihtml5/bootstrap-wysihtml5.css')}}">
 	 <link rel="stylesheet" href="{{asset('assets/css/datatables-bootstrap.css')}}">
 	 <link rel="stylesheet" href="{{asset('assets/css/colorbox.css')}}">
-
-	 <style>
-		body {
-			padding: 60px 0;
-		}
-	 </style>
+	 <link rel="stylesheet" href="{{asset('assets/css/custom.css')}}">
 
 	 @yield('styles')
 

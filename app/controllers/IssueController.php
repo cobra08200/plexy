@@ -194,19 +194,50 @@ class IssueController extends BaseController {
 
 	public function postApi()
 	{
-		$issue = new Issue;
-		$issue->user_id = Auth::id();
-		$issue->content = Input::get('title') . ' - ' . Input::get('year');
-		//removed topics
-		// $issue->topic = Input::get('topic');
-		$issue->poster_url = Input::get('img');
-		$issue->save();
 
-		// send email
-		// nothing here yet
+		// dd(Input::all());
 
-		//return to after form submit
-		return Redirect::back();
+		// validator
+		$rules = array(
+			'year' 	=> 'required'  // checker to see if they actually used a suggestion
+		);
+
+		$validator = Validator::make(Input::all(), $rules);
+
+		if ($validator->fails())
+		{
+			// get the error messages from the validator
+			$messages = $validator->messages();
+
+			// redirect our user back to the form with the errors from the validator
+			return Redirect::back()
+			->withErrors($validator);
+		}
+		else
+		{
+			// get imgur ready to accept themoviedb img
+
+			return array(   
+				'imgur_apikey'   => '7b310c90e258519cefd34f5a4e88d0ba589a9914', // Imgur API key
+				'imgur_format'   => 'json', // json OR xml
+				'imgur_xml_type' => 'object', // array OR object
+			);
+
+			// create new issue
+			$issue = new Issue;
+			$issue->user_id = Auth::id();
+			$issue->content = Input::get('title') . ' - ' . Input::get('year');
+			//removed topics
+			// $issue->topic = Input::get('topic');
+			$issue->poster_url = Input::get('img');
+			$issue->save();
+
+			// send email
+			// nothing here yet
+
+			//return to after form submit
+			return Redirect::back();
+		}
 	}
 
 	public function getIssueView($id)
@@ -229,7 +260,7 @@ class IssueController extends BaseController {
 
 		if($user->hasRole('admin'))
 		{
-			$issues  	= Issue::paginate(10);
+			$issues  	= Issue::paginate(12);
 		}
 		else
 		{
