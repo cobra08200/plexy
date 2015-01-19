@@ -23,9 +23,8 @@ EOF
 
 sudo a2enmod rewrite
 
-sudo rm -rf /var/www/html
 sudo rm -rf /var/www
-sudo ln -fs /vagrant/public /var/www/html
+sudo ln -fs /vagrant/public /var/www
 
 mysql -u root -proot -e "create database plexy"
 
