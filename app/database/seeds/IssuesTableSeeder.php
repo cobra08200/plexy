@@ -13,21 +13,21 @@ class IssuesTableSeeder extends Seeder {
         DB::table('issues')->insert( array(
             array(
                 'user_id'    => $user_id,
-                'topic'      => 'movies',
+                // 'topic'      => 'movies',
                 'content'    => $this->content,
                 'created_at' => new DateTime,
                 'updated_at' => new DateTime,
             ),
             array(
                 'user_id'    => $user_id,
-                'topic'      => 'music',
+                // 'topic'      => 'music',
                 'content'    => $this->content,
                 'created_at' => new DateTime,
                 'updated_at' => new DateTime,
             ),
             array(
                 'user_id'    => $user_id,
-                'topic'      => 'tv',
+                // 'topic'      => 'tv',
                 'content'    => $this->content,
                 'created_at' => new DateTime,
                 'updated_at' => new DateTime,
