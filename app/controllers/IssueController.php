@@ -217,11 +217,11 @@ class IssueController extends BaseController {
 		{
 			// get imgur ready to accept themoviedb img
 
-			return array(   
-				'imgur_apikey'   => '7b310c90e258519cefd34f5a4e88d0ba589a9914', // Imgur API key
-				'imgur_format'   => 'json', // json OR xml
-				'imgur_xml_type' => 'object', // array OR object
-			);
+			// return array(   
+			// 	'imgur_apikey'   => '7b310c90e258519cefd34f5a4e88d0ba589a9914', // Imgur API key
+			// 	'imgur_format'   => 'json', // json OR xml
+			// 	'imgur_xml_type' => 'object', // array OR object
+			// );
 
 			// create new issue
 			$issue = new Issue;

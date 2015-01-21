@@ -3,15 +3,16 @@
 @section('content')
 
 <div class="row">
-	<div class="panel panel-primary">
-		<div class="panel-heading">
-			<h3 class="panel-title">
-				@if($user->hasRole("comment"))
-				My
-				@endif
-				Requests
-			</h3>
-		</div>
+
+{{--
+	<h3>
+		@if($user->hasRole("comment"))
+		My
+		@endif
+		Requests
+	</h3>
+--}}
+{{--
 		<table class="table">
 			<thead>
 				<tr>
@@ -26,20 +27,9 @@
 						</select>
 					</th>
 					@endif
-					{{ Form::open(array('route' => 'movies.search')) }}
-					{{--
-					<th>{{ Form::select('topic', array('miscellaneous' => 'Miscellaneous', 'movies' => 'Movies', 'music' => 'Music', 'tv' => 'TV'), 'miscellaneous') }}</th>
-					--}}
-					<th>{{ Form::text('title', '', array('class' => 'typeahead form-control','placeholder' => 'Title')) }}</th>
-					{{ Form::hidden('title', '', array('id' => 'title')) }}
-					{{ Form::hidden('year', '', array('id' => 'year')) }}
-					{{ Form::hidden('movieid', '', array('id' => 'movieid')) }}
-					{{ Form::hidden('img', '', array('id' => 'img')) }}
-					<th>{{ Form::submit('Add', array('class' => 'btn btn-primary')) }}</th>
-					{{ Form::close() }}
+					
 				</tr>
 			</thead>
-{{--
 			<tbody>
 				@foreach($issues as $issue)
 				@if($issue->status === 'closed')
@@ -60,9 +50,19 @@
 				</tr>
 				@endforeach
 			</tbody>
---}}
 		</table>
-	</div>
+--}}
+
+	{{ Form::open(array('route' => 'movies.search')) }}
+	{{ Form::text('title', '', array('class' => 'typeahead form-control','placeholder' => 'Title')) }}
+	{{ Form::hidden('title', '', array('id' => 'title')) }}
+	{{ Form::hidden('year', '', array('id' => 'year')) }}
+	{{ Form::hidden('movieid', '', array('id' => 'movieid')) }}
+	{{ Form::hidden('img', '', array('id' => 'img')) }}
+	{{ Form::submit('Add', array('class' => 'btn btn-primary')) }}
+	{{ Form::close() }}
+
+
 	@foreach(array_chunk($issues->all(), 4) as $issue_row)
 		<div class="row-fluid">
 			@foreach ($issue_row as $issue)
@@ -71,9 +71,8 @@
 		</div>
 	@endforeach
 	{{ $issues->appends(Request::except('page'))->links() }}
+
 </div>
-
-
 
 @stop
 
@@ -139,14 +138,14 @@ $('.typeahead').typeahead(
 });
 
 
-$(document).ready(function(){
-	$('.img-zoom').hover(function() {
-		$(this).addClass('transition');
+// $(document).ready(function(){
+// 	$('.img-zoom').hover(function() {
+// 		$(this).addClass('transition');
 
-	}, function() {
-		$(this).removeClass('transition');
-	});
-});
+// 	}, function() {
+// 		$(this).removeClass('transition');
+// 	});
+// });
 
 </script>
 @stop
