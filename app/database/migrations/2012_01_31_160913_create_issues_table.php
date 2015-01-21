@@ -17,6 +17,7 @@ class CreateIssuesTable extends Migration {
 			$table->engine = 'InnoDB';
 			$table->increments('id')->unsigned();
 			$table->integer('user_id')->unsigned()->index();
+			$table->string('tmdb');
 			$table->enum('status', array('open', 'pending', 'closed'))->default('open');
 			$table->enum('topic', array('miscellaneous', 'movies', 'music', 'tv'));
 			$table->text('content');

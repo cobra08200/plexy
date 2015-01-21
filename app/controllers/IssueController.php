@@ -228,11 +228,11 @@ class IssueController extends BaseController {
 			$issue->user_id = Auth::id();
 			$issue->content = Input::get('title') . ' - ' . Input::get('year');
 			//removed topics
-			// $issue->topic = Input::get('topic');
+			$issue->topic = Input::get('topic');
 			$issue->poster_url = Input::get('poster');
 			$issue->backdrop_url = Input::get('backdrop');
 			$issue->topic = Input::get('topic');
-			$issue->tmdb = Input::get('db');
+			$issue->tmdb = Input::get('tmdb');
 			$issue->save();
 
 			// send email
