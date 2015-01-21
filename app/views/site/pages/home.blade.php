@@ -57,8 +57,9 @@
 	{{ Form::text('title', '', array('class' => 'typeahead form-control','placeholder' => 'Title')) }}
 	{{ Form::hidden('title', '', array('id' => 'title')) }}
 	{{ Form::hidden('year', '', array('id' => 'year')) }}
-	{{ Form::hidden('movieid', '', array('id' => 'movieid')) }}
-	{{ Form::hidden('img', '', array('id' => 'img')) }}
+	{{ Form::hidden('tmdb', '', array('id' => 'tmdb')) }}
+	{{ Form::hidden('poster', '', array('id' => 'poster')) }}
+	{{ Form::hidden('topic', '', array('id' => 'topic')) }}
 	{{ Form::submit('Add', array('class' => 'btn btn-primary')) }}
 	{{ Form::close() }}
 
@@ -66,7 +67,7 @@
 	@foreach(array_chunk($issues->all(), 4) as $issue_row)
 		<div class="row-fluid">
 			@foreach ($issue_row as $issue)
-				<img class="img-zoom" src="{{ $issue->poster_url }}" width="150">
+				<!-- <img class="img-zoom" src="{{ $issue->poster_url }}" width="150"> -->
 			@endforeach
 		</div>
 	@endforeach
@@ -85,6 +86,8 @@
 		});
 	});
 
+
+//movies search
 var movies = new Bloodhound({
 	datumTokenizer: function (datum) {
 		return Bloodhound.tokenizers.whitespace(datum.value);
@@ -97,10 +100,38 @@ var movies = new Bloodhound({
 			// Map the remote source JSON array to a JavaScript array
 			return $.map(movies.results, function (movie) {
 				return {
-					movieid: movie.id,
+					tmdb: movie.id,
 					value: movie.original_title,
 					year: (movie.release_date.substr(0, 4) ? movie.release_date.substr(0, 4) : ''),
-					poster_path: movie.poster_path
+					poster_path: movie.poster_path,
+					backdrop_path: movie.backdrop_path,
+					media_type: 'movie'
+				};
+			});
+		}
+	}
+});
+
+//tv search
+//movies search
+var tvshows = new Bloodhound({
+	datumTokenizer: function (datum) {
+		return Bloodhound.tokenizers.whitespace(datum.value);
+	},
+	queryTokenizer: Bloodhound.tokenizers.whitespace,
+	limit: 5,
+	remote: {
+		url: 'http://api.themoviedb.org/3/search/tv?api_key=470fd2ec8853e25d2f8d86f685d2270e&query=%QUERY&include_adult=false&search_type=ngram',
+		filter: function (tvshows) {
+			// Map the remote source JSON array to a JavaScript array
+			return $.map(tvshows.results, function (tvshow) {
+				return {
+					tmdb: tvshow.id,
+					value: tvshow.name,
+					year: (tvshow.first_air_date.substr(0, 4) ? tvshow.first_air_date.substr(0, 4) : ''),
+					poster_path: tvshow.poster_path,
+					backdrop_path: tvshow.backdrop_path,
+					media_type: 'tv'
 				};
 			});
 		}
@@ -109,7 +140,7 @@ var movies = new Bloodhound({
 
 // Initialize the Bloodhound suggestion engine
 movies.initialize();
-// tv.initialize();
+tvshows.initialize();
 
 // Instantiate the Typeahead UI
 $('.typeahead').typeahead(
@@ -118,10 +149,26 @@ $('.typeahead').typeahead(
 	highlight: true
 },
 {
+	name: 'movies',
 	displayKey: 'value',
 	source: movies.ttAdapter(),
 	templates:
 	{
+		header: '<h3 class="dropdown-header">movies</h3>',
+		empty: [
+		'<div class="empty-message">',
+		'You goofed.',
+		'</div>'].join('\n'),
+		suggestion: Handlebars.compile('<p><strong>@{{value}}</strong> – @{{year}}</p>')
+	}
+},
+{
+	name: 'tvshows',
+	displayKey: 'value',
+	source: tvshows.ttAdapter(),
+	templates:
+	{
+		header: '<h3 class="dropdown-header">tv shows</h3>',
 		empty: [
 		'<div class="empty-message">',
 		'You goofed.',
@@ -129,12 +176,15 @@ $('.typeahead').typeahead(
 		suggestion: Handlebars.compile('<p><strong>@{{value}}</strong> – @{{year}}</p>')
 	}
 
+// binding disabled for multi dataset testing
 }).bind("typeahead:selected", function (obj, datum, name)
 {
 	$( '#title' ).val(datum.value);
 	$( '#year' ).val(datum.year);
-	$( '#movieid' ).val(datum.movieid);
-	$( '#img' ).val('http://image.tmdb.org/t/p/w500' + datum.poster_path);
+	$( '#tmdb' ).val(datum.tmdb);
+	$( '#poster' ).val('http://image.tmdb.org/t/p/w500' + datum.poster_path);
+	$( '#backdrop' ).val('http://image.tmdb.org/t/p/w500' + datum.backdrop_path);
+	$( '#topic' ).val(datum.media_type);
 });
 
 

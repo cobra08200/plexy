@@ -195,7 +195,7 @@ class IssueController extends BaseController {
 	public function postApi()
 	{
 
-		// dd(Input::all());
+		dd(Input::all());
 
 		// validator
 		$rules = array(
@@ -229,7 +229,10 @@ class IssueController extends BaseController {
 			$issue->content = Input::get('title') . ' - ' . Input::get('year');
 			//removed topics
 			// $issue->topic = Input::get('topic');
-			$issue->poster_url = Input::get('img');
+			$issue->poster_url = Input::get('poster');
+			$issue->backdrop_url = Input::get('backdrop');
+			$issue->topic = Input::get('topic');
+			$issue->tmdb = Input::get('db');
 			$issue->save();
 
 			// send email
