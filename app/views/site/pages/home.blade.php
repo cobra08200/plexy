@@ -59,6 +59,7 @@
 	{{ Form::hidden('year', '', array('id' => 'year')) }}
 	{{ Form::hidden('tmdb', '', array('id' => 'tmdb')) }}
 	{{ Form::hidden('poster', '', array('id' => 'poster')) }}
+	{{ Form::hidden('backdrop', '', array('id' => 'backdrop')) }}
 	{{ Form::hidden('topic', '', array('id' => 'topic')) }}
 	{{ Form::submit('Add', array('class' => 'btn btn-primary')) }}
 	{{ Form::close() }}

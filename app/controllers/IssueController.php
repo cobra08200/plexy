@@ -195,7 +195,7 @@ class IssueController extends BaseController {
 	public function postApi()
 	{
 
-		dd(Input::all());
+		// dd(Input::all());
 
 		// validator
 		$rules = array(
