@@ -11,7 +11,7 @@
 
 	<title>
 		@section('title')
-		Plex Request
+		Plexy
 		@show
 	</title>
 

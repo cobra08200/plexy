@@ -227,16 +227,34 @@ class IssueController extends BaseController {
 			$issue = new Issue;
 			$issue->user_id = Auth::id();
 			$issue->content = Input::get('title') . ' - ' . Input::get('year');
-			//removed topics
-			$issue->topic = Input::get('topic');
 			$issue->poster_url = Input::get('poster');
 			$issue->backdrop_url = Input::get('backdrop');
 			$issue->topic = Input::get('topic');
 			$issue->tmdb = Input::get('tmdb');
+
 			$issue->save();
 
 			// send email
-			// nothing here yet
+			$username = 	Auth::user()->username;
+			$email = 		Auth::user()->email;
+			$issue_id =		$issue->id;
+			$poster_url =	$issue->poster_url;
+			$title =	$issue->content;
+
+			$data = array(
+				'user' 			=> Auth::user(),
+				'username' 		=> $username, 
+				'email' 		=> $email,
+				'issue_id' 		=> $issue_id,
+				'poster_url' 	=> $poster_url,
+				'title' 		=> $title
+				);
+
+			Mail::later(5, 'emails.newrequest', $data, function($message) use ($username, $email, $issue_id, $poster_url, $title)
+			{
+				$message->from('requests@ehumps.me', 'Plexy');
+				$message->to($email, $username)->subject('Plexy - Request #'.$issue_id);
+			});
 
 			//return to after form submit
 			return Redirect::back();

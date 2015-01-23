@@ -96,7 +96,7 @@ var movies = new Bloodhound({
 	queryTokenizer: Bloodhound.tokenizers.whitespace,
 	limit: 5,
 	remote: {
-		url: 'http://api.themoviedb.org/3/search/movie?api_key=470fd2ec8853e25d2f8d86f685d2270e&query=%QUERY&include_adult=false&search_type=ngram',
+		url: 'http://api.themoviedb.org/3/search/movie?api_key=a31dbc04c5cc13fd61e1427d4ff1cd58&query=%QUERY&include_adult=false&search_type=ngram',
 		filter: function (movies) {
 			// Map the remote source JSON array to a JavaScript array
 			return $.map(movies.results, function (movie) {
@@ -122,7 +122,7 @@ var tvshows = new Bloodhound({
 	queryTokenizer: Bloodhound.tokenizers.whitespace,
 	limit: 5,
 	remote: {
-		url: 'http://api.themoviedb.org/3/search/tv?api_key=470fd2ec8853e25d2f8d86f685d2270e&query=%QUERY&include_adult=false&search_type=ngram',
+		url: 'http://api.themoviedb.org/3/search/tv?api_key=a31dbc04c5cc13fd61e1427d4ff1cd58&query=%QUERY&include_adult=false&search_type=ngram',
 		filter: function (tvshows) {
 			// Map the remote source JSON array to a JavaScript array
 			return $.map(tvshows.results, function (tvshow) {

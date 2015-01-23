@@ -11,7 +11,7 @@
 
 	<title>
 		@section('title')
-			{{{ $title }}} :: Administration
+			Plexy
 		@show
 	</title>
 

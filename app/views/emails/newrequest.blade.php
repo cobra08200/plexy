@@ -85,31 +85,39 @@
 
 				<!-- 600px container (white background) -->
 				<table border="0" width="600" cellpadding="0" cellspacing="0" class="container" style="width:600px;max-width:600px">
+					{{--
 					<tr>
 						<td class="container-padding header" align="left" style="font-family:Helvetica, Arial, sans-serif;font-size:24px;font-weight:bold;padding-bottom:12px;color:#DF4726;padding-left:24px;padding-right:24px">
-							{{ Lang::get('confide::confide.email.password_reset.subject') }}
+							{{ $title }}
 						</td>
 					</tr>
+					--}}
 					<tr>
 						<td class="container-padding content" align="left" style="padding-left:24px;padding-right:24px;padding-top:12px;padding-bottom:12px;background-color:#ffffff">
 							<br>
 
 							<div class="title" style="font-family:Helvetica, Arial, sans-serif;font-size:18px;font-weight:600;color:#374550">
-								{{ Lang::get('confide::confide.email.password_reset.greetings', array( 'name' => $user['username'])) }}
+								You just requested {{ $title }}
 							</div>
 							<br>
 
 							<div class="body-text" style="font-family:Helvetica, Arial, sans-serif;font-size:14px;line-height:20px;text-align:left;color:#333333">
+								{{--
 								<p>
-									{{ Lang::get('confide::confide.email.password_reset.body') }}
+									body
 								</p>
-								<a href='{{ URL::to('user/reset/'.$token) }}'>
-									{{ URL::to('user/reset/'.$token) }}
+								<a href='{{ URL::to('user/reset/') }}'>
+									url
 								</a>
+								--}}
+								<center>
+									<img src="{{ $poster_url }}">
+								</center>
 								<br><br>
-
-								{{ Lang::get('confide::confide.email.password_reset.farewell') }}
+								{{--
+								farewell
 								<br><br>
+								--}}
 							</div>
 
 						</td>
@@ -117,15 +125,17 @@
 					<tr>
 						<td class="container-padding footer-text" align="left" style="font-family:Helvetica, Arial, sans-serif;font-size:12px;line-height:16px;color:#aaaaaa;padding-left:24px;padding-right:24px">
 							<br><br>
-
+							{{--
 							You are receiving this email because someone clicked a button on my website. <!-- Update your <a href="#" style="color:#aaaaaa">email preferences</a> or <a href="#" style="color:#aaaaaa">unsubscribe</a>. -->
 							<br><br>
 
-<!-- 							<strong>ehumps.me</strong><br>
+ 							<strong>ehumps.me</strong>
+ 							<br>
 							<span class="ios-footer">
 								123 Main St.<br>
 								Springfield, MA 12345<br>
-							</span> -->
+							</span>
+							--}}
 							<a href="http://help.ehumps.me" style="color:#aaaaaa">help.ehumps.me</a><br>
 
 							<br><br>
