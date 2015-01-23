@@ -1,5 +1,6 @@
 @extends('admin.layouts.default')
 
+{{--
 <?php
 define('DISQUS_SECRET_KEY', 'IsNynpAZO4xzjklvboqeNHo91a1tkBLSeLl4zchOTq4fwGinpBJXMOYznWZgEYyn');
 define('DISQUS_PUBLIC_KEY', 'wwZyMeih66TmTi6ni634aKxEuzLK86f6i2vt81HaEFp1amk0VAs4FVmNI4cn2mtH');
@@ -34,12 +35,14 @@ $message = base64_encode(json_encode($data));
 $timestamp = time();
 $hmac = dsq_hmacsha1($message . ' ' . $timestamp, DISQUS_SECRET_KEY);
 ?>
+
 <script type="text/javascript">
 	var disqus_config = function() {
 		this.page.remote_auth_s3 = "<?php echo "$message $hmac $timestamp"; ?>";
 		this.page.api_key = "<?php echo DISQUS_PUBLIC_KEY; ?>";
 	}
 </script>
+--}}
 
 @section('content')
 
@@ -51,6 +54,7 @@ $hmac = dsq_hmacsha1($message . ' ' . $timestamp, DISQUS_SECRET_KEY);
 		<img src="{{ $issue->poster_url }}">
 	</div>
 
+{{-- Disqus
 	<div id="disqus_thread"></div>
 	<script type="text/javascript">
 		/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
@@ -66,5 +70,6 @@ $hmac = dsq_hmacsha1($message . ' ' . $timestamp, DISQUS_SECRET_KEY);
 	})();
 </script>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+--}}
 
 @stop
