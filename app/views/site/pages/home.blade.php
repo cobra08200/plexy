@@ -68,7 +68,9 @@
 	@foreach(array_chunk($issues->all(), 4) as $issue_row)
 		<div class="row-fluid">
 			@foreach ($issue_row as $issue)
-				<!-- <img class="img-zoom" src="{{ $issue->poster_url }}" width="150"> -->
+			<a href="{{ URL::to('issue') }}/{{ $issue->id }}">
+				<img class="img-zoom" src="{{ $issue->poster_url }}" width="150">
+			</a>
 			@endforeach
 		</div>
 	@endforeach
