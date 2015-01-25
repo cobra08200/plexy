@@ -1,6 +1,6 @@
 <?php
 
-class RequestsController extends \BaseController {
+class RequestController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
@@ -9,7 +9,7 @@ class RequestsController extends \BaseController {
 	 */
 	public function index()
 	{
-		//
+		return 'RequestController.index()';
 	}
 
 

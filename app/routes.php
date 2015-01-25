@@ -127,6 +127,9 @@ Route::group(array('before' => 'auth'), function()
 
 	// Route::get('issue/{id}', 'IssueController@getIssueView');
 	Route::get('issue/{id}', ['as' => 'issue.id', 'uses' => 'IssueController@getIssueView']);
+
+	# Request routes
+	Route::get('requests/index', 'RequestController@index');
 });
 
 // AUTH FILTER

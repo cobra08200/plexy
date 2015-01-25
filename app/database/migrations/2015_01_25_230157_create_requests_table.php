@@ -14,7 +14,13 @@ class CreateRequestsTable extends Migration {
 	{
 		Schema::create('requests', function(Blueprint $table)
 		{
-			$table->increments('id');
+			$table->increments('id')->unsigned();
+			$table->integer('user_id')->unsigned()->index();
+			$table->string('tmdb')->nullable();
+			$table->enum('status', ['open', 'pending', 'closed'])->default('open');
+			$table->enum('topic', ['miscellaneous', 'movies', 'music', 'tv']);
+			$table->string('post_url')->nullable();
+			$table->string('backdrop_url')->nullable();
 			$table->timestamps();
 		});
 	}
