@@ -1,8 +1,8 @@
 <div class="container">
 	<div class="omb_login">
-		<h3 class="omb_authTitle">Login or <a href="/user/create">Sign up</a></h3>
+		<h3 class="omb_authTitle">Login or {{ link_to('user/create', 'Sign up') }}</h3>
 		<div class="row omb_row-sm-offset-3">
-			<div class="col-xs-12 col-sm-6">    
+			<div class="col-xs-12 col-sm-6">
 				<form class="form-horizontal" method="POST" action="{{ URL::to('user/login') }}" accept-charset="UTF-8">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					<fieldset>
