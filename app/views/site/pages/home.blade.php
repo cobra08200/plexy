@@ -53,18 +53,6 @@
 		</table>
 --}}
 
-	{{ Form::open(array('route' => 'movies.search')) }}
-	{{ Form::text('title', '', array('class' => 'typeahead form-control','placeholder' => 'Title')) }}
-	{{ Form::hidden('title', '', array('id' => 'title')) }}
-	{{ Form::hidden('year', '', array('id' => 'year')) }}
-	{{ Form::hidden('tmdb', '', array('id' => 'tmdb')) }}
-	{{ Form::hidden('poster', '', array('id' => 'poster')) }}
-	{{ Form::hidden('backdrop', '', array('id' => 'backdrop')) }}
-	{{ Form::hidden('topic', '', array('id' => 'topic')) }}
-	{{ Form::submit('Add', array('class' => 'btn btn-primary')) }}
-	{{ Form::close() }}
-
-
 	@foreach(array_chunk($issues->all(), 4) as $issue_row)
 		<div class="row-fluid">
 			@foreach ($issue_row as $issue)
