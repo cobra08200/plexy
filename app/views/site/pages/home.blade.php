@@ -27,7 +27,7 @@
 						</select>
 					</th>
 					@endif
-					
+
 				</tr>
 			</thead>
 			<tbody>
@@ -177,16 +177,6 @@ $('.typeahead').typeahead(
 	$( '#backdrop' ).val('http://image.tmdb.org/t/p/w500' + datum.backdrop_path);
 	$( '#topic' ).val(datum.media_type);
 });
-
-
-// $(document).ready(function(){
-// 	$('.img-zoom').hover(function() {
-// 		$(this).addClass('transition');
-
-// 	}, function() {
-// 		$(this).removeClass('transition');
-// 	});
-// });
 
 </script>
 @stop
