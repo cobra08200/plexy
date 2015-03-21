@@ -121,7 +121,11 @@ class IssueController extends BaseController {
 
 		// validator
 		$rules = array(
-			'year' 	=> 'required'  // checker to see if they actually used a suggestion
+			'year'		=> 'required'  // checker to see if they actually used a suggestion
+		);
+
+		$unique = array(
+			'tmdb'		=> 'unique:issues'  // check tmdb to see if anyone else in plexy has requested it
 		);
 
 		$validator = Validator::make(Input::all(), $rules);
@@ -148,7 +152,7 @@ class IssueController extends BaseController {
 			// create new issue
 			$issue = new Issue;
 			$issue->user_id = Auth::id();
-			$issue->content = Input::get('title') . ' - ' . Input::get('year');
+			$issue->content = Input::get('title') . ' (' . Input::get('year') .')';
 			$issue->poster_url = Input::get('poster');
 			$issue->backdrop_url = Input::get('backdrop');
 			$issue->topic = Input::get('topic');

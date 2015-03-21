@@ -57,7 +57,7 @@
 		<div class="row-fluid">
 			@foreach ($issue_row as $issue)
 			<a href="{{ URL::to('issue') }}/{{ $issue->id }}">
-				<img class="img-zoom" src="{{ $issue->poster_url }}" width="150">
+				<img class="img-zoom" src="{{ $issue->poster_url }}" width="150" data-toggle="tooltip" data-placement="top" title="{{ $issue->content }}">
 			</a>
 			@endforeach
 		</div>
@@ -177,6 +177,10 @@ $('.typeahead').typeahead(
 	$( '#backdrop' ).val('http://image.tmdb.org/t/p/w500' + datum.backdrop_path);
 	$( '#topic' ).val(datum.media_type);
 });
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
 
 </script>
 @stop

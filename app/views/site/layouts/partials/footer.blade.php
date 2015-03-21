@@ -1,7 +1,17 @@
 @if(Auth::check())
 <!-- Footer -->
-<footer class="clearfix">
-	@yield('footer')
+<hr>
+
+<!-- Footer -->
+<footer>
+		<div class="row">
+				<div class="col-lg-12">
+					<p>
+						@yield('footer')
+					</p>
+				</div>
+		</div>
+		<!-- /.row -->
 </footer>
 <!-- ./ Footer -->
 
@@ -9,7 +19,8 @@
 <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.4/typeahead.bundle.min.js"></script>
-<script src="{{asset('bootstrap/js/bootstrap.min.js')}}"></script>
+<!-- <script src="{{asset('bootstrap/js/bootstrap.min.js')}}"></script> -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 {{--
 <script src="{{asset('assets/js/wysihtml5/wysihtml5-0.3.0.js')}}"></script>
 <script src="{{asset('assets/js/wysihtml5/bootstrap-wysihtml5.js')}}"></script>
