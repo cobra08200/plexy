@@ -52,6 +52,7 @@
 			</tbody>
 		</table>
 --}}
+@include('site/layouts/partials/search')
 
 	@foreach(array_chunk($issues->all(), 4) as $issue_row)
 		<div class="row-fluid">

@@ -3,7 +3,7 @@
 	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.4/typeahead.bundle.min.js"></script>
-	
+
 	<style type="text/css">
 
 		.tt-dropdown-menu {
