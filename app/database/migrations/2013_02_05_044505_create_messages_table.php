@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCommentsTable extends Migration {
+class CreateMessagesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,7 +12,7 @@ class CreateCommentsTable extends Migration {
 	public function up()
 	{
 		// Create the `Comments` table
-		Schema::create('comments', function($table)
+		Schema::create('messages', function($table)
 		{
       $table->engine = 'InnoDB';
 			$table->increments('id')->unsigned();
@@ -35,7 +35,7 @@ class CreateCommentsTable extends Migration {
 	public function down()
 	{
 		// Delete the `Comments` table
-		Schema::drop('comments');
+		Schema::drop('messages');
 	}
 
 }

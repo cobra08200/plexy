@@ -52,7 +52,6 @@
 			</tbody>
 		</table>
 --}}
-@include('site/layouts/partials/search')
 
 	@foreach(array_chunk($issues->all(), 4) as $issue_row)
 		<div class="row-fluid">
@@ -127,7 +126,7 @@ var tvshows = new Bloodhound({
 					year: (tvshow.first_air_date !== null ? tvshow.first_air_date.substr(0, 4) : ''),
 					poster_path: tvshow.poster_path,
 					backdrop_path: tvshow.backdrop_path,
-					vote_average: movie.vote_average,
+					vote_average: tvshow.vote_average,
 					media_type: 'tv'
 				};
 			});

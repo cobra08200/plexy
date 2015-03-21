@@ -3,6 +3,12 @@
 class IssueController extends BaseController {
 
 	/**
+	 * Message Model
+	 * @var Message
+	 */
+
+	protected $message;
+	/**
 	 * Issue Model
 	 * @var Issue
 	 */
@@ -19,10 +25,12 @@ class IssueController extends BaseController {
 	 * @param Issue $issue
 	 * @param User $user
 	 */
-	public function __construct(Issue $issue, User $user)
+
+	public function __construct(Issue $issue, User $user, Message $message)
 	{
 		parent::__construct();
 
+		$this->message = $message;
 		$this->issue = $issue;
 		$this->user = $user;
 	}
@@ -118,17 +126,19 @@ class IssueController extends BaseController {
 	{
 		// inspect input
 		// dd(Input::all());
+		// dd(Input::only('type'));
 
 		// validator
 		$rules = array(
-			'year'		=> 'required'  // checker to see if they actually used a suggestion
+			'year'	=> 'required'  // checker to see if they actually used a suggestion
 		);
 
-		$unique = array(
-			'tmdb'		=> 'unique:issues'  // check tmdb to see if anyone else in plexy has requested it
+		$unique_rules = array(
+			'tmdb'	=> 'unique:issues'  // check tmdb to see if anyone else in plexy has requested it
 		);
 
 		$validator = Validator::make(Input::all(), $rules);
+		$unique = Validator::make(Input::all(), $unique_rules);
 
 		if ($validator->fails())
 		{
@@ -139,15 +149,18 @@ class IssueController extends BaseController {
 			return Redirect::back()
 			->withErrors($validator);
 		}
+
+		elseif ($unique->fails())
+		{
+			// get the error messages from the validator
+			$messages = $validator->messages();
+
+			// redirect our user back to the form with the errors from the validator
+			return Redirect::back()
+			->with('message', 'Someone already either wants this or reported this, ya dingo.');
+		}
 		else
 		{
-			// get imgur ready to accept themoviedb img
-
-			// return array(
-			// 	'imgur_apikey'   => '7b310c90e258519cefd34f5a4e88d0ba589a9914', // Imgur API key
-			// 	'imgur_format'   => 'json', // json OR xml
-			// 	'imgur_xml_type' => 'object', // array OR object
-			// );
 
 			// create new issue
 			$issue = new Issue;
@@ -184,7 +197,7 @@ class IssueController extends BaseController {
 				$message->to($email, $username)->subject('Plexy - Request #'.$issue_id);
 			});
 
-			//return to after form submit
+			//return after form submit
 			return Redirect::back();
 		}
 	}
@@ -193,8 +206,9 @@ class IssueController extends BaseController {
 	{
 		// Auth::loginUsingId(2);
 		$issue = Issue::findOrFail($id);
+		$message = Message::all();
 
-		return View::make('site/pages/issues', compact('issue'));
+		return View::make('site/pages/issues', compact('issue', 'message'));
 	}
 
 	public function getIndex()
@@ -231,8 +245,4 @@ class IssueController extends BaseController {
 		return View::make('site.pages.home', compact('search', 'users', 'user', 'id', 'issues'));
 	}
 
-	public function style()
-	{
-		return View::make('site/pages/style');
-	}
 }
