@@ -20,9 +20,12 @@ class CreateIssuesTable extends Migration {
 			$table->string('tmdb');
 			$table->enum('status', array('open', 'pending', 'closed'))->default('open');
 			$table->enum('topic', array('miscellaneous', 'movies', 'music', 'tv'));
+			$table->enum('type', array('issue', 'request'));
 			$table->text('content');
 			$table->string('poster_url');
 			$table->string('backdrop_url');
+			$table->string('vote_average');
+			$table->string('plex_url');
 			$table->timestamps();
 			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 		});

@@ -116,7 +116,7 @@ class IssueController extends BaseController {
 
 	public function postApi()
 	{
-
+		// inspect input
 		// dd(Input::all());
 
 		// validator
@@ -157,6 +157,8 @@ class IssueController extends BaseController {
 			$issue->backdrop_url = Input::get('backdrop');
 			$issue->topic = Input::get('topic');
 			$issue->tmdb = Input::get('tmdb');
+			$issue->vote_average = Input::get('vote_average');
+			$issue->type = strtolower(Input::get('type'));
 
 			$issue->save();
 

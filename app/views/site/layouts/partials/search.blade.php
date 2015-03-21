@@ -7,6 +7,8 @@
 {{ Form::hidden('poster', '', array('id' => 'poster')) }}
 {{ Form::hidden('backdrop', '', array('id' => 'backdrop')) }}
 {{ Form::hidden('topic', '', array('id' => 'topic')) }}
-{{ Form::submit('Add', array('class' => 'btn btn-default')) }}
+{{ Form::hidden('vote_average', '', array('id' => 'vote_average')) }}
+{{ Form::submit('Request', array('class' => 'btn btn-default', 'name' => 'type')) }}
+{{ Form::submit('Issue', array('class' => 'btn btn-default', 'name' => 'type')) }}
 </div>
 {{ Form::close() }}

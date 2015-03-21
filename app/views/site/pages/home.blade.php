@@ -57,6 +57,9 @@
 	@foreach(array_chunk($issues->all(), 4) as $issue_row)
 		<div class="row-fluid">
 			@foreach ($issue_row as $issue)
+			<p>
+				{{ $issue->type }}
+			</p>
 			<a href="{{ URL::to('issue') }}/{{ $issue->id }}">
 				<img class="img-zoom" src="{{ $issue->poster_url }}" width="150" data-toggle="tooltip" data-placement="top" title="{{ $issue->content }}">
 			</a>
@@ -97,6 +100,7 @@ var movies = new Bloodhound({
 					year: (movie.release_date !== null ? movie.release_date.substr(0, 4) : ''),
 					poster_path: movie.poster_path,
 					backdrop_path: movie.backdrop_path,
+					vote_average: movie.vote_average,
 					media_type: 'movie'
 				};
 			});
@@ -123,6 +127,7 @@ var tvshows = new Bloodhound({
 					year: (tvshow.first_air_date !== null ? tvshow.first_air_date.substr(0, 4) : ''),
 					poster_path: tvshow.poster_path,
 					backdrop_path: tvshow.backdrop_path,
+					vote_average: movie.vote_average,
 					media_type: 'tv'
 				};
 			});
@@ -177,6 +182,7 @@ $('.typeahead').typeahead(
 	$( '#poster' ).val('http://image.tmdb.org/t/p/w500' + datum.poster_path);
 	$( '#backdrop' ).val('http://image.tmdb.org/t/p/w500' + datum.backdrop_path);
 	$( '#topic' ).val(datum.media_type);
+	$( '#vote_average' ).val(datum.vote_average);
 });
 
 $(function () {
