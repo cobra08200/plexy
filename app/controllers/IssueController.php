@@ -26,24 +26,7 @@ class IssueController extends BaseController {
 		$this->issue = $issue;
 		$this->user = $user;
 	}
-	
-	/**
-	 * Returns all the blog posts.
-	 *
-	 * @return View
-	 */
-	public function getIndexOld()
-	{
-		$user = Auth::user();
 
-		$title = Lang::get('admin/blogs/title.blog_management');
-		// Get all the issues
-		// $issues = $this->issue->orderBy('created_at', 'DESC')->paginate(10);
-		$issues = $this->issue;
-
-		// Show the page
-		return View::make('site/pages/index', compact('issues', 'title', 'user'));
-	}
 
 	/**
 	 * View a blog post.
@@ -131,67 +114,6 @@ class IssueController extends BaseController {
 		return Redirect::to($slug)->withInput()->withErrors($validator);
 	}
 
-
-	/**
-	 * Show a list of all the blog issues formatted for Datatables.
-	 *
-	 * @return Datatables JSON
-	 */
-	public function getDataAdmin()
-	{
-		// admin view all
-		$issues = DB::table('issues')
-		->join('users', 'users.id', '=', 'issues.user_id')
-		->select(array('issues.status as status', 'issues.id as id', 'users.username as username', 'issues.topic as topic', 'issues.id as comments', 'issues.created_at as created_at'));
-
-		return Datatables::of($issues)
-
-		->edit_column('comments', '{{ DB::table(\'comments\')->where(\'issue_id\', \'=\', $id)->count() }}')
-
-		->add_column('actions', '<a href="{{{ URL::to(\'admin/blogs/\' . $id . \'/edit\' ) }}}" class="btn btn-default btn-xs iframe" >{{{ Lang::get(\'button.edit\') }}}</a>
-			<a href="{{{ URL::to(\'admin/blogs/\' . $id . \'/delete\' ) }}}" class="btn btn-xs btn-danger iframe">{{{ Lang::get(\'button.delete\') }}}</a>
-			')
-
-		->remove_column('id')
-
-		->make();
-	}
-
-	/**
-	 * Show a list of all the blog issues formatted for Datatables.
-	 *
-	 * @return Datatables JSON
-	 */
-	public function getDataUser()
-	{
-		$id = Auth::id();
-
-		// user view all
-		$issues = DB::table('issues')
-		->where('users.id', '=', $id)
-		->join('users', 'users.id', '=', 'issues.user_id')
-		->select(array('issues.status as status', 'issues.id as id', 'issues.topic as topic', 'issues.id as comments', 'issues.created_at as created_at'));
-
-		return Datatables::of($issues)
-
-		->edit_column('comments', '{{ DB::table(\'comments\')->where(\'issue_id\', \'=\', $id)->count() }}')
-
-		->add_column('actions', '<a href="{{{ URL::to(\'admin/blogs/\' . $id . \'/edit\' ) }}}" class="btn btn-default btn-xs iframe" >{{{ Lang::get(\'button.edit\') }}}</a>
-			<a href="{{{ URL::to(\'admin/blogs/\' . $id . \'/delete\' ) }}}" class="btn btn-xs btn-danger iframe">{{{ Lang::get(\'button.delete\') }}}</a>
-			')
-
-		->remove_column('id')
-
-		->make();
-	}
-
-	public function api()
-	{
-		Auth::loginUsingId(2);
-		// return View::make('site/pages/api', compact('movie'));
-		return View::make('site/pages/api');
-	}
-
 	public function postApi()
 	{
 
@@ -217,7 +139,7 @@ class IssueController extends BaseController {
 		{
 			// get imgur ready to accept themoviedb img
 
-			// return array(   
+			// return array(
 			// 	'imgur_apikey'   => '7b310c90e258519cefd34f5a4e88d0ba589a9914', // Imgur API key
 			// 	'imgur_format'   => 'json', // json OR xml
 			// 	'imgur_xml_type' => 'object', // array OR object
@@ -243,7 +165,7 @@ class IssueController extends BaseController {
 
 			$data = array(
 				'user' 			=> Auth::user(),
-				'username' 		=> $username, 
+				'username' 		=> $username,
 				'email' 		=> $email,
 				'issue_id' 		=> $issue_id,
 				'poster_url' 	=> $poster_url,
