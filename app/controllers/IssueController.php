@@ -231,4 +231,8 @@ class IssueController extends BaseController {
 		return View::make('site.pages.home', compact('search', 'users', 'user', 'id', 'issues'));
 	}
 
+	public function style()
+	{
+		return View::make('site/pages/style');
+	}
 }
