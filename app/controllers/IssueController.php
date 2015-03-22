@@ -206,7 +206,7 @@ class IssueController extends BaseController {
 	{
 		// Auth::loginUsingId(2);
 		$issue = Issue::findOrFail($id);
-		$message = Message::all();
+		$message = Message::where('issue_id', '=', $id)->paginate(10);
 
 		return View::make('site/pages/issues', compact('issue', 'message'));
 	}

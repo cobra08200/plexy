@@ -33,6 +33,5 @@ class MessageController extends BaseController
       $message->save();
 
       return Redirect::back();
-
     }
 }
