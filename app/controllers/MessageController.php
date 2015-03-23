@@ -22,7 +22,7 @@ class MessageController extends BaseController
     public function messageAdd()
     {
       // inspect input
-      //   dd(Input::all());
+      // dd(Input::all());
 
       // create new message
       $message = new Message;

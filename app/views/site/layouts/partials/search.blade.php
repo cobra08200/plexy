@@ -1,3 +1,4 @@
+@if(Request::url() === '/')
 {{ Form::open(array('route' => 'movies.search', 'class' => 'navbar-form navbar-left', 'role' => 'search')) }}
 <div class="form-group">
 {{ Form::text('title', '', array('class' => 'typeahead form-control','placeholder' => 'Title')) }}
@@ -12,3 +13,4 @@
 {{ Form::submit('Issue', array('class' => 'btn btn-default', 'name' => 'type')) }}
 </div>
 {{ Form::close() }}
+@endif

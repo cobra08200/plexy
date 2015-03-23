@@ -2,33 +2,115 @@
 
 @section('content')
 
-<!-- Portfolio Item Heading -->
-<div class="row">
-	<div class="col-lg-12">
-		<h1 class="page-header">{{ $issue->content }}
-			<!-- <small>Item Subheading</small> -->
-		</h1>
-	</div>
-</div>
-<!-- /.row -->
-
-<!-- Portfolio Item Row -->
 <div class="row">
 
-	<div class="col-md-8">
-		<img class="img-responsive" src="{{ $issue->poster_url }}" width="200" alt="{{ $issue->content }}">
-	</div>
+	<h1 class="page-header">
+		{{ $issue->content }}
+		<!-- <small>Secondary Text</small> -->
+	</h1>
 
+	<!-- Entries Column -->
 	<div class="col-md-4">
-		<h3>Project Description</h3>
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae. Sed dui lorem, adipiscing in adipiscing et, interdum nec metus. Mauris ultricies, justo eu convallis placerat, felis enim.</p>
-		<h3>Project Details</h3>
-		<ul>
-			<li>Lorem Ipsum</li>
-			<li>Dolor Sit Amet</li>
-			<li>Consectetur</li>
-			<li>Adipiscing Elit</li>
-		</ul>
+
+		<img class="img-responsive" src="{{ $issue->poster_url }}" width="100%" alt="">
+		<hr>
+
+	</div>
+
+	<!-- Sidebar Widgets Column -->
+	<div class="col-md-8">
+
+		<div class="method">
+			{{--
+		        <div class="row margin-0 list-header hidden-sm hidden-xs">
+		            <div class="col-md-3"><div class="header">Property</div></div>
+		            <div class="col-md-2"><div class="header">Type</div></div>
+		            <div class="col-md-2"><div class="header">Required</div></div>
+		            <div class="col-md-5"><div class="header">Description</div></div>
+		        </div>
+			--}}
+
+		        <div class="row margin-0">
+		            <div class="col-md-6">
+		                <div class="cell">
+		                    <div class="propertyname">
+		                        Status  <span class="mobile-isrequired">[Required]</span>
+		                    </div>
+		                </div>
+		            </div>
+		            <div class="col-md-6">
+		                <div class="cell">
+		                    <div class="type">
+								@if($issue->status === 'open')
+								<span class="label label-primary">{{ ucwords($issue->status) }}</span>
+								@elseif($issue->status === 'pending')
+								<span class="label label-warning">{{ ucwords($issue->status) }}</span>
+								@elseif($issue->status === 'closed')
+								<span class="label label-default">{{ ucwords($issue->status) }}</span>
+								@endif
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+		        <div class="row margin-0">
+		            <div class="col-md-6">
+		                <div class="cell">
+		                    <div class="propertyname">
+		                        Type  <span class="mobile-isrequired">[Required]</span>
+		                    </div>
+		                </div>
+		            </div>
+		            <div class="col-md-6">
+		                <div class="cell">
+		                    <div class="type">
+								<span class="label label-info">{{ ucwords($issue->type) }}</span>
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+		        <div class="row margin-0">
+		            <div class="col-md-6">
+		                <div class="cell">
+		                    <div class="propertyname">
+		                        Plex URL  <span class="mobile-isrequired">[Required]</span>
+		                    </div>
+		                </div>
+		            </div>
+		            <div class="col-md-6">
+		                <div class="cell">
+		                    <div class="type">
+								@if($issue->plex_url != '')
+								<a href="{{ ucwords($issue->plex_url) }}">Link</a>
+								@else
+								<span class="label label-danger">Not Available Yet</span>
+								@endif
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+		        <div class="row margin-0">
+		            <div class="col-md-6">
+		                <div class="cell">
+		                    <div class="propertyname">
+		                        Added
+		                    </div>
+		                </div>
+		            </div>
+		            <div class="col-md-6">
+		                <div class="cell">
+		                    <div class="type">
+		                        <code>{{ $issue->created_at->diffForHumans() }}</code>
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+
+		<!-- Side Widget Well -->
+		<!-- <div class="well">
+			<h4>Side Widget Well</h4>
+		</div> -->
+
 	</div>
 
 </div>
@@ -49,13 +131,13 @@
         <h1 id="timeline">Messages</h1>
     </div>
     <ul class="timeline">
-		@if(Auth::user()->id = 1)
+		@if(Auth::user()->id === 1)
 		@foreach($message->all() as $messages)
 		<?php
 		$user = User::find($messages->user_id);
 		?>
 		<li>
-			<div class="timeline-badge"><i class="glyphicon glyphicon-check"></i></div>
+			<div class="timeline-badge"><i class="glyphicon glyphicon-asterisk"></i></div>
           <div class="timeline-panel">
             <div class="timeline-heading">
               <h4 class="timeline-title">{{ $user->username }}</h4>
@@ -68,11 +150,12 @@
         </li>
 		@endforeach
 		@else
+		@foreach($message->all() as $messages)
 		<?php
 		$user = User::find($messages->user_id);
 		?>
 		<li class="timeline-inverted">
-          <div class="timeline-badge"><i class="glyphicon glyphicon-check"></i></div>
+          <div class="timeline-badge"><i class="glyphicon glyphicon-user"></i></div>
           <div class="timeline-panel">
             <div class="timeline-heading">
               <h4 class="timeline-title">{{ $user->username }}</h4>
@@ -83,6 +166,7 @@
             </div>
           </div>
         </li>
+		@endforeach
 		@endif
 
     </ul>
