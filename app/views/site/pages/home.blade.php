@@ -2,17 +2,19 @@
 
 @section('content')
 
+<div class="page-header">
+  <h1>Test 1 <small>Table</small></h1>
+</div>
+
 <div class="row">
 
-{{--
 	<h3>
 		@if($user->hasRole("comment"))
 		My
 		@endif
 		Requests
 	</h3>
---}}
-{{--
+
 		<table class="table">
 			<thead>
 				<tr>
@@ -41,17 +43,17 @@
 					<td data-title="User">{{ $issue->owner->username }}</td>
 					<td data-title="Status">{{ $issue->status }}</td>
 					@endif
-					{{--
 					<td data-title="Topic">{{ $issue->topic }}</td>
-					--}}
-					{{--
 					<td data-title="Content">{{ $issue->content }}</td>
 					<td data-title="Created">{{ $issue->created_at->diffForHumans() }}</td>
 				</tr>
 				@endforeach
 			</tbody>
 		</table>
---}}
+
+<div class="page-header">
+  <h1>Test 2 <small>Posters</small></h1>
+</div>
 
 	@foreach(array_chunk($issues->all(), 4) as $issue_row)
 		<div class="row-fluid">
@@ -67,6 +69,41 @@
 	@endforeach
 	{{ $issues->appends(Request::except('page'))->links() }}
 
+</div>
+
+<div class="page-header">
+  <h1>Test 3 <small>Other thing</small></h1>
+</div>
+
+<div class="container">
+
+    <hgroup class="mb20">
+		<h1>Search Results</h1>
+		<h2 class="lead"><strong class="text-danger">3</strong> results were found for the search for <strong class="text-danger">Lorem</strong></h2>
+	</hgroup>
+
+    <section class="col-xs-12 col-sm-6 col-md-12">
+
+		<article class="request-result row">
+			<div class="col-xs-12 col-sm-12 col-md-3">
+				<a href="#" title="Lorem ipsum" class="thumbnail"><img src="http://lorempixel.com/250/140/people" alt="Lorem ipsum" /></a>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-2">
+				<ul class="meta-search">
+					<li><i class="glyphicon glyphicon-calendar"></i> <span>02/15/2014</span></li>
+					<li><i class="glyphicon glyphicon-time"></i> <span>4:28 pm</span></li>
+					<li><i class="glyphicon glyphicon-tags"></i> <span>People</span></li>
+				</ul>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-7 excerpet">
+				<h3><a href="#" title="">Voluptatem, exercitationem, suscipit, distinctio</a></h3>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, exercitationem, suscipit, distinctio, qui sapiente aspernatur molestiae non corporis magni sit sequi iusto debitis delectus doloremque.</p>
+                <span class="plus"><a href="#" title="Lorem ipsum"><i class="glyphicon glyphicon-plus"></i></a></span>
+			</div>
+			<span class="clearfix borda"></span>
+		</article>
+
+	</section>
 </div>
 
 @stop
