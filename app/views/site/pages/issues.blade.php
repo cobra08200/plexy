@@ -34,7 +34,7 @@
 		            <div class="col-md-6">
 		                <div class="cell">
 		                    <div class="propertyname">
-		                        Status  <span class="mobile-isrequired">[Required]</span>
+		                        Status  <span class="mobile-isrequired"></span>
 		                    </div>
 		                </div>
 		            </div>
@@ -56,7 +56,7 @@
 		            <div class="col-md-6">
 		                <div class="cell">
 		                    <div class="propertyname">
-		                        Type  <span class="mobile-isrequired">[Required]</span>
+		                        Type  <span class="mobile-isrequired"></span>
 		                    </div>
 		                </div>
 		            </div>
@@ -72,7 +72,7 @@
 		            <div class="col-md-6">
 		                <div class="cell">
 		                    <div class="propertyname">
-		                        Plex URL  <span class="mobile-isrequired">[Required]</span>
+		                        Plex URL  <span class="mobile-isrequired"></span>
 		                    </div>
 		                </div>
 		            </div>
