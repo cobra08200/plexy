@@ -37,7 +37,7 @@
 	<div id="wrap">
 		@include('site/layouts/partials/navigation')
 
-		<div class="container">
+		<div class="container-fluid">
 			@include('notifications')
 
 			@yield('content')

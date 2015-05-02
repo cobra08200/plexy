@@ -26,6 +26,7 @@ class CreateIssuesTable extends Migration {
 			$table->string('backdrop_url');
 			$table->string('vote_average');
 			$table->string('plex_url');
+			$table->softDeletes();
 			$table->timestamps();
 			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 		});

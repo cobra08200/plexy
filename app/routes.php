@@ -59,6 +59,9 @@ Route::group(array('before' => 'auth'), function()
 
 	// Route::get('issue/{id}', 'IssueController@getIssueView');
 	Route::get('issue/{id}', ['as' => 'issue.id', 'uses' => 'IssueController@getIssueView']);
+
+	//delete issue/request
+	Route::delete('issues/delete/{id}', ['as' => 'delete.issue', 'uses' => 'IssueController@destroyIssue']);
 });
 
 // Garbage Can

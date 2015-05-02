@@ -2,74 +2,66 @@
 
 @section('content')
 
-<div class="page-header">
-  <h1>Test 1 <small>Table</small></h1>
-</div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-3 col-md-2 sidebar">
+      <ul class="nav nav-sidebar">
+        @include('site/layouts/partials/search')
+      </ul>
+    </div>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+      <h1 class="page-header">Recently Added</h1>
 
-<div class="row">
+      @foreach(array_chunk($issues->all(), 4) as $issue_row)
+        <div class="row placeholders">
+          @foreach ($issue_row as $issue)
+          <div class="col-xs-6 col-sm-3">
+            <a href="{{ URL::to('issue') }}/{{ $issue->id }}">
+            <img src="{{ $issue->poster_url }}" height="200">
+            </a>
+            <h4>{{ $issue->content }}</h4>
+            <span class="text-muted">{{ $issue->type }}</span>
+          </div>
+          @endforeach
+        </div>
+      @endforeach
 
-	<h3>
-		@if($user->hasRole("comment"))
-		My
-		@endif
-		Requests
-	</h3>
+{{-- Optional Table View (Probably for Admin View)
+      <h2 class="sub-header">Table</h2>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              @if($user->hasRole("admin"))
+              <th>User</th>
+              @endif
+              <th>Status</th>
+              <th>Title</th>
+              <th>Added</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach($issues as $issue)
+            @if($issue->status === 'closed')
+            <tr class="clickableRow" href="{{ URL::to('issue') }}/{{ $issue->id }}">
+            @else
+            <tr class="clickableRow" href="{{ URL::to('issue') }}/{{ $issue->id }}">
+              @endif
+              @if($user->hasRole("admin"))
+              <td data-title="User">{{ $issue->owner->username }}</td>
+              @endif
+              <td data-title="Status">{{ $issue->status }}</td>
+              <td data-title="Content">{{ $issue->content }}</td>
+              <td data-title="Created">{{ $issue->created_at->diffForHumans() }}</td>
+            </tr>
+            @endforeach
+          </tbody>
+        </table>
+      </div>
+    </div>
+--}}
 
-		<table class="table">
-			<thead>
-				<tr>
-					@if($user->hasRole("admin"))
-					<th><input type="text" class="form-control" placeholder="User"></th>
-					<th>
-						<select class="form-control" id="status">
-							<option>all statuses</option>
-							<option>open</option>
-							<option>pending</option>
-							<option>closed</option>
-						</select>
-					</th>
-					@endif
-
-				</tr>
-			</thead>
-			<tbody>
-				@foreach($issues as $issue)
-				@if($issue->status === 'closed')
-				<tr class="clickableRow" href="{{ URL::to('issue') }}/{{ $issue->id }}">
-				@else
-				<tr class="clickableRow" href="{{ URL::to('issue') }}/{{ $issue->id }}">
-					@endif
-					@if($user->hasRole("admin"))
-					<td data-title="User">{{ $issue->owner->username }}</td>
-					<td data-title="Status">{{ $issue->status }}</td>
-					@endif
-					<td data-title="Topic">{{ $issue->topic }}</td>
-					<td data-title="Content">{{ $issue->content }}</td>
-					<td data-title="Created">{{ $issue->created_at->diffForHumans() }}</td>
-				</tr>
-				@endforeach
-			</tbody>
-		</table>
-
-<div class="page-header">
-  <h1>Test 2 <small>Posters</small></h1>
-</div>
-
-	@foreach(array_chunk($issues->all(), 4) as $issue_row)
-		<div class="row-fluid">
-			@foreach ($issue_row as $issue)
-			<p>
-				{{ $issue->type }}
-			</p>
-			<a href="{{ URL::to('issue') }}/{{ $issue->id }}">
-				<img class="img-zoom" src="{{ $issue->poster_url }}" width="150" data-toggle="tooltip" data-placement="top" title="{{ $issue->content }}">
-			</a>
-			@endforeach
-		</div>
-	@endforeach
 	{{ $issues->appends(Request::except('page'))->links() }}
-
-</div>
 
 @stop
 

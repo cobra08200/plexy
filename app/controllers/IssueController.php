@@ -245,4 +245,14 @@ class IssueController extends BaseController {
 		return View::make('site.pages.home', compact('search', 'users', 'user', 'id', 'issues'));
 	}
 
+	public function destroyIssue($id)
+  {
+      // delete
+      $issue = Issue::find($id);
+      $issue->delete();
+
+      // redirect
+      Session::flash('message', 'Successfully deleted the issue!');
+      return Redirect::to('/');
+	}
 }

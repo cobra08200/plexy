@@ -7,11 +7,11 @@
 <title>Plexy</title>
 
 <!-- Bootstrap Core CSS -->
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css"> -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
 
 <!-- Custom CSS -->
-<link rel="stylesheet" href="{{asset('assets/stylesheets/css/master.css')}}">
+<!-- <link rel="stylesheet" href="{{asset('assets/stylesheets/css/master.css')}}"> -->
 <link rel="stylesheet" href="{{asset('assets/stylesheets/css/custom.css')}}">
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->

@@ -116,6 +116,11 @@
 </div>
 <!-- /.row -->
 
+{{ Form::open(array('url' => 'issues/delete/' . $issue->id, 'class' => 'pull-right')) }}
+		{{ Form::hidden('_method', 'DELETE') }}
+		{{ Form::submit('Delete this issue', array('class' => 'btn btn-warning')) }}
+{{ Form::close() }}
+
 <hr>
 
 {{ Form::open(array('route' => 'message.add')) }}
