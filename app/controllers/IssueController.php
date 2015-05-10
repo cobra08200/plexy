@@ -217,17 +217,19 @@ class IssueController extends BaseController {
 		$search_url = Request::getQueryString();
 		parse_str($search_url, $search);
 
-		$users 		= User::all();
-		$user 		= Auth::user();
-		$id 		= Auth::id();
+		$users 	= User::all();
+		$user 	= Auth::user();
+		$id 	= Auth::id();
 
 		if($user->hasRole('admin'))
 		{
-			$issues  	= Issue::paginate(12);
+			$issues = Issue::where('status', '!=', 'closed')->paginate(10);
+			$closed	= Issue::where('status', '=', 'closed')->paginate(10);
 		}
 		else
 		{
-			$issues 	= Issue::where('user_id', '=', $id)->where('status', '=', 'open')->paginate(10);
+			$issues	= Issue::where('user_id', '=', $id)->where('status', '!=', 'closed')->paginate(10);
+			$closed	= Issue::where('user_id', '=', $id)->where('status', '=', 'closed')->paginate(10);
 		};
 		// if($user->hasRole('admin') && Input::get('status'))
 		// {
@@ -242,17 +244,27 @@ class IssueController extends BaseController {
 		// 	$issues 	= Issue::where('status', Request::only('status'))->where('topic', Request::only('topic'))->paginate(10);
 		// }
 
-		return View::make('site.pages.home', compact('search', 'users', 'user', 'id', 'issues'));
+		return View::make('site.pages.home', compact('search', 'users', 'user', 'id', 'issues', 'closed'));
+	}
+
+	public function updateIssueStatus($id)
+	{
+		// dd(Input::all());
+		$issue = Issue::find($id);
+		$issue->status = Input::get('status');
+		$issue->save();
+
+		return Redirect::to('issue/'.$id);
 	}
 
 	public function destroyIssue($id)
-  {
-      // delete
-      $issue = Issue::find($id);
-      $issue->delete();
+  	{
+		// delete
+		$issue = Issue::find($id);
+		$issue->delete();
 
-      // redirect
-      Session::flash('message', 'Successfully deleted the issue!');
-      return Redirect::to('/');
+		// redirect
+		Session::flash('message', 'Successfully deleted the issue!');
+		return Redirect::to('/');
 	}
 }

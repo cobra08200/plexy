@@ -54,13 +54,17 @@ Route::group(array('before' => 'auth'), function()
 
 	// Add issue
 	Route::post('api/search/', ['as' => 'movies.search', 'uses' => 'IssueController@postApi']);
+
 	// Add message to issue
 	Route::post('message/add/', ['as' => 'message.add', 'uses' => 'MessageController@messageAdd']);
 
 	// Route::get('issue/{id}', 'IssueController@getIssueView');
 	Route::get('issue/{id}', ['as' => 'issue.id', 'uses' => 'IssueController@getIssueView']);
 
-	//delete issue/request
+	// update issue status
+	Route::post('issues/update/{id}', ['as' => 'update.issue', 'uses' => 'IssueController@updateIssueStatus']);
+
+	// delete issue/request
 	Route::delete('issues/delete/{id}', ['as' => 'delete.issue', 'uses' => 'IssueController@destroyIssue']);
 });
 

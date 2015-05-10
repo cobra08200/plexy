@@ -4,13 +4,22 @@
 
 <div class="container-fluid">
   <div class="row">
+    @if($user->hasRole("admin"))
+    @else
     <div class="col-sm-3 col-md-2 sidebar">
       <ul class="nav nav-sidebar">
         @include('site/layouts/partials/search')
       </ul>
     </div>
+    @endif
+
+    @if($user->hasRole("admin"))
+    <div class="col-sm-12 main">
+    @else
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-      <h1 class="page-header">Recently Added</h1>
+    @endif
+
+      <h1 class="page-header">Requests</h1>
 
       @foreach(array_chunk($issues->all(), 4) as $issue_row)
         <div class="row placeholders">
@@ -20,7 +29,23 @@
             <img src="{{ $issue->poster_url }}" height="200">
             </a>
             <h4>{{ $issue->content }}</h4>
-            <span class="text-muted">{{ $issue->type }}</span>
+            <kbd>{{ $issue->status }}</kbd>
+          </div>
+          @endforeach
+        </div>
+      @endforeach
+
+      <h1 class="page-header">Finished</h1>
+
+      @foreach(array_chunk($closed->all(), 4) as $closed_row)
+        <div class="row placeholders">
+          @foreach ($closed_row as $close)
+          <div class="col-xs-6 col-sm-3">
+            <a href="{{ URL::to('issue') }}/{{ $close->id }}">
+            <img src="{{ $close->poster_url }}" height="200">
+            </a>
+            <h4>{{ $close->content }}</h4>
+            <kbd>{{ $close->status }}</kbd>
           </div>
           @endforeach
         </div>

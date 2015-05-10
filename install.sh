@@ -26,6 +26,8 @@ sudo a2enmod rewrite
 sudo rm -rf /var/www
 sudo ln -fs /vagrant/public /var/www
 
+mysql -u root -proot -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '' WITH GRANT OPTION; FLUSH PRIVILEGES;"
+
 mysql -u root -proot -e "create database plexy"
 
 sed -i "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php5/apache2/php.ini
