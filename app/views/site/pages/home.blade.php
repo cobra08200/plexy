@@ -21,9 +21,8 @@
 
       <h1 class="page-header">Requests</h1>
 
-      @foreach(array_chunk($requests->all(), 4) as $request_row)
-        <div class="row placeholders">
-          @foreach ($request_row as $request)
+      @foreach($requests->all() as $request)
+        <div class="media placeholders">
           <div class="col-xs-6 col-sm-3">
             <a href="{{ URL::to('issue') }}/{{ $request->id }}">
             <img src="{{ $request->poster_url }}" height="200">
@@ -31,15 +30,13 @@
             <h4>{{ $request->content }}</h4>
             <kbd>{{ $request->status }}</kbd>
           </div>
-          @endforeach
         </div>
       @endforeach
 
       <h1 class="page-header">Issues</h1>
 
-      @foreach(array_chunk($issues->all(), 4) as $issue_row)
-        <div class="row placeholders">
-          @foreach ($issue_row as $issue)
+      @foreach($issues->all() as $issue)
+        <div class="media placeholders">
           <div class="col-xs-6 col-sm-3">
             <a href="{{ URL::to('issue') }}/{{ $issue->id }}">
             <img src="{{ $issue->poster_url }}" height="200">
@@ -47,15 +44,13 @@
             <h4>{{ $issue->content }}</h4>
             <kbd>{{ $issue->status }}</kbd>
           </div>
-          @endforeach
         </div>
       @endforeach
 
       <h1 class="page-header">Finished</h1>
 
-      @foreach(array_chunk($closed->all(), 4) as $closed_row)
-        <div class="row placeholders">
-          @foreach ($closed_row as $close)
+      @foreach($closed->all() as $close)
+        <div class="media placeholders">
           <div class="col-xs-6 col-sm-3">
             <a href="{{ URL::to('issue') }}/{{ $close->id }}">
             <img src="{{ $close->poster_url }}" height="200">
@@ -63,7 +58,6 @@
             <h4>{{ $close->content }}</h4>
             <kbd>{{ $close->status }}</kbd>
           </div>
-          @endforeach
         </div>
       @endforeach
 
