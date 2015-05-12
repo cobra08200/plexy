@@ -21,6 +21,22 @@
 
       <h1 class="page-header">Requests</h1>
 
+      @foreach(array_chunk($requests->all(), 4) as $request_row)
+        <div class="row placeholders">
+          @foreach ($request_row as $request)
+          <div class="col-xs-6 col-sm-3">
+            <a href="{{ URL::to('issue') }}/{{ $request->id }}">
+            <img src="{{ $request->poster_url }}" height="200">
+            </a>
+            <h4>{{ $request->content }}</h4>
+            <kbd>{{ $request->status }}</kbd>
+          </div>
+          @endforeach
+        </div>
+      @endforeach
+
+      <h1 class="page-header">Issues</h1>
+
       @foreach(array_chunk($issues->all(), 4) as $issue_row)
         <div class="row placeholders">
           @foreach ($issue_row as $issue)

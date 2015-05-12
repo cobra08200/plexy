@@ -223,12 +223,14 @@ class IssueController extends BaseController {
 
 		if($user->hasRole('admin'))
 		{
-			$issues = Issue::where('status', '!=', 'closed')->paginate(10);
+			$requests = Issue::where('type', '=', 'request')->paginate(10);
+			$issues = Issue::where('type', '=', 'issue')->paginate(10);
 			$closed	= Issue::where('status', '=', 'closed')->paginate(10);
 		}
 		else
 		{
-			$issues	= Issue::where('user_id', '=', $id)->where('status', '!=', 'closed')->paginate(10);
+			$requests = Issue::where('user_id', '=', $id)->where('type', '=', 'request')->paginate(10);
+			$issues	= Issue::where('user_id', '=', $id)->where('type', '=', 'issue')->paginate(10);
 			$closed	= Issue::where('user_id', '=', $id)->where('status', '=', 'closed')->paginate(10);
 		};
 		// if($user->hasRole('admin') && Input::get('status'))
@@ -244,7 +246,7 @@ class IssueController extends BaseController {
 		// 	$issues 	= Issue::where('status', Request::only('status'))->where('topic', Request::only('topic'))->paginate(10);
 		// }
 
-		return View::make('site.pages.home', compact('search', 'users', 'user', 'id', 'issues', 'closed'));
+		return View::make('site.pages.home', compact('search', 'users', 'user', 'id', 'requests', 'issues', 'closed'));
 	}
 
 	public function updateIssueStatus($id)

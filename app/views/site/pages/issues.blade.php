@@ -152,36 +152,20 @@
 			<h1 class="page-header">Comments</h1>
 			<section class="comment-list">
 				@foreach($messages as $messages)
-				@if(Auth::user()->id > 1)
 				<?php $user = User::find($messages->user_id); ?>
 				<article class="row">
+					@if($messages->user_id > 1)
 					<div class="col-md-2 col-sm-2 hidden-xs">
 						<figure class="thumbnail">
 						<img class="img-responsive" src="http://www.keita-gaming.com/assets/profile/default-avatar-c5d8ec086224cb6fc4e395f4ba3018c2.jpg" />
 						<figcaption class="text-center">{{ $user->username }}</figcaption>
 						</figure>
 					</div>
+					@endif
 					<div class="col-md-10 col-sm-10">
 						<div class="panel panel-default arrow left">
 							<div class="panel-body">
 								<header class="text-left">
-								<div class="comment-user"><i class="fa fa-user"></i> That Guy</div>
-								<time class="comment-date"><i class="fa fa-clock-o"></i> {{ $messages->created_at->diffForHumans() }}</time>
-								</header>
-								<div class="comment-post">
-								<p>{{ $messages->body }}</p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</article>
-				@else
-				<?php $user = User::find($messages->user_id); ?>
-				<article class="row">
-					<div class="col-md-10 col-sm-10">
-						<div class="panel panel-default arrow right">
-							<div class="panel-body">
-								<header class="text-right">
 								<div class="comment-user"><i class="fa fa-user"></i> {{ $user->username }}</div>
 								<time class="comment-date"><i class="fa fa-clock-o"></i> {{ $messages->created_at->diffForHumans() }}</time>
 								</header>
@@ -191,14 +175,15 @@
 							</div>
 						</div>
 					</div>
+					@if($messages->user_id == 1)
 					<div class="col-md-2 col-sm-2 hidden-xs">
 						<figure class="thumbnail">
 						<img class="img-responsive" src="http://www.keita-gaming.com/assets/profile/default-avatar-c5d8ec086224cb6fc4e395f4ba3018c2.jpg" />
 						<figcaption class="text-center">{{ $user->username }}</figcaption>
 						</figure>
 					</div>
+					@endif
 				</article>
-				@endif
 				@endforeach
 			</section>
 		</div>
@@ -220,7 +205,5 @@
 </div>
 
 {{-- /Messages--}}
-
-<?php echo $messages->links(); ?>
 
 @stop
