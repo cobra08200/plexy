@@ -223,14 +223,14 @@ class IssueController extends BaseController {
 
 		if($user->hasRole('admin'))
 		{
-			$requests = Issue::where('type', '=', 'request')->paginate(10);
-			$issues = Issue::where('type', '=', 'issue')->paginate(10);
+			$requests = Issue::where('type', '=', 'request')->where('status', '!=', 'closed')->paginate(10);
+			$issues = Issue::where('type', '=', 'issue')->where('status', '!=', 'closed')->paginate(10);
 			$closed	= Issue::where('status', '=', 'closed')->paginate(10);
 		}
 		else
 		{
-			$requests = Issue::where('user_id', '=', $id)->where('type', '=', 'request')->paginate(10);
-			$issues	= Issue::where('user_id', '=', $id)->where('type', '=', 'issue')->paginate(10);
+			$requests = Issue::where('user_id', '=', $id)->where('type', '=', 'request')->where('status', '!=', 'closed')->paginate(10);
+			$issues	= Issue::where('user_id', '=', $id)->where('type', '=', 'issue')->where('status', '!=', 'closed')->paginate(10);
 			$closed	= Issue::where('user_id', '=', $id)->where('status', '=', 'closed')->paginate(10);
 		};
 		// if($user->hasRole('admin') && Input::get('status'))
