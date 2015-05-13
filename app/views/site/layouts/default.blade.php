@@ -1,11 +1,14 @@
-@if(Auth::check())
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	@include('site/layouts/partials/header')
 </head>
 
+@if(Auth::check())
 <body>
+@else
+<body>
+@endif
 	<!-- Container -->
 	<div class="container">
 		@include('site/layouts/partials/navigation')
@@ -26,27 +29,3 @@
 	@include('site/layouts/partials/footer')
 </body>
 </html>
-@else
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	@include('site/layouts/partials/header')
-</head>
-
-<body>
-	<div id="wrap">
-		@include('site/layouts/partials/navigation')
-
-		<div class="container-fluid">
-			@include('notifications')
-
-			@yield('content')
-		</div>
-
-		<div id="push"></div>
-	</div>
-
-	@include('site/layouts/partials/footer')
-</body>
-</html>
-@endif

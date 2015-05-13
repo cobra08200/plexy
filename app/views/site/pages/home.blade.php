@@ -19,6 +19,7 @@
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
     @endif
 
+      @if(count($requests) > 0)
       <h1 class="page-header">Requests</h1>
 
       @foreach($requests->all() as $request)
@@ -32,7 +33,9 @@
           </div>
         </div>
       @endforeach
+      @endif
 
+      @if(count($issues) > 0)
       <h1 class="page-header">Issues</h1>
 
       @foreach($issues->all() as $issue)
@@ -46,7 +49,9 @@
           </div>
         </div>
       @endforeach
+      @endif
 
+      @if(count($closed) > 0)
       <h1 class="page-header">Finished</h1>
 
       @foreach($closed->all() as $close)
@@ -60,6 +65,11 @@
           </div>
         </div>
       @endforeach
+      @endif
+
+      @if(count($requests) + count($issues) + count($closed) == 0)
+      <p>Add something you dingo</p>
+      @endif
 
 {{-- Optional Table View (Probably for Admin View)
       <h2 class="sub-header">Table</h2>
