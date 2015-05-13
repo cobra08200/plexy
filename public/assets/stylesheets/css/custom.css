@@ -178,3 +178,111 @@ body {
 .comment-list .comment-post {
   margin-top: 6px;
 }
+
+
+/*====================================*\
+    #PLEXY v1
+\*====================================*/
+html, body {
+    height: 100%;
+}
+
+a {
+    color: silver;
+}
+.login {
+    background: #000;
+background: rgba(254,254,254,1);
+background: -moz-radial-gradient(center, ellipse cover, rgba(254,254,254,1) 0%, rgba(226,226,226,1) 100%);
+background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(254,254,254,1)), color-stop(100%, rgba(226,226,226,1)));
+background: -webkit-radial-gradient(center, ellipse cover, rgba(254,254,254,1) 0%, rgba(226,226,226,1) 100%);
+background: -o-radial-gradient(center, ellipse cover, rgba(254,254,254,1) 0%, rgba(226,226,226,1) 100%);
+background: -ms-radial-gradient(center, ellipse cover, rgba(254,254,254,1) 0%, rgba(226,226,226,1) 100%);
+background: radial-gradient(ellipse at center, rgba(254,254,254,1) 0%, rgba(226,226,226,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefefe', endColorstr='#e2e2e2', GradientType=1 );
+}
+
+.login .navbar,
+.login #navbar {
+    display: none;
+    background: none;
+    border: 0;
+}
+
+.login__card {
+    margin: 0 auto;
+    padding: 10px;
+    width: 50%;
+    min-width: 320px;
+    max-width: 500px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    border: 1px silver solid;
+
+    -webkit-box-shadow: 0px 7px 20px -5px rgba(0,0,0,0.62);
+    -moz-box-shadow: 0px 7px 20px -5px rgba(0,0,0,0.62);
+    box-shadow: 0px 7px 20px -5px rgba(0,0,0,0.62);
+}
+
+    .login__logo {
+        display: block;
+        margin: 0 auto;
+        width:  300px;
+        height: 300px;
+        text-align: center;
+        border-radius: 300px;
+        background: white;
+        background: #fff url(../../img/plexy_temp.png) 0 0 no-repeat;
+        background-size: contain;
+        line-height: 300px;
+        text-indent: 100%;
+        whitespace: no-wrap;
+        overflow: hidden;
+    }
+
+        .login .container {
+            width: auto;
+        }
+        .login .omb_login {
+            text-align: center;
+        }
+        .login [class^="col"] {
+            width: auto;
+            float: none;
+        }
+
+        .login .input-group-addon {
+            display: none;
+        }
+        .login .input-group {
+            display: block;
+            margin-bottom: 10px;
+        }
+        .login input[type="text"],
+        .login input[type="password"] {
+            display: block;
+            border-radius: 0;
+            width: 100%;
+            height: auto;
+            padding: 15px 10px;
+            float: none;
+            border: silver solid;
+            border-width: 0 0 2px;
+            /*border-bottom: 2px silver solid;*/
+        }
+
+        .login .btn {
+            padding: 15px 25px;
+            width: auto;
+            /*width: 80%;*/
+            margin: 0 auto;
+            background: black;
+            border-radius: 0;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+
+        .login .omb_forgotPwd a {
+            color: silver;
+        }

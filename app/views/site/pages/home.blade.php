@@ -4,12 +4,9 @@
 
 <div class="container-fluid">
   <div class="row">
-    @if($user->hasRole("admin"))
-    @else
-    <div class="col-sm-3 col-md-2 sidebar">
-      <ul class="nav nav-sidebar">
+    @if(!$user->hasRole("admin"))
+      <div class="search">
         @include('site/layouts/partials/search')
-      </ul>
     </div>
     @endif
 

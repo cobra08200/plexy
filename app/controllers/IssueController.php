@@ -263,6 +263,7 @@ class IssueController extends BaseController {
 		$users 	= User::all();
 		$user 	= Auth::user();
 		$id 	= Auth::id();
+		$bodyClass = "home";
 
 		if($user->hasRole('admin'))
 		{
@@ -289,7 +290,7 @@ class IssueController extends BaseController {
 		// 	$issues 	= Issue::where('status', Request::only('status'))->where('topic', Request::only('topic'))->paginate(10);
 		// }
 
-		return View::make('site.pages.home', compact('search', 'users', 'user', 'id', 'requests', 'issues', 'closed'));
+		return View::make('site.pages.home', compact('search', 'users', 'user', 'id', 'requests', 'issues', 'closed', 'bodyClass'));
 	}
 
 	public function updateIssueStatus($id)

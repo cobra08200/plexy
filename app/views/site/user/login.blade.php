@@ -8,8 +8,10 @@
 
 {{-- Content --}}
 @section('content')
-<!-- <div class="page-header">
-	<h1>Login into your account</h1>
-</div> -->
-{{ Confide::makeLoginForm()->render() }}
+
+<div class="login__card">
+	<h1 class="login__logo">Plexy Logo</h1>
+	{{ Confide::makeLoginForm()->render() }}
+</div>
+
 @stop
