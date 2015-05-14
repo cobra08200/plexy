@@ -11,62 +11,82 @@
     @endif
 
     @if($user->hasRole("admin"))
-    <div class="col-sm-12 main">
+    <div class="dashboard__tab dashboard__tab-admin" data-tab>
     @else
-    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <div class="dashboard__tab dashboard__tab-user" data-tab>
     @endif
 
+      <ul class="dashboard__tabs">
+          @if(count($requests) > 0 )
+          <li><a href="#tab-requests">Requests</a></li>
+          @endif
+          @if(count($issues) > 0)
+          <li><a href="#tab-issues">Issues</a></li>
+          @endif
+          @if(count($closed) > 0)
+          <li><a href="#tab-finished">Finished</a></li>
+          @endif
+      </ul>
+
       @if(count($requests) > 0)
-      <h1 class="page-header">Requests</h1>
+      <div id="tab-requests">
+
+      <h3 class="page-header">Requests</h3>
 
       @foreach($requests->all() as $request)
-        <div class="media placeholders">
-          <div class="col-xs-6 col-sm-3">
-            <a href="{{ URL::to('issue') }}/{{ $request->id }}">
-            <img src="{{ $request->poster_url }}" height="200">
-            </a>
-            <h4>{{ $request->content }}</h4>
-            <kbd>{{ $request->status }}</kbd>
-          </div>
-        </div>
+      <div class="media placeholders">
+        <a href="{{ URL::to('issue') }}/{{ $request->id }}">
+            <img src="{{ $request->poster_url }}">
+        </a>
+        <h4>{{ $request->content }}</h4>
+        <kbd>{{ $request->status }}</kbd>
+      </div>
       @endforeach
+
+      </div>
       @endif
 
       @if(count($issues) > 0)
-      <h1 class="page-header">Issues</h1>
+      <div id="tab-issues">
+
+      <h3 class="page-header">Issues</h3>
 
       @foreach($issues->all() as $issue)
         <div class="media placeholders">
-          <div class="col-xs-6 col-sm-3">
             <a href="{{ URL::to('issue') }}/{{ $issue->id }}">
-            <img src="{{ $issue->poster_url }}" height="200">
+                <img src="{{ $issue->poster_url }}">
             </a>
             <h4>{{ $issue->content }}</h4>
             <kbd>{{ $issue->status }}</kbd>
-          </div>
         </div>
       @endforeach
+
+      </div>
       @endif
 
       @if(count($closed) > 0)
-      <h1 class="page-header">Finished</h1>
+      <div id="tab-finished">
+
+      <h3 class="page-header">Finished</h3>
 
       @foreach($closed->all() as $close)
         <div class="media placeholders">
-          <div class="col-xs-6 col-sm-3">
             <a href="{{ URL::to('issue') }}/{{ $close->id }}">
-            <img src="{{ $close->poster_url }}" height="200">
+                <img src="{{ $close->poster_url }}" height="200">
             </a>
             <h4>{{ $close->content }}</h4>
             <kbd>{{ $close->status }}</kbd>
-          </div>
         </div>
       @endforeach
+
+      </div>
       @endif
 
       @if(count($requests) + count($issues) + count($closed) == 0)
       <p>Add something you dingo</p>
       @endif
+
+  </div>
 
 {{-- Optional Table View (Probably for Admin View)
       <h2 class="sub-header">Table</h2>
@@ -221,7 +241,13 @@ $('.typeahead').typeahead(
 
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()
-})
+});
+
+// intialize dashboard tabs
+$(document).ready(function () {
+    $('[data-tab]').tabs();
+});
+
 
 </script>
 @stop

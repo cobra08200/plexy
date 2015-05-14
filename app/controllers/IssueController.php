@@ -263,7 +263,7 @@ class IssueController extends BaseController {
 		$users 	= User::all();
 		$user 	= Auth::user();
 		$id 	= Auth::id();
-		$bodyClass = "home";
+		$bodyClass = "dashboard";
 
 		if($user->hasRole('admin'))
 		{

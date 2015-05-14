@@ -9,10 +9,13 @@
 {{ Form::hidden('topic', '', array('id' => 'topic')) }}
 {{ Form::hidden('vote_average', '', array('id' => 'vote_average')) }}
 
-{{ Form::text('title', '', array('class' => 'typeahead form-control','placeholder' => 'Title')) }}
+{{ Form::text('title', '', array('class' => 'typeahead form-control search__input','placeholder' => 'Title')) }}
 
-{{ Form::submit('Request', array('class' => 'btn btn-default', 'name' => 'type')) }}
-{{ Form::submit('Issue', array('class' => 'btn btn-default', 'name' => 'type')) }}
+<div class="search__actions">
+    {{ Form::submit('Request', array('class' => 'btn btn-default', 'name' => 'type')) }}
+</div>
+    {{-- {{ Form::submit('Report an Issue', array('class' => 'btn btn-default report button__text', 'name' => 'type', 'value' => 'Issue')) }} --}}
+    <button type="submit" name="type" value="Issue" class="btn btn-default report button--text">Report an Issue</button>
 </div>
 {{ Form::close() }}
 @endif

@@ -183,6 +183,9 @@ body {
 /*====================================*\
     #PLEXY v1
 \*====================================*/
+/**
+ * ELEMENTS
+ */
 html, body {
     height: 100%;
 }
@@ -190,16 +193,20 @@ html, body {
 a {
     color: silver;
 }
+
+/**
+ * LOGIN
+ */
 .login {
     background: #000;
-background: rgba(254,254,254,1);
-background: -moz-radial-gradient(center, ellipse cover, rgba(254,254,254,1) 0%, rgba(226,226,226,1) 100%);
-background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(254,254,254,1)), color-stop(100%, rgba(226,226,226,1)));
-background: -webkit-radial-gradient(center, ellipse cover, rgba(254,254,254,1) 0%, rgba(226,226,226,1) 100%);
-background: -o-radial-gradient(center, ellipse cover, rgba(254,254,254,1) 0%, rgba(226,226,226,1) 100%);
-background: -ms-radial-gradient(center, ellipse cover, rgba(254,254,254,1) 0%, rgba(226,226,226,1) 100%);
-background: radial-gradient(ellipse at center, rgba(254,254,254,1) 0%, rgba(226,226,226,1) 100%);
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefefe', endColorstr='#e2e2e2', GradientType=1 );
+    background: rgba(254,254,254,1);
+    background: -moz-radial-gradient(center, ellipse cover, rgba(254,254,254,1) 0%, rgba(226,226,226,1) 100%);
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(254,254,254,1)), color-stop(100%, rgba(226,226,226,1)));
+    background: -webkit-radial-gradient(center, ellipse cover, rgba(254,254,254,1) 0%, rgba(226,226,226,1) 100%);
+    background: -o-radial-gradient(center, ellipse cover, rgba(254,254,254,1) 0%, rgba(226,226,226,1) 100%);
+    background: -ms-radial-gradient(center, ellipse cover, rgba(254,254,254,1) 0%, rgba(226,226,226,1) 100%);
+    background: radial-gradient(ellipse at center, rgba(254,254,254,1) 0%, rgba(226,226,226,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefefe', endColorstr='#e2e2e2', GradientType=1 );
 }
 
 .login .navbar,
@@ -218,7 +225,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefefe', end
     border-radius: 4px;
     box-sizing: border-box;
     border: 1px silver solid;
-
     -webkit-box-shadow: 0px 7px 20px -5px rgba(0,0,0,0.62);
     -moz-box-shadow: 0px 7px 20px -5px rgba(0,0,0,0.62);
     box-shadow: 0px 7px 20px -5px rgba(0,0,0,0.62);
@@ -243,9 +249,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefefe', end
         .login .container {
             width: auto;
         }
+
         .login .omb_login {
             text-align: center;
         }
+
         .login [class^="col"] {
             width: auto;
             float: none;
@@ -254,10 +262,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefefe', end
         .login .input-group-addon {
             display: none;
         }
+
         .login .input-group {
             display: block;
             margin-bottom: 10px;
         }
+
         .login input[type="text"],
         .login input[type="password"] {
             display: block;
@@ -268,13 +278,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefefe', end
             float: none;
             border: silver solid;
             border-width: 0 0 2px;
-            /*border-bottom: 2px silver solid;*/
         }
 
         .login .btn {
             padding: 15px 25px;
             width: auto;
-            /*width: 80%;*/
             margin: 0 auto;
             background: black;
             border-radius: 0;
@@ -282,7 +290,139 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefefe', end
             text-transform: uppercase;
         }
 
-
         .login .omb_forgotPwd a {
             color: silver;
         }
+
+/**
+ * DASHBOARD
+ */
+
+.dashboard {
+    padding-top: 120px;
+}
+
+    .dashboard .navbar {
+        padding: 20px 0;
+        background: white;
+        border-bottom: 1px solid silver;
+    }
+
+    .dashboard .container {
+        width: auto;
+    }
+
+    .dashboard__tabs {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+        border-bottom: 1px solid silver;
+    }
+        .dashboard__tabs li {
+            display: inline-block;
+            margin-right: 2px;
+        }
+        .dashboard__tabs li a {
+            display: block;
+            padding: 10px 8px;
+            color: white;
+            background-color: silver;
+            box-sizing: border-box;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        .dashboard__tabs .ui-state-active a,
+        .dashboard__tabs li a:hover,
+        .dashboard__tabs li a:focus {
+            background: black;
+            color: white;
+            text-decoration: none;
+        }
+
+    .dashboard [id^="tab-"] {
+        padding: 10px 0;
+    }
+
+        .dashboard [id^="tab-"] .page-header {
+            display: none;
+        }
+
+/**
+ * SEARCH
+ */
+.search {
+    position: relative;
+    margin: 5px auto 0;
+    width: 80%;
+}
+.search .twitter-typeahead {
+    width: 100%;
+    display: block;
+}
+     .search__input {
+         padding: 30px 20px;
+         border: 0;
+         background: silver;
+         color: white;
+         border-radius: 0;
+         border: 0;
+         font-size: 20px;
+     }
+
+     .search__actions {
+         position: absolute;
+         top: 0;
+         right: 0;
+         bottom: 0;
+     }
+
+     .search__actions .btn {
+         padding: 20px;
+         background: black;
+         color: white;
+         border-radius: 0;
+         height: 60px;
+         text-tranform: uppercase;
+     }
+
+     .search .report {
+         float: right;
+         font-style: italic;
+         text-transform: uppercase;
+         color: red;
+         background: none;
+         border: 0;
+     }
+
+
+
+
+/**
+ * MEDIA
+ */
+.media {
+    display: inline-block;
+    padding: 10px;
+    background: white;
+    border-radius: 3px;
+    width: 23.5%;
+    margin: 0 0.5% 10px;
+    vertical-align: top;
+    position: relative;
+    box-sizing: border-box;
+
+    -webkit-box-shadow: 0px 7px 20px -5px rgba(0,0,0,0.62);
+    -moz-box-shadow: 0px 7px 20px -5px rgba(0,0,0,0.62);
+    box-shadow: 0px 7px 20px -5px rgba(0,0,0,0.62);
+}
+
+.media img {
+    max-width: 100%;
+    height: auto;
+}
+
+.media kbd {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
