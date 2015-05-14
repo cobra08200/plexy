@@ -2,8 +2,7 @@
 {{ Form::open(array('route' => 'movies.search', 'class' => 'navbar-form navbar-left', 'role' => 'search')) }}
 <div class="form-group">
 {{ Form::submit('Request', array('class' => 'btn btn-default', 'name' => 'type')) }}
-{{-- {{ Form::submit('Issue', array('class' => 'btn btn-default', 'name' => 'type')) }} --}}
-<button type="submit" name="type" value="Issue" class="btn btn-default">Report an Issue</button>
+{{ Form::submit('Issue', array('class' => 'btn btn-default', 'name' => 'type')) }}
 {{ Form::text('title', '', array('class' => 'typeahead form-control','placeholder' => 'Title')) }}
 {{ Form::hidden('title', '', array('id' => 'title')) }}
 {{ Form::hidden('year', '', array('id' => 'year')) }}
