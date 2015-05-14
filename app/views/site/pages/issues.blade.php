@@ -196,6 +196,7 @@
 <div class="form-group">
 	<textarea class="form-control" rows="3" name="body"></textarea>
 	<input type="hidden" name="issue_id" value="{{ $issue->id }}">
+	<input type="hidden" name="user_id" value="{{ $issue->user_id }}">
 	{{ Form::submit('Submit', array('class' => 'btn btn-default')) }}
 </div>
 {{ Form::close() }}

@@ -193,8 +193,8 @@ class IssueController extends BaseController {
 
 			Mail::later(5, 'emails.newrequest', $data, function($message) use ($username, $email, $issue_id, $poster_url, $title)
 			{
-				$message->from('requests@ehumps.me', 'Plexy');
-				$message->to($email, $username)->subject('Plexy - Request #'.$issue_id);
+				$message->from('plexy@ehumps.me', 'Plexy');
+				$message->to($email, $username)->subject('Plexy - Ticket #'.$issue_id);
 			});
 
 			//return after form submit
@@ -206,9 +206,16 @@ class IssueController extends BaseController {
 	{
 		// Auth::loginUsingId(2);
 		$issue = Issue::findOrFail($id);
-		$messages = Message::where('issue_id', '=', $id)->paginate(10);
 
-		return View::make('site/pages/issues', compact('issue', 'messages'));
+		// security to make sure logged in user is admin OR ticket owner
+		if(Auth::id() == 1 || Auth::id() == $issue->user_id)
+		{
+			$messages = Message::where('issue_id', '=', $id)->paginate(10);
+
+			return View::make('site/pages/issues', compact('issue', 'messages'));
+		}
+
+		return Redirect::to('/');
 	}
 
 	public function getIndex()
