@@ -119,7 +119,6 @@
 		});
 	});
 
-
 //movies search
 var movies = new Bloodhound({
 	datumTokenizer: function (datum) {

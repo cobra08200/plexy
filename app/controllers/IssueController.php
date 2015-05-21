@@ -173,14 +173,27 @@ class IssueController extends BaseController {
 			$issue->vote_average = Input::get('vote_average');
 			$issue->type = strtolower(Input::get('type'));
 
+			//plexy 2.0 advanced issue capture
+			//issue detector -> need to gather more info from user
+			// if($issue->type == 'issue')
+			// {
+			// 	//if tv show
+			// 	if($issue->topic == 'tv')
+			// 	{
+			// 		dd('tv show detected');
+			// 	}
+			//
+			// 	//if movie
+			// }
+
 			$issue->save();
 
 			// send email
-			$username = 	Auth::user()->username;
-			$email = 		Auth::user()->email;
-			$issue_id =		$issue->id;
-			$poster_url =	$issue->poster_url;
-			$title =	$issue->content;
+			$username 		= Auth::user()->username;
+			$email 			= Auth::user()->email;
+			$issue_id 		= $issue->id;
+			$poster_url 	= $issue->poster_url;
+			$title 			= $issue->content;
 
 			$data = array(
 				'user' 			=> Auth::user(),
@@ -204,18 +217,41 @@ class IssueController extends BaseController {
 
 	public function getIssueView($id)
 	{
+
+		$issue = Issue::find($id);
+
+		//plexy 2.0 advanced issue capture
+		// $ch = curl_init();
+		//
+		// curl_setopt($ch, CURLOPT_URL, "http://api.themoviedb.org/3/tv/$issue->tmdb/season/1/episode/1?api_key=a31dbc04c5cc13fd61e1427d4ff1cd58");
+		// curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+		// curl_setopt($ch, CURLOPT_HEADER, FALSE);
+		//
+		// curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+		//   "Accept: application/json"
+		// ));
+		//
+		// $response = curl_exec($ch);
+		// curl_close($ch);
+		//
+		// var_dump($response);
+
 		// Auth::loginUsingId(2);
-		$issue = Issue::findOrFail($id);
+		if(Issue::where('id', '=', $id)->exists()){
 
-		// security to make sure logged in user is admin OR ticket owner
-		if(Auth::id() == 1 || Auth::id() == $issue->user_id)
-		{
-			$messages = Message::where('issue_id', '=', $id)->paginate(10);
+			$issue = Issue::find($id);
 
-			return View::make('site/pages/issues', compact('issue', 'messages'));
+			// security to make sure logged in user is admin OR ticket owner
+			if(Auth::id() == 1 || Auth::id() == $issue->user_id)
+			{
+				$messages = Message::where('issue_id', '=', $id)->paginate(10);
+
+				return View::make('site/pages/issues', compact('issue', 'messages'));
+			}
 		}
 
 		return Redirect::to('/');
+
 	}
 
 	public function getIndex()
@@ -264,6 +300,7 @@ class IssueController extends BaseController {
 		$issue->save();
 
 		return Redirect::to('issue/'.$id);
+		// return Redirect::to('/');
 	}
 
 	public function destroyIssue($id)
