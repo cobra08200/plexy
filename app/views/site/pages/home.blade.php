@@ -1,4 +1,4 @@
-@extends('site.layouts.default')
+@extends( Request::ajax() ? 'site.layouts.ajax' : 'site.layouts.default' )
 
 @section('content')
 
@@ -35,7 +35,7 @@
 
       @foreach($requests->all() as $request)
       <div class="media placeholders">
-        <a href="{{ URL::to('issue') }}/{{ $request->id }}">
+        <a href="{{ URL::to('issue') }}/{{ $request->id }}" data-target="#plexyModal">
             <img src="{{ $request->poster_url }}">
         </a>
         <h4>{{ $request->content }}</h4>
@@ -53,7 +53,7 @@
 
       @foreach($issues->all() as $issue)
         <div class="media placeholders">
-            <a href="{{ URL::to('issue') }}/{{ $issue->id }}">
+            <a href="{{ URL::to('issue') }}/{{ $issue->id }}" data-target="#plexyModal">
                 <img src="{{ $issue->poster_url }}">
             </a>
             <h4>{{ $issue->content }}</h4>
@@ -71,7 +71,7 @@
 
       @foreach($closed->all() as $close)
         <div class="media placeholders">
-            <a href="{{ URL::to('issue') }}/{{ $close->id }}">
+            <a href="{{ URL::to('issue') }}/{{ $close->id }}" data-target="#plexyModal">
                 <img src="{{ $close->poster_url }}" height="200">
             </a>
             <h4>{{ $close->content }}</h4>
@@ -210,7 +210,7 @@ $('.typeahead').typeahead(
 		'<div class="empty-message">',
 		'You goofed.',
 		'</div>'].join('\n'),
-		suggestion: Handlebars.compile('<p><strong>@{{value}}</strong> – @{{year}}</p>')
+		suggestion: Handlebars.compile('<p class="tt__list-item"><img class="tt__list-item-image" src="http://image.tmdb.org/t/p/w92@{{poster_path}}" alt="Poster of @{{value}}"/><strong>@{{value}}</strong> – @{{year}}</p>')
 	}
 },
 {
@@ -224,7 +224,7 @@ $('.typeahead').typeahead(
 		'<div class="empty-message">',
 		'You goofed.',
 		'</div>'].join('\n'),
-		suggestion: Handlebars.compile('<p><strong>@{{value}}</strong> – @{{year}}</p>')
+		suggestion: Handlebars.compile('<p class="tt__list-item"><img class="tt__list-item-image" src="http://image.tmdb.org/t/p/w92@{{poster_path}}" alt="Poster of @{{value}}"/><strong>@{{value}}</strong> – @{{year}}</p>')
 	}
 
 // binding disabled for multi dataset testing
@@ -245,7 +245,32 @@ $(function () {
 
 // intialize dashboard tabs
 $(document).ready(function () {
-    $('[data-tab]').tabs();
+
+    var $dataTabs = $('[data-tab]'),
+        $modalLinks = '[data-target="#plexyModal"]',
+        $modal = $('[data-plexyModal]');
+
+    // Init jquery tabs on home view
+    $dataTabs.tabs();
+
+    // open modal links
+    $(document).on('click', $modalLinks, function(e) {
+        e.preventDefault(); //  prevent default click
+
+        var $issue = $(this),
+            issueURL = $issue.attr('href');
+
+        $modal
+            .find('.modal-body')
+            .empty()
+            .load(issueURL)
+        .end()
+            .modal();
+        console.log($modal.find('.modal-body'));
+            return false;
+    });
+
+
 });
 
 

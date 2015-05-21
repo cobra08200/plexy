@@ -25,7 +25,12 @@
 		<div id="push"></div>
 
 	</div>
+	
+	{{-- plexy modal--}}
+	@include('site/layouts/partials/modal')
+
 	<!-- ./ container -->
 	@include('site/layouts/partials/footer')
+
 </body>
 </html>

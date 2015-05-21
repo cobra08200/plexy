@@ -426,3 +426,40 @@ a {
     top: 5px;
     right: 5px;
 }
+
+
+/**
+ * SEARCH AUTOCOMPLETE DROPDOWN
+ */
+.tt-dropdown-menu {
+    padding: 0px 20px;
+    background: white;
+    outline: 1px silver dotted;
+    right: 0 !important;
+
+    -webkit-box-shadow: 0px 7px 20px -5px rgba(0,0,0,0.62);
+    -moz-box-shadow: 0px 7px 20px -5px rgba(0,0,0,0.62);
+    box-shadow: 0px 7px 20px -5px rgba(0,0,0,0.62);
+}
+    .tt__list-item {
+        padding: 10px 20px;
+    }
+    .tt__list-item:hover,
+    .tt__list-item:focus {
+        cursor: pointer;
+        background: silver;
+        color: black;
+        font-weight: bold;
+    }
+
+    .tt__list-item:hover .tt__list-item-image,
+    .tt__list-item:focus .tt__list-item-image {
+        border-color: black;
+    }
+        .tt__list-item-image {
+            margin-right: 10px;
+            width: 92px;
+            height: 92px;
+            border: 2px solid transparent;
+            border-radius: 92px;
+        }
