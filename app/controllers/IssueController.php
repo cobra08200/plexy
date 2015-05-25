@@ -313,4 +313,9 @@ class IssueController extends BaseController {
 		Session::flash('message', 'Successfully deleted the issue!');
 		return Redirect::to('/');
 	}
+
+	public function style()
+	{
+		return View::make('site.pages.style');
+	}
 }

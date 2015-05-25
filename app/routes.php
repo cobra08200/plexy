@@ -4,7 +4,7 @@
  *  Route Style Guide
  *  ------------------------------------------
  */
-Route::get('/style_guide/', ['as' => 'style', 'uses' => 'IssueController@style']);
+Route::get('style_guide', 'IssueController@style');
 
 /** ------------------------------------------
  *  Route model binding
