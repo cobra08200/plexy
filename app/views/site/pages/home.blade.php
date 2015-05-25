@@ -1,75 +1,92 @@
-@extends('site.layouts.default')
+@extends( Request::ajax() ? 'site.layouts.ajax' : 'site.layouts.default' )
 
 @section('content')
 
 <div class="container-fluid">
   <div class="row">
-    @if($user->hasRole("admin"))
-    @else
-    <div class="col-sm-3 col-md-2 sidebar">
-      <ul class="nav nav-sidebar">
+    @if(!$user->hasRole("admin"))
+      <div class="search">
         @include('site/layouts/partials/search')
-      </ul>
     </div>
     @endif
 
     @if($user->hasRole("admin"))
-    <div class="col-sm-12 main">
+    <div class="dashboard__tab dashboard__tab-admin" data-tab>
     @else
-    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <div class="dashboard__tab dashboard__tab-user" data-tab>
     @endif
 
+      <ul class="dashboard__tabs">
+          @if(count($requests) > 0 )
+          <li><a href="#tab-requests">Requests</a></li>
+          @endif
+          @if(count($issues) > 0)
+          <li><a href="#tab-issues">Issues</a></li>
+          @endif
+          @if(count($closed) > 0)
+          <li><a href="#tab-finished">Finished</a></li>
+          @endif
+      </ul>
+
       @if(count($requests) > 0)
-      <h1 class="page-header">Requests</h1>
+      <div id="tab-requests">
+
+      <h3 class="page-header">Requests</h3>
 
       @foreach($requests->all() as $request)
-        <div class="media placeholders">
-          <div class="col-xs-6 col-sm-3">
-            <a href="{{ URL::to('issue') }}/{{ $request->id }}">
-            <img src="{{ $request->poster_url }}" height="200">
-            </a>
-            <h4>{{ $request->content }}</h4>
-            <kbd>{{ $request->status }}</kbd>
-          </div>
-        </div>
+      <div class="media placeholders">
+        <a href="{{ URL::to('issue') }}/{{ $request->id }}" data-target="#plexyModal">
+            <img src="{{ $request->poster_url }}">
+        </a>
+        <h4>{{ $request->content }}</h4>
+        <kbd>{{ $request->status }}</kbd>
+      </div>
       @endforeach
+
+      </div>
       @endif
 
       @if(count($issues) > 0)
-      <h1 class="page-header">Issues</h1>
+      <div id="tab-issues">
+
+      <h3 class="page-header">Issues</h3>
 
       @foreach($issues->all() as $issue)
         <div class="media placeholders">
-          <div class="col-xs-6 col-sm-3">
-            <a href="{{ URL::to('issue') }}/{{ $issue->id }}">
-            <img src="{{ $issue->poster_url }}" height="200">
+            <a href="{{ URL::to('issue') }}/{{ $issue->id }}" data-target="#plexyModal">
+                <img src="{{ $issue->poster_url }}">
             </a>
             <h4>{{ $issue->content }}</h4>
             <kbd>{{ $issue->status }}</kbd>
-          </div>
         </div>
       @endforeach
+
+      </div>
       @endif
 
       @if(count($closed) > 0)
-      <h1 class="page-header">Finished</h1>
+      <div id="tab-finished">
+
+      <h3 class="page-header">Finished</h3>
 
       @foreach($closed->all() as $close)
         <div class="media placeholders">
-          <div class="col-xs-6 col-sm-3">
-            <a href="{{ URL::to('issue') }}/{{ $close->id }}">
-            <img src="{{ $close->poster_url }}" height="200">
+            <a href="{{ URL::to('issue') }}/{{ $close->id }}" data-target="#plexyModal">
+                <img src="{{ $close->poster_url }}" height="200">
             </a>
             <h4>{{ $close->content }}</h4>
             <kbd>{{ $close->status }}</kbd>
-          </div>
         </div>
       @endforeach
+
+      </div>
       @endif
 
       @if(count($requests) + count($issues) + count($closed) == 0)
       <p>Add something you dingo</p>
       @endif
+
+  </div>
 
 {{-- Optional Table View (Probably for Admin View)
       <h2 class="sub-header">Table</h2>
@@ -193,7 +210,7 @@ $('.typeahead').typeahead(
 		'<div class="empty-message">',
 		'You goofed.',
 		'</div>'].join('\n'),
-		suggestion: Handlebars.compile('<p><strong>@{{value}}</strong> – @{{year}}</p>')
+		suggestion: Handlebars.compile('<p class="tt__list-item"><img class="tt__list-item-image" src="http://image.tmdb.org/t/p/w92@{{poster_path}}" alt="Poster of @{{value}}"/><strong>@{{value}}</strong> – @{{year}}</p>')
 	}
 },
 {
@@ -207,7 +224,7 @@ $('.typeahead').typeahead(
 		'<div class="empty-message">',
 		'You goofed.',
 		'</div>'].join('\n'),
-		suggestion: Handlebars.compile('<p><strong>@{{value}}</strong> – @{{year}}</p>')
+		suggestion: Handlebars.compile('<p class="tt__list-item"><img class="tt__list-item-image" src="http://image.tmdb.org/t/p/w92@{{poster_path}}" alt="Poster of @{{value}}"/><strong>@{{value}}</strong> – @{{year}}</p>')
 	}
 
 // binding disabled for multi dataset testing
@@ -224,7 +241,38 @@ $('.typeahead').typeahead(
 
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()
-})
+});
+
+// intialize dashboard tabs
+$(document).ready(function () {
+
+    var $dataTabs = $('[data-tab]'),
+        $modalLinks = '[data-target="#plexyModal"]',
+        $modal = $('[data-plexyModal]');
+
+    // Init jquery tabs on home view
+    $dataTabs.tabs();
+
+    // open modal links
+    $(document).on('click', $modalLinks, function(e) {
+        e.preventDefault(); //  prevent default click
+
+        var $issue = $(this),
+            issueURL = $issue.attr('href');
+
+        $modal
+            .find('.modal-body')
+            .empty()
+            .load(issueURL)
+        .end()
+            .modal();
+        console.log($modal.find('.modal-body'));
+            return false;
+    });
+
+
+});
+
 
 </script>
 @stop

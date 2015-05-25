@@ -1,4 +1,4 @@
-@extends('site.layouts.default')
+@extends( Request::ajax() ? 'site.layouts.ajax' : 'site.layouts.default' )
 
 @section('content')
 
