@@ -148,15 +148,17 @@ var movies = new Bloodhound({
 		filter: function (movies) {
 			// Map the remote source JSON array to a JavaScript array
 			return $.map(movies.results, function (movie) {
-				return {
-					tmdb: movie.id,
-					value: movie.original_title,
-					year: (movie.release_date !== null ? movie.release_date.substr(0, 4) : ''),
-                    poster_path: (movie.poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + movie.poster_path : '{{asset('assets/img/no-poster.jpg')}}'),
-					backdrop_path: (movie.backdrop_path !== null ? 'http://image.tmdb.org/t/p/w500' + movie.backdrop_path : '{{asset('assets/img/no-backdrop.jpg')}}'),
-					vote_average: movie.vote_average,
-					media_type: 'movie'
-				};
+                if (movie.release_date) {
+    				return {
+    					tmdb: movie.id,
+    					value: movie.original_title,
+    					year: movie.release_date,
+                        poster_path: (movie.poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + movie.poster_path : '{{asset('assets/img/no-poster.jpg')}}'),
+    					backdrop_path: (movie.backdrop_path !== null ? 'http://image.tmdb.org/t/p/w500' + movie.backdrop_path : '{{asset('assets/img/no-backdrop.jpg')}}'),
+    					vote_average: movie.vote_average,
+    					media_type: 'movie'
+    				};
+                }
 			});
 		}
 	}
@@ -175,15 +177,17 @@ var tvshows = new Bloodhound({
 		filter: function (tvshows) {
 			// Map the remote source JSON array to a JavaScript array
 			return $.map(tvshows.results, function (tvshow) {
-				return {
-					tmdb: tvshow.id,
-					value: tvshow.name,
-					year: (tvshow.first_air_date !== null ? tvshow.first_air_date.substr(0, 4) : ''),
-					poster_path: (tvshow.poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + tvshow.poster_path : '{{asset('assets/img/no-poster.jpg')}}'),
-					backdrop_path: (tvshow.backdrop_path !== null ? 'http://image.tmdb.org/t/p/w500' + tvshow.backdrop_path : '{{asset('assets/img/no-backdrop.jpg')}}'),
-					vote_average: tvshow.vote_average,
-					media_type: 'tv'
-				};
+                if (tvshow.first_air_date) {
+    				return {
+    					tmdb: tvshow.id,
+    					value: tvshow.name,
+    					year: tvshow.first_air_date,
+    					poster_path: (tvshow.poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + tvshow.poster_path : '{{asset('assets/img/no-poster.jpg')}}'),
+    					backdrop_path: (tvshow.backdrop_path !== null ? 'http://image.tmdb.org/t/p/w500' + tvshow.backdrop_path : '{{asset('assets/img/no-backdrop.jpg')}}'),
+    					vote_average: tvshow.vote_average,
+    					media_type: 'tv'
+    				};
+                }
 			});
 		}
 	}
@@ -192,6 +196,8 @@ var tvshows = new Bloodhound({
 // Initialize the Bloodhound suggestion engine
 movies.initialize();
 tvshows.initialize();
+
+// console.log(movies, movies.initialize());
 
 // Instantiate the Typeahead UI
 $('.typeahead').typeahead(
