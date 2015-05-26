@@ -5,6 +5,7 @@
  *  ------------------------------------------
  */
 Route::get('style_guide', 'IssueController@style');
+Route::get('json', 'IssueController@tmdb_movie');
 
 /** ------------------------------------------
  *  Route model binding

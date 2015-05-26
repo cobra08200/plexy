@@ -122,6 +122,27 @@ class IssueController extends BaseController {
 		return Redirect::to($slug)->withInput()->withErrors($validator);
 	}
 
+	public function tmdb_movie()
+	{
+		$ch = curl_init();
+
+		$query = 'Fight';
+
+		// curl_setopt($ch, CURLOPT_URL, "http://api.themoviedb.org/3/search/movie");
+		curl_setopt($ch, CURLOPT_URL, "http://api.themoviedb.org/3/search/tv?api_key=a31dbc04c5cc13fd61e1427d4ff1cd58&query".$query."&include_adult=false&search_type=ngram");
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+		curl_setopt($ch, CURLOPT_HEADER, FALSE);
+
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+		  "Accept: application/json"
+		));
+
+		$response = curl_exec($ch);
+		curl_close($ch);
+
+		var_dump($response);
+	}
+
 	public function postApi()
 	{
 		// inspect input
@@ -180,7 +201,9 @@ class IssueController extends BaseController {
 			// 	//if tv show
 			// 	if($issue->topic == 'tv')
 			// 	{
-			// 		dd('tv show detected');
+			// 		//return to view with current issue info and get season + episode
+			// 		// dd($issue);
+			// 		return View::make('site/pages/tv_issues', compact('issue'));
 			// 	}
 			//
 			// 	//if movie

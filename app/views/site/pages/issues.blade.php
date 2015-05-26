@@ -4,16 +4,13 @@
 
 <div class="row">
 
-	<h1 class="page-header">
+	<h2 class="page-header" align="center">
 		{{ $issue->content }}
-		<!-- <small>Secondary Text</small> -->
-	</h1>
+	</h2>
 
 	<!-- Entries Column -->
 	<div class="col-md-4">
-
 		<img src="{{ $issue->poster_url }}" height="200" alt="">
-
 	</div>
 
 	<!-- Sidebar Widgets Column -->
@@ -87,7 +84,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="row margin-0">
+				{{-- <div class="row margin-0">
 					<div class="col-md-6">
 						<div class="cell">
 							<div class="propertyname">
@@ -106,7 +103,7 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> --}}
 				<div class="row margin-0">
 					<div class="col-md-6">
 						<div class="cell">
@@ -118,7 +115,28 @@
 					<div class="col-md-6">
 						<div class="cell">
 							<div class="type">
-								<code>{{ $issue->created_at->diffForHumans() }}</code>
+								<code><small>{{ $issue->created_at->diffForHumans() }}</small></code>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row margin-0">
+					<div class="col-md-6">
+						<div class="cell">
+							<div class="propertyname">
+								Remove
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="cell">
+							<div class="type">
+								{{-- Delete Button--}}
+								{{ Form::open(array('url' => 'issues/delete/' . $issue->id)) }}
+								{{ Form::hidden('_method', 'DELETE') }}
+								{{ Form::submit('Delete this', array('class' => 'btn btn-warning btn-xs')) }}
+								{{ Form::close() }}
+								{{-- /Delete Button--}}
 							</div>
 						</div>
 					</div>
@@ -135,21 +153,12 @@
 </div>
 <!-- /.row -->
 
-{{-- Delete Button--}}
-
-{{ Form::open(array('url' => 'issues/delete/' . $issue->id, 'class' => 'pull-right')) }}
-{{ Form::hidden('_method', 'DELETE') }}
-{{ Form::submit('Delete this issue', array('class' => 'btn btn-warning')) }}
-{{ Form::close() }}
-
-{{-- /Delete Button--}}
-
 {{-- Messages--}}
 
 <div class="container">
 	<div class="row">
 		<div class="col-md-12">
-			<h1 class="page-header">Comments</h1>
+			<h2 class="page-header" align="center">Comments</h2>
 			<section class="comment-list">
 				@foreach($messages as $messages)
 				<?php $user = User::find($messages->user_id); ?>

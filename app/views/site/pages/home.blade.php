@@ -5,7 +5,7 @@
 <div class="container-fluid">
   <div class="row">
     @if(!$user->hasRole("admin"))
-      <div class="search">
+    <div class="search">
         @include('site/layouts/partials/search')
     </div>
     @endif
@@ -152,8 +152,8 @@ var movies = new Bloodhound({
 					tmdb: movie.id,
 					value: movie.original_title,
 					year: (movie.release_date !== null ? movie.release_date.substr(0, 4) : ''),
-					poster_path: movie.poster_path,
-					backdrop_path: movie.backdrop_path,
+                    poster_path: (movie.poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + movie.poster_path : '{{asset('assets/img/no-poster.jpg')}}'),
+					backdrop_path: (movie.backdrop_path !== null ? 'http://image.tmdb.org/t/p/w500' + movie.backdrop_path : '{{asset('assets/img/no-backdrop.jpg')}}'),
 					vote_average: movie.vote_average,
 					media_type: 'movie'
 				};
@@ -179,8 +179,8 @@ var tvshows = new Bloodhound({
 					tmdb: tvshow.id,
 					value: tvshow.name,
 					year: (tvshow.first_air_date !== null ? tvshow.first_air_date.substr(0, 4) : ''),
-					poster_path: tvshow.poster_path,
-					backdrop_path: tvshow.backdrop_path,
+					poster_path: (tvshow.poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + tvshow.poster_path : '{{asset('assets/img/no-poster.jpg')}}'),
+					backdrop_path: (tvshow.backdrop_path !== null ? 'http://image.tmdb.org/t/p/w500' + tvshow.backdrop_path : '{{asset('assets/img/no-backdrop.jpg')}}'),
 					vote_average: tvshow.vote_average,
 					media_type: 'tv'
 				};
@@ -210,7 +210,7 @@ $('.typeahead').typeahead(
 		'<div class="empty-message">',
 		'You goofed.',
 		'</div>'].join('\n'),
-		suggestion: Handlebars.compile('<p class="tt__list-item"><img class="tt__list-item-image" src="http://image.tmdb.org/t/p/w92@{{poster_path}}" alt="Poster of @{{value}}"/><strong>@{{value}}</strong> – @{{year}}</p>')
+		suggestion: Handlebars.compile('<p class="tt__list-item"><img class="tt__list-item-image" src="@{{poster_path}}" alt="Poster of @{{value}}"/><strong>@{{value}}</strong> – @{{year}}</p>')
 	}
 },
 {
@@ -224,7 +224,7 @@ $('.typeahead').typeahead(
 		'<div class="empty-message">',
 		'You goofed.',
 		'</div>'].join('\n'),
-		suggestion: Handlebars.compile('<p class="tt__list-item"><img class="tt__list-item-image" src="http://image.tmdb.org/t/p/w92@{{poster_path}}" alt="Poster of @{{value}}"/><strong>@{{value}}</strong> – @{{year}}</p>')
+		suggestion: Handlebars.compile('<p class="tt__list-item"><img class="tt__list-item-image" src="@{{poster_path}}" alt="Poster of @{{value}}"/><strong>@{{value}}</strong> – @{{year}}</p>')
 	}
 
 // binding disabled for multi dataset testing
@@ -233,8 +233,8 @@ $('.typeahead').typeahead(
 	$( '#title' ).val(datum.value);
 	$( '#year' ).val(datum.year);
 	$( '#tmdb' ).val(datum.tmdb);
-	$( '#poster' ).val('http://image.tmdb.org/t/p/w500' + datum.poster_path);
-	$( '#backdrop' ).val('http://image.tmdb.org/t/p/w500' + datum.backdrop_path);
+    $( '#poster' ).val(datum.poster_path);
+    $( '#backdrop' ).val(datum.backdrop_path);
 	$( '#topic' ).val(datum.media_type);
 	$( '#vote_average' ).val(datum.vote_average);
 });
@@ -269,10 +269,7 @@ $(document).ready(function () {
         console.log($modal.find('.modal-body'));
             return false;
     });
-
-
 });
-
 
 </script>
 @stop

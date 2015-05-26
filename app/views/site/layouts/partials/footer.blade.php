@@ -20,7 +20,7 @@
 <script src="//code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.4/typeahead.bundle.min.js"></script>
-<!-- <script src="{{asset('bootstrap/js/bootstrap.min.js')}}"></script> -->
+{{-- <script src="{{asset('bootstrap/js/bootstrap.min.js')}}"></script> --}}
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 {{--
 <script src="{{asset('assets/js/wysihtml5/wysihtml5-0.3.0.js')}}"></script>

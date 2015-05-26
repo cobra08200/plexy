@@ -463,3 +463,22 @@ a {
             border: 2px solid transparent;
             border-radius: 92px;
         }
+
+/**
+* MODAL HEADER MODIFED
+*/
+.modal-header {
+  border-bottom: 0px;
+}
+
+.page-header {
+  border-bottom: 0px;
+}
+
+/**
+* Black navbar-brand Hover
+*/
+.navbar-brand:focus,
+.navbar-brand:hover {
+     color: black;
+}
