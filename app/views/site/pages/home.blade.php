@@ -39,7 +39,13 @@
             <img src="{{ $request->poster_url }}">
         </a>
         <h4>{{ $request->content }}</h4>
-        <kbd>{{ $request->status }}</kbd>
+        @if($request->status === 'open')
+        <span class="label label-primary">{{ ucwords($request->status) }}</span>
+        @elseif($request->status === 'pending')
+        <span class="label label-warning">{{ ucwords($request->status) }}</span>
+        @elseif($request->status === 'closed')
+        <span class="label label-default">{{ ucwords($request->status) }}</span>
+        @endif
       </div>
       @endforeach
 
@@ -57,7 +63,13 @@
                 <img src="{{ $issue->poster_url }}">
             </a>
             <h4>{{ $issue->content }}</h4>
-            <kbd>{{ $issue->status }}</kbd>
+            @if($issue->status === 'open')
+            <span class="label label-primary">{{ ucwords($issue->status) }}</span>
+            @elseif($issue->status === 'pending')
+            <span class="label label-warning">{{ ucwords($issue->status) }}</span>
+            @elseif($issue->status === 'closed')
+            <span class="label label-default">{{ ucwords($issue->status) }}</span>
+            @endif
         </div>
       @endforeach
 
@@ -75,7 +87,13 @@
                 <img src="{{ $close->poster_url }}" height="200">
             </a>
             <h4>{{ $close->content }}</h4>
-            <kbd>{{ $close->status }}</kbd>
+            @if($close->status === 'open')
+            <span class="label label-primary">{{ ucwords($close->status) }}</span>
+            @elseif($close->status === 'pending')
+            <span class="label label-warning">{{ ucwords($close->status) }}</span>
+            @elseif($close->status === 'closed')
+            <span class="label label-default">{{ ucwords($close->status) }}</span>
+            @endif
         </div>
       @endforeach
 
@@ -123,7 +141,7 @@
     </div>
 --}}
 
-	{{ $issues->appends(Request::except('page'))->links() }}
+	{{-- {{ $issues->appends(Request::except('page'))->links() }} --}}
 
 @stop
 
