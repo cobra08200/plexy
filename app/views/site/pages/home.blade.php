@@ -232,7 +232,7 @@ $('.typeahead').typeahead(
 		header: '<h3 class="dropdown-header">movies</h3>',
 		empty: [
 		'<div class="empty-message">',
-		'You goofed.',
+		'You goofed. Try something else.',
 		'</div>'].join('\n'),
 		suggestion: Handlebars.compile('<p class="tt__list-item"><img class="tt__list-item-image" src="@{{poster_path}}" alt="Poster of @{{value}}"/><strong>@{{value}}</strong> – @{{year}}</p>')
 	}
@@ -246,7 +246,7 @@ $('.typeahead').typeahead(
 		header: '<h3 class="dropdown-header">tv shows</h3>',
 		empty: [
 		'<div class="empty-message">',
-		'You goofed.',
+		'You goofed. Try something else.',
 		'</div>'].join('\n'),
 		suggestion: Handlebars.compile('<p class="tt__list-item"><img class="tt__list-item-image" src="@{{poster_path}}" alt="Poster of @{{value}}"/><strong>@{{value}}</strong> – @{{year}}</p>')
 	}

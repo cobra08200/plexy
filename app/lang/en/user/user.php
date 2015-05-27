@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 return array(
 
@@ -19,6 +19,6 @@ return array(
 	'profile'               => 'Profile',
 	'user_account_is_not_confirmed'          => 'User Account is not confirmed.',
 	'user_account_updated'          => 'User Account updated.',
-	'user_account_created'          => 'User Account created.',
+	'user_account_created'          => 'Account created. Go check your email to confirm.',
 
 );
