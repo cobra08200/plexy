@@ -421,7 +421,7 @@ a {
     height: auto;
 }
 
-.media kbd {
+.media .label {
     position: absolute;
     top: 5px;
     right: 5px;
@@ -476,9 +476,49 @@ a {
 }
 
 /**
-* Black navbar-brand Hover
-*/
+ * Black navbar-brand Hover
+ */
+
 .navbar-brand:focus,
 .navbar-brand:hover {
-     color: black;
+     color: black !important;
 }
+
+.dropdown-toggle:focus,
+.dropdown-toggle:hover {
+    color: black!important;
+}
+    .dropdown-toggle:focus .caret,
+    .dropdown-toggle:hover .caret {
+        color: black !important;
+    }
+
+.open .dropdown-toggle:focus,
+.open .dropdown-toggle:hover {
+    color: white!important;
+}
+    .open .dropdown-toggle:focus .caret,
+    .open .dropdown-toggle:hover .caret {
+        color: white !important;
+    }
+
+a {
+    text-shadow: none !important;
+}
+
+/**
+ * account dropdown styles
+ */
+.dropdown-menu {
+    padding: 0;
+    min-width: initial;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+    .dropdown-menu a {
+        text-align: center;
+        padding: 12px !important;
+        width: 100%;
+        box-sizing: border-box;
+    }
