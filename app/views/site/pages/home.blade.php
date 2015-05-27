@@ -1,82 +1,147 @@
-@extends('admin.layouts.default')
+@extends( Request::ajax() ? 'site.layouts.ajax' : 'site.layouts.default' )
 
 @section('content')
 
-<div class="row">
+<div class="container-fluid">
+  <div class="row">
+    @if(!$user->hasRole("admin"))
+    <div class="search">
+        @include('site/layouts/partials/search')
+    </div>
+    @endif
 
-{{--
-	<h3>
-		@if($user->hasRole("comment"))
-		My
-		@endif
-		Requests
-	</h3>
+    @if($user->hasRole("admin"))
+    <div class="dashboard__tab dashboard__tab-admin" data-tab>
+    @else
+    <div class="dashboard__tab dashboard__tab-user" data-tab>
+    @endif
+
+      <ul class="dashboard__tabs">
+          @if(count($requests) > 0 )
+          <li><a href="#tab-requests">Requests</a></li>
+          @endif
+          @if(count($issues) > 0)
+          <li><a href="#tab-issues">Issues</a></li>
+          @endif
+          @if(count($closed) > 0)
+          <li><a href="#tab-finished">Finished</a></li>
+          @endif
+      </ul>
+
+      @if(count($requests) > 0)
+      <div id="tab-requests">
+
+      <h3 class="page-header">Requests</h3>
+
+      @foreach($requests->all() as $request)
+      <div class="media placeholders">
+        <a href="{{ URL::to('issue') }}/{{ $request->id }}" data-target="#plexyModal">
+            <img src="{{ $request->poster_url }}">
+        </a>
+        <h4>{{ $request->content }}</h4>
+        @if($request->status === 'open')
+        <span class="label label-primary">{{ ucwords($request->status) }}</span>
+        @elseif($request->status === 'pending')
+        <span class="label label-warning">{{ ucwords($request->status) }}</span>
+        @elseif($request->status === 'closed')
+        <span class="label label-default">{{ ucwords($request->status) }}</span>
+        @endif
+      </div>
+      @endforeach
+
+      </div>
+      @endif
+
+      @if(count($issues) > 0)
+      <div id="tab-issues">
+
+      <h3 class="page-header">Issues</h3>
+
+      @foreach($issues->all() as $issue)
+        <div class="media placeholders">
+            <a href="{{ URL::to('issue') }}/{{ $issue->id }}" data-target="#plexyModal">
+                <img src="{{ $issue->poster_url }}">
+            </a>
+            <h4>{{ $issue->content }}</h4>
+            @if($issue->status === 'open')
+            <span class="label label-primary">{{ ucwords($issue->status) }}</span>
+            @elseif($issue->status === 'pending')
+            <span class="label label-warning">{{ ucwords($issue->status) }}</span>
+            @elseif($issue->status === 'closed')
+            <span class="label label-default">{{ ucwords($issue->status) }}</span>
+            @endif
+        </div>
+      @endforeach
+
+      </div>
+      @endif
+
+      @if(count($closed) > 0)
+      <div id="tab-finished">
+
+      <h3 class="page-header">Finished</h3>
+
+      @foreach($closed->all() as $close)
+        <div class="media placeholders">
+            <a href="{{ URL::to('issue') }}/{{ $close->id }}" data-target="#plexyModal">
+                <img src="{{ $close->poster_url }}" height="200">
+            </a>
+            <h4>{{ $close->content }}</h4>
+            @if($close->status === 'open')
+            <span class="label label-primary">{{ ucwords($close->status) }}</span>
+            @elseif($close->status === 'pending')
+            <span class="label label-warning">{{ ucwords($close->status) }}</span>
+            @elseif($close->status === 'closed')
+            <span class="label label-default">{{ ucwords($close->status) }}</span>
+            @endif
+        </div>
+      @endforeach
+
+      </div>
+      @endif
+
+      @if(count($requests) + count($issues) + count($closed) == 0)
+      <p>Add something you dingo</p>
+      @endif
+
+  </div>
+
+{{-- Optional Table View (Probably for Admin View)
+      <h2 class="sub-header">Table</h2>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              @if($user->hasRole("admin"))
+              <th>User</th>
+              @endif
+              <th>Status</th>
+              <th>Title</th>
+              <th>Added</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach($issues as $issue)
+            @if($issue->status === 'closed')
+            <tr class="clickableRow" href="{{ URL::to('issue') }}/{{ $issue->id }}">
+            @else
+            <tr class="clickableRow" href="{{ URL::to('issue') }}/{{ $issue->id }}">
+              @endif
+              @if($user->hasRole("admin"))
+              <td data-title="User">{{ $issue->owner->username }}</td>
+              @endif
+              <td data-title="Status">{{ $issue->status }}</td>
+              <td data-title="Content">{{ $issue->content }}</td>
+              <td data-title="Created">{{ $issue->created_at->diffForHumans() }}</td>
+            </tr>
+            @endforeach
+          </tbody>
+        </table>
+      </div>
+    </div>
 --}}
-{{--
-		<table class="table">
-			<thead>
-				<tr>
-					@if($user->hasRole("admin"))
-					<th><input type="text" class="form-control" placeholder="User"></th>
-					<th>
-						<select class="form-control" id="status">
-							<option>all statuses</option>
-							<option>open</option>
-							<option>pending</option>
-							<option>closed</option>
-						</select>
-					</th>
-					@endif
-					
-				</tr>
-			</thead>
-			<tbody>
-				@foreach($issues as $issue)
-				@if($issue->status === 'closed')
-				<tr class="clickableRow" href="{{ URL::to('issue') }}/{{ $issue->id }}">
-				@else
-				<tr class="clickableRow" href="{{ URL::to('issue') }}/{{ $issue->id }}">
-					@endif
-					@if($user->hasRole("admin"))
-					<td data-title="User">{{ $issue->owner->username }}</td>
-					<td data-title="Status">{{ $issue->status }}</td>
-					@endif
-					{{--
-					<td data-title="Topic">{{ $issue->topic }}</td>
-					--}}
-					{{--
-					<td data-title="Content">{{ $issue->content }}</td>
-					<td data-title="Created">{{ $issue->created_at->diffForHumans() }}</td>
-				</tr>
-				@endforeach
-			</tbody>
-		</table>
---}}
 
-	{{ Form::open(array('route' => 'movies.search')) }}
-	{{ Form::text('title', '', array('class' => 'typeahead form-control','placeholder' => 'Title')) }}
-	{{ Form::hidden('title', '', array('id' => 'title')) }}
-	{{ Form::hidden('year', '', array('id' => 'year')) }}
-	{{ Form::hidden('tmdb', '', array('id' => 'tmdb')) }}
-	{{ Form::hidden('poster', '', array('id' => 'poster')) }}
-	{{ Form::hidden('backdrop', '', array('id' => 'backdrop')) }}
-	{{ Form::hidden('topic', '', array('id' => 'topic')) }}
-	{{ Form::submit('Add', array('class' => 'btn btn-primary')) }}
-	{{ Form::close() }}
-
-
-	@foreach(array_chunk($issues->all(), 4) as $issue_row)
-		<div class="row-fluid">
-			@foreach ($issue_row as $issue)
-			<a href="{{ URL::to('issue') }}/{{ $issue->id }}">
-				<img class="img-zoom" src="{{ $issue->poster_url }}" width="150">
-			</a>
-			@endforeach
-		</div>
-	@endforeach
-	{{ $issues->appends(Request::except('page'))->links() }}
-
-</div>
+	{{-- {{ $issues->appends(Request::except('page'))->links() }} --}}
 
 @stop
 
@@ -88,7 +153,6 @@
 			window.document.location = $(this).attr("href");
 		});
 	});
-
 
 //movies search
 var movies = new Bloodhound({
@@ -102,14 +166,17 @@ var movies = new Bloodhound({
 		filter: function (movies) {
 			// Map the remote source JSON array to a JavaScript array
 			return $.map(movies.results, function (movie) {
-				return {
-					tmdb: movie.id,
-					value: movie.original_title,
-					year: (movie.release_date.substr(0, 4) ? movie.release_date.substr(0, 4) : ''),
-					poster_path: movie.poster_path,
-					backdrop_path: movie.backdrop_path,
-					media_type: 'movie'
-				};
+                if (movie.release_date) {
+    				return {
+    					tmdb: movie.id,
+    					value: movie.original_title,
+    					year: (movie.release_date !== null ? movie.release_date.substr(0, 4) : ''),
+                        poster_path: (movie.poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + movie.poster_path : '{{asset('assets/img/no-poster.jpg')}}'),
+    					backdrop_path: (movie.backdrop_path !== null ? 'http://image.tmdb.org/t/p/w500' + movie.backdrop_path : '{{asset('assets/img/no-backdrop.jpg')}}'),
+    					vote_average: movie.vote_average,
+    					media_type: 'movie'
+    				};
+                }
 			});
 		}
 	}
@@ -128,14 +195,17 @@ var tvshows = new Bloodhound({
 		filter: function (tvshows) {
 			// Map the remote source JSON array to a JavaScript array
 			return $.map(tvshows.results, function (tvshow) {
-				return {
-					tmdb: tvshow.id,
-					value: tvshow.name,
-					year: (tvshow.first_air_date.substr(0, 4) ? tvshow.first_air_date.substr(0, 4) : ''),
-					poster_path: tvshow.poster_path,
-					backdrop_path: tvshow.backdrop_path,
-					media_type: 'tv'
-				};
+                if (tvshow.first_air_date) {
+    				return {
+    					tmdb: tvshow.id,
+    					value: tvshow.name,
+    					year: (tvshow.first_air_date !== null ? tvshow.first_air_date.substr(0, 4) : ''),
+    					poster_path: (tvshow.poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + tvshow.poster_path : '{{asset('assets/img/no-poster.jpg')}}'),
+    					backdrop_path: (tvshow.backdrop_path !== null ? 'http://image.tmdb.org/t/p/w500' + tvshow.backdrop_path : '{{asset('assets/img/no-backdrop.jpg')}}'),
+    					vote_average: tvshow.vote_average,
+    					media_type: 'tv'
+    				};
+                }
 			});
 		}
 	}
@@ -144,6 +214,8 @@ var tvshows = new Bloodhound({
 // Initialize the Bloodhound suggestion engine
 movies.initialize();
 tvshows.initialize();
+
+// console.log(movies, movies.initialize());
 
 // Instantiate the Typeahead UI
 $('.typeahead').typeahead(
@@ -160,9 +232,9 @@ $('.typeahead').typeahead(
 		header: '<h3 class="dropdown-header">movies</h3>',
 		empty: [
 		'<div class="empty-message">',
-		'You goofed.',
+		'You goofed. Try something else.',
 		'</div>'].join('\n'),
-		suggestion: Handlebars.compile('<p><strong>@{{value}}</strong> – @{{year}}</p>')
+		suggestion: Handlebars.compile('<p class="tt__list-item"><img class="tt__list-item-image" src="@{{poster_path}}" alt="Poster of @{{value}}"/><strong>@{{value}}</strong> – @{{year}}</p>')
 	}
 },
 {
@@ -174,9 +246,9 @@ $('.typeahead').typeahead(
 		header: '<h3 class="dropdown-header">tv shows</h3>',
 		empty: [
 		'<div class="empty-message">',
-		'You goofed.',
+		'You goofed. Try something else.',
 		'</div>'].join('\n'),
-		suggestion: Handlebars.compile('<p><strong>@{{value}}</strong> – @{{year}}</p>')
+		suggestion: Handlebars.compile('<p class="tt__list-item"><img class="tt__list-item-image" src="@{{poster_path}}" alt="Poster of @{{value}}"/><strong>@{{value}}</strong> – @{{year}}</p>')
 	}
 
 // binding disabled for multi dataset testing
@@ -185,20 +257,43 @@ $('.typeahead').typeahead(
 	$( '#title' ).val(datum.value);
 	$( '#year' ).val(datum.year);
 	$( '#tmdb' ).val(datum.tmdb);
-	$( '#poster' ).val('http://image.tmdb.org/t/p/w500' + datum.poster_path);
-	$( '#backdrop' ).val('http://image.tmdb.org/t/p/w500' + datum.backdrop_path);
+    $( '#poster' ).val(datum.poster_path);
+    $( '#backdrop' ).val(datum.backdrop_path);
 	$( '#topic' ).val(datum.media_type);
+	$( '#vote_average' ).val(datum.vote_average);
 });
 
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+});
 
-// $(document).ready(function(){
-// 	$('.img-zoom').hover(function() {
-// 		$(this).addClass('transition');
+// intialize dashboard tabs
+$(document).ready(function () {
 
-// 	}, function() {
-// 		$(this).removeClass('transition');
-// 	});
-// });
+    var $dataTabs = $('[data-tab]'),
+        $modalLinks = '[data-target="#plexyModal"]',
+        $modal = $('[data-plexyModal]');
+
+    // Init jquery tabs on home view
+    $dataTabs.tabs();
+
+    // open modal links
+    $(document).on('click', $modalLinks, function(e) {
+        e.preventDefault(); //  prevent default click
+
+        var $issue = $(this),
+            issueURL = $issue.attr('href');
+
+        $modal
+            .find('.modal-body')
+            .empty()
+            .load(issueURL)
+        .end()
+            .modal();
+        console.log($modal.find('.modal-body'));
+            return false;
+    });
+});
 
 </script>
 @stop

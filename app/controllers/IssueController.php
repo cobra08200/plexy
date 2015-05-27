@@ -3,6 +3,12 @@
 class IssueController extends BaseController {
 
 	/**
+	 * Message Model
+	 * @var Message
+	 */
+
+	protected $message;
+	/**
 	 * Issue Model
 	 * @var Issue
 	 */
@@ -19,31 +25,16 @@ class IssueController extends BaseController {
 	 * @param Issue $issue
 	 * @param User $user
 	 */
-	public function __construct(Issue $issue, User $user)
+
+	public function __construct(Issue $issue, User $user, Message $message)
 	{
 		parent::__construct();
 
+		$this->message = $message;
 		$this->issue = $issue;
 		$this->user = $user;
 	}
-	
-	/**
-	 * Returns all the blog posts.
-	 *
-	 * @return View
-	 */
-	public function getIndexOld()
-	{
-		$user = Auth::user();
 
-		$title = Lang::get('admin/blogs/title.blog_management');
-		// Get all the issues
-		// $issues = $this->issue->orderBy('created_at', 'DESC')->paginate(10);
-		$issues = $this->issue;
-
-		// Show the page
-		return View::make('site/pages/index', compact('issues', 'title', 'user'));
-	}
 
 	/**
 	 * View a blog post.
@@ -131,78 +122,44 @@ class IssueController extends BaseController {
 		return Redirect::to($slug)->withInput()->withErrors($validator);
 	}
 
-
-	/**
-	 * Show a list of all the blog issues formatted for Datatables.
-	 *
-	 * @return Datatables JSON
-	 */
-	public function getDataAdmin()
+	public function tmdb_movie()
 	{
-		// admin view all
-		$issues = DB::table('issues')
-		->join('users', 'users.id', '=', 'issues.user_id')
-		->select(array('issues.status as status', 'issues.id as id', 'users.username as username', 'issues.topic as topic', 'issues.id as comments', 'issues.created_at as created_at'));
+		$ch = curl_init();
 
-		return Datatables::of($issues)
+		$query = 'Fight';
 
-		->edit_column('comments', '{{ DB::table(\'comments\')->where(\'issue_id\', \'=\', $id)->count() }}')
+		// curl_setopt($ch, CURLOPT_URL, "http://api.themoviedb.org/3/search/movie");
+		curl_setopt($ch, CURLOPT_URL, "http://api.themoviedb.org/3/search/tv?api_key=a31dbc04c5cc13fd61e1427d4ff1cd58&query".$query."&include_adult=false&search_type=ngram");
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+		curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
-		->add_column('actions', '<a href="{{{ URL::to(\'admin/blogs/\' . $id . \'/edit\' ) }}}" class="btn btn-default btn-xs iframe" >{{{ Lang::get(\'button.edit\') }}}</a>
-			<a href="{{{ URL::to(\'admin/blogs/\' . $id . \'/delete\' ) }}}" class="btn btn-xs btn-danger iframe">{{{ Lang::get(\'button.delete\') }}}</a>
-			')
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+		  "Accept: application/json"
+		));
 
-		->remove_column('id')
+		$response = curl_exec($ch);
+		curl_close($ch);
 
-		->make();
-	}
-
-	/**
-	 * Show a list of all the blog issues formatted for Datatables.
-	 *
-	 * @return Datatables JSON
-	 */
-	public function getDataUser()
-	{
-		$id = Auth::id();
-
-		// user view all
-		$issues = DB::table('issues')
-		->where('users.id', '=', $id)
-		->join('users', 'users.id', '=', 'issues.user_id')
-		->select(array('issues.status as status', 'issues.id as id', 'issues.topic as topic', 'issues.id as comments', 'issues.created_at as created_at'));
-
-		return Datatables::of($issues)
-
-		->edit_column('comments', '{{ DB::table(\'comments\')->where(\'issue_id\', \'=\', $id)->count() }}')
-
-		->add_column('actions', '<a href="{{{ URL::to(\'admin/blogs/\' . $id . \'/edit\' ) }}}" class="btn btn-default btn-xs iframe" >{{{ Lang::get(\'button.edit\') }}}</a>
-			<a href="{{{ URL::to(\'admin/blogs/\' . $id . \'/delete\' ) }}}" class="btn btn-xs btn-danger iframe">{{{ Lang::get(\'button.delete\') }}}</a>
-			')
-
-		->remove_column('id')
-
-		->make();
-	}
-
-	public function api()
-	{
-		Auth::loginUsingId(2);
-		// return View::make('site/pages/api', compact('movie'));
-		return View::make('site/pages/api');
+		var_dump($response);
 	}
 
 	public function postApi()
 	{
-
+		// inspect input
 		// dd(Input::all());
+		// dd(Input::only('type'));
 
 		// validator
 		$rules = array(
-			'year' 	=> 'required'  // checker to see if they actually used a suggestion
+			'year'	=> 'required'  // checker to see if they actually used a suggestion
+		);
+
+		$unique_rules = array(
+			'tmdb'	=> 'unique:issues'  // check tmdb to see if anyone else in plexy has requested it
 		);
 
 		$validator = Validator::make(Input::all(), $rules);
+		$unique = Validator::make(Input::all(), $unique_rules);
 
 		if ($validator->fails())
 		{
@@ -213,37 +170,57 @@ class IssueController extends BaseController {
 			return Redirect::back()
 			->withErrors($validator);
 		}
+
+		elseif ($unique->fails())
+		{
+			// get the error messages from the validator
+			$messages = $validator->messages();
+
+			// redirect our user back to the form with the errors from the validator
+			return Redirect::back()
+			->with('message', 'Someone already either wants this or reported this, ya dingo.');
+		}
 		else
 		{
-			// get imgur ready to accept themoviedb img
-
-			// return array(   
-			// 	'imgur_apikey'   => '7b310c90e258519cefd34f5a4e88d0ba589a9914', // Imgur API key
-			// 	'imgur_format'   => 'json', // json OR xml
-			// 	'imgur_xml_type' => 'object', // array OR object
-			// );
 
 			// create new issue
 			$issue = new Issue;
 			$issue->user_id = Auth::id();
-			$issue->content = Input::get('title') . ' - ' . Input::get('year');
+			$issue->content = Input::get('title') . ' (' . Input::get('year') .')';
 			$issue->poster_url = Input::get('poster');
 			$issue->backdrop_url = Input::get('backdrop');
 			$issue->topic = Input::get('topic');
 			$issue->tmdb = Input::get('tmdb');
+			$issue->vote_average = Input::get('vote_average');
+			$issue->type = strtolower(Input::get('type'));
+
+			//plexy 2.0 advanced issue capture
+			//issue detector -> need to gather more info from user
+			// if($issue->type == 'issue')
+			// {
+			// 	//if tv show
+			// 	if($issue->topic == 'tv')
+			// 	{
+			// 		//return to view with current issue info and get season + episode
+			// 		// dd($issue);
+			// 		return View::make('site/pages/tv_issues', compact('issue'));
+			// 	}
+			//
+			// 	//if movie
+			// }
 
 			$issue->save();
 
 			// send email
-			$username = 	Auth::user()->username;
-			$email = 		Auth::user()->email;
-			$issue_id =		$issue->id;
-			$poster_url =	$issue->poster_url;
-			$title =	$issue->content;
+			$username 		= Auth::user()->username;
+			$email 			= Auth::user()->email;
+			$issue_id 		= $issue->id;
+			$poster_url 	= $issue->poster_url;
+			$title 			= $issue->content;
 
 			$data = array(
 				'user' 			=> Auth::user(),
-				'username' 		=> $username, 
+				'username' 		=> $username,
 				'email' 		=> $email,
 				'issue_id' 		=> $issue_id,
 				'poster_url' 	=> $poster_url,
@@ -252,21 +229,52 @@ class IssueController extends BaseController {
 
 			Mail::later(5, 'emails.newrequest', $data, function($message) use ($username, $email, $issue_id, $poster_url, $title)
 			{
-				$message->from('requests@ehumps.me', 'Plexy');
-				$message->to($email, $username)->subject('Plexy - Request #'.$issue_id);
+				$message->from('plexy@ehumps.me', 'Plexy');
+				$message->to($email, $username)->subject('Plexy - Ticket #'.$issue_id);
 			});
 
-			//return to after form submit
+			//return after form submit
 			return Redirect::back();
 		}
 	}
 
 	public function getIssueView($id)
 	{
-		// Auth::loginUsingId(2);
-		$issue = Issue::findOrFail($id);
 
-		return View::make('site/pages/issues', compact('issue'));
+		$issue = Issue::find($id);
+
+		//plexy 2.0 advanced issue capture
+		// $ch = curl_init();
+		//
+		// curl_setopt($ch, CURLOPT_URL, "http://api.themoviedb.org/3/tv/$issue->tmdb/season/1/episode/1?api_key=a31dbc04c5cc13fd61e1427d4ff1cd58");
+		// curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+		// curl_setopt($ch, CURLOPT_HEADER, FALSE);
+		//
+		// curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+		//   "Accept: application/json"
+		// ));
+		//
+		// $response = curl_exec($ch);
+		// curl_close($ch);
+		//
+		// var_dump($response);
+
+		// Auth::loginUsingId(2);
+		if(Issue::where('id', '=', $id)->exists()){
+
+			$issue = Issue::find($id);
+
+			// security to make sure logged in user is admin OR ticket owner
+			if(Auth::id() == 1 || Auth::id() == $issue->user_id)
+			{
+				$messages = Message::where('issue_id', '=', $id)->paginate(10);
+
+				return View::make('site/pages/issues', compact('issue', 'messages'));
+			}
+		}
+
+		return Redirect::to('/');
+
 	}
 
 	public function getIndex()
@@ -275,17 +283,22 @@ class IssueController extends BaseController {
 		$search_url = Request::getQueryString();
 		parse_str($search_url, $search);
 
-		$users 		= User::all();
-		$user 		= Auth::user();
-		$id 		= Auth::id();
+		$users 	= User::all();
+		$user 	= Auth::user();
+		$id 	= Auth::id();
+		$bodyClass = "dashboard";
 
 		if($user->hasRole('admin'))
 		{
-			$issues  	= Issue::paginate(12);
+			$requests = Issue::where('type', '=', 'request')->where('status', '!=', 'closed')->get();
+			$issues = Issue::where('type', '=', 'issue')->where('status', '!=', 'closed')->get();
+			$closed	= Issue::where('status', '=', 'closed')->get();
 		}
 		else
 		{
-			$issues 	= Issue::where('user_id', '=', $id)->where('status', '=', 'open')->paginate(10);
+			$requests = Issue::where('user_id', '=', $id)->where('type', '=', 'request')->where('status', '!=', 'closed')->get();
+			$issues	= Issue::where('user_id', '=', $id)->where('type', '=', 'issue')->where('status', '!=', 'closed')->get();
+			$closed	= Issue::where('user_id', '=', $id)->where('status', '=', 'closed')->get();
 		};
 		// if($user->hasRole('admin') && Input::get('status'))
 		// {
@@ -300,7 +313,33 @@ class IssueController extends BaseController {
 		// 	$issues 	= Issue::where('status', Request::only('status'))->where('topic', Request::only('topic'))->paginate(10);
 		// }
 
-		return View::make('site.pages.home', compact('search', 'users', 'user', 'id', 'issues'));
+		return View::make('site.pages.home', compact('search', 'users', 'user', 'id', 'requests', 'issues', 'closed', 'bodyClass'));
 	}
 
+	public function updateIssueStatus($id)
+	{
+		// dd(Input::all());
+		$issue = Issue::find($id);
+		$issue->status = Input::get('status');
+		$issue->save();
+
+		return Redirect::to('issue/'.$id);
+		// return Redirect::to('/');
+	}
+
+	public function destroyIssue($id)
+  	{
+		// delete
+		$issue = Issue::find($id);
+		$issue->delete();
+
+		// redirect
+		Session::flash('message', 'Successfully deleted the issue!');
+		return Redirect::to('/');
+	}
+
+	public function style()
+	{
+		return View::make('site.pages.style');
+	}
 }

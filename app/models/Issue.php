@@ -2,8 +2,11 @@
 
 use Illuminate\Support\Facades\URL;
 use Carbon\Carbon;
+use SoftDeletingTrait;
 
 class Issue extends Eloquent {
+
+	protected $dates = ['deleted_at'];
 
 	// protected $table = 'issues';
 

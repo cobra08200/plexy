@@ -117,15 +117,16 @@
 					<tr>
 						<td class="container-padding footer-text" align="left" style="font-family:Helvetica, Arial, sans-serif;font-size:12px;line-height:16px;color:#aaaaaa;padding-left:24px;padding-right:24px">
 							<br><br>
-
+							{{--
 							You are receiving this email because someone clicked a button on my website. <!-- Update your <a href="#" style="color:#aaaaaa">email preferences</a> or <a href="#" style="color:#aaaaaa">unsubscribe</a>. -->
 							<br><br>
 
-<!-- 							<strong>ehumps.me</strong><br>
+							<strong>ehumps.me</strong><br>
 							<span class="ios-footer">
 								123 Main St.<br>
 								Springfield, MA 12345<br>
-							</span> -->
+							</span>
+							--}}
 							<a href="http://help.ehumps.me" style="color:#aaaaaa">help.ehumps.me</a><br>
 
 							<br><br>

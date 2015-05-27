@@ -14,6 +14,7 @@ class IssuesTableSeeder extends Seeder {
             array(
                 'user_id'    => $user_id,
                 // 'topic'      => 'movies',
+                'poster_url' => 'http://placehold.it/200x300',
                 'content'    => $this->content,
                 'created_at' => new DateTime,
                 'updated_at' => new DateTime,
@@ -21,6 +22,7 @@ class IssuesTableSeeder extends Seeder {
             array(
                 'user_id'    => $user_id,
                 // 'topic'      => 'music',
+                'poster_url' => 'http://placehold.it/200x300',
                 'content'    => $this->content,
                 'created_at' => new DateTime,
                 'updated_at' => new DateTime,
@@ -28,6 +30,7 @@ class IssuesTableSeeder extends Seeder {
             array(
                 'user_id'    => $user_id,
                 // 'topic'      => 'tv',
+                'poster_url' => 'http://placehold.it/200x300',
                 'content'    => $this->content,
                 'created_at' => new DateTime,
                 'updated_at' => new DateTime,

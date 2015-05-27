@@ -1,3 +1,12 @@
+# Ignore all dot files
+.*
+
+
+#except for
+!.gitignore
+!.gitkeep
+!.editorconfig
+
 # Laravel
 /bootstrap/compiled.php
 /vendor
@@ -19,3 +28,8 @@ vagrant
 
 # Packages
 _ide_helper.php
+
+# SASS
+*.css.map
+/public/assets/stylesheets/css/master.css
+/public/assets/stylesheets/css/master.css.map
