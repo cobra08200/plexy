@@ -1,6 +1,15 @@
 <?php
 
 /** ------------------------------------------
+ *  Force HTTPS while in production
+ *  ------------------------------------------
+ */
+if ($env = 'production')
+{
+	URL::forceSchema('https');
+}
+
+/** ------------------------------------------
  *  Route Style Guide
  *  ------------------------------------------
  */
@@ -42,7 +51,7 @@ Route::post('user/reset/{token}', 'UserController@postReset');
 Route::post('user/{user}/edit', 'UserController@postEdit');
 
 //:: User Account Routes ::
-Route::post('user/login', 'UserController@postLogin');
+Route::post('user/login', ['uses' => 'UserController@postLogin', 'https' => true]);
 
 # User RESTful Routes (Login, Logout, Register, etc)
 Route::controller('user', 'UserController');

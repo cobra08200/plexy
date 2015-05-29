@@ -162,8 +162,12 @@ var movies = new Bloodhound({
 	queryTokenizer: Bloodhound.tokenizers.whitespace,
 	limit: 5,
 	remote: {
-		url: 'http://api.themoviedb.org/3/search/movie?api_key=a31dbc04c5cc13fd61e1427d4ff1cd58&query=%QUERY&include_adult=false&search_type=ngram',
-		filter: function (movies) {
+        @if($env = 'production')
+		url: 'https://api.themoviedb.org/3/search/movie?api_key=a31dbc04c5cc13fd61e1427d4ff1cd58&query=%QUERY&include_adult=false&search_type=ngram',
+		@else
+        url: 'http://api.themoviedb.org/3/search/movie?api_key=a31dbc04c5cc13fd61e1427d4ff1cd58&query=%QUERY&include_adult=false&search_type=ngram',
+		@endif
+        filter: function (movies) {
 			// Map the remote source JSON array to a JavaScript array
 			return $.map(movies.results, function (movie) {
                 if (movie.release_date) {
@@ -191,8 +195,12 @@ var tvshows = new Bloodhound({
 	queryTokenizer: Bloodhound.tokenizers.whitespace,
 	limit: 5,
 	remote: {
-		url: 'http://api.themoviedb.org/3/search/tv?api_key=a31dbc04c5cc13fd61e1427d4ff1cd58&query=%QUERY&include_adult=false&search_type=ngram',
-		filter: function (tvshows) {
+        @if($env = 'production')
+		url: 'https://api.themoviedb.org/3/search/tv?api_key=a31dbc04c5cc13fd61e1427d4ff1cd58&query=%QUERY&include_adult=false&search_type=ngram',
+		@else
+        url: 'http://api.themoviedb.org/3/search/tv?api_key=a31dbc04c5cc13fd61e1427d4ff1cd58&query=%QUERY&include_adult=false&search_type=ngram',
+		@endif
+        filter: function (tvshows) {
 			// Map the remote source JSON array to a JavaScript array
 			return $.map(tvshows.results, function (tvshow) {
                 if (tvshow.first_air_date) {
@@ -200,9 +208,14 @@ var tvshows = new Bloodhound({
     					tmdb: tvshow.id,
     					value: tvshow.name,
     					year: (tvshow.first_air_date !== null ? tvshow.first_air_date.substr(0, 4) : ''),
-    					poster_path: (tvshow.poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + tvshow.poster_path : '{{asset('assets/img/no-poster.jpg')}}'),
+                        @if($env = 'production')
+    					poster_path: (tvshow.poster_path !== null ? 'https://image.tmdb.org/t/p/w500' + tvshow.poster_path : '{{asset('assets/img/no-poster.jpg')}}'),
+    					backdrop_path: (tvshow.backdrop_path !== null ? 'https://image.tmdb.org/t/p/w500' + tvshow.backdrop_path : '{{asset('assets/img/no-backdrop.jpg')}}'),
+                        @else
+                        poster_path: (tvshow.poster_path !== null ? 'http://image.tmdb.org/t/p/w500' + tvshow.poster_path : '{{asset('assets/img/no-poster.jpg')}}'),
     					backdrop_path: (tvshow.backdrop_path !== null ? 'http://image.tmdb.org/t/p/w500' + tvshow.backdrop_path : '{{asset('assets/img/no-backdrop.jpg')}}'),
-    					vote_average: tvshow.vote_average,
+                        @endif
+                        vote_average: tvshow.vote_average,
     					media_type: 'tv'
     				};
                 }

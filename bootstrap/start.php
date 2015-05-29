@@ -24,14 +24,20 @@ $app = new Illuminate\Foundation\Application;
 |
 */
 
+// $env = $app->detectEnvironment(function() {
+//     if (getenv('LARAVEL_ENV')) {
+//         return getenv('LARAVEL_ENV');
+//     } else {
+//         return 'local'; // Default
+//     }
+// });
+
 $env = $app->detectEnvironment(array(
-
-    // 'local' => array('VirtualMint','homestead','*.local'), // Change this to your local machine hostname.
-    'local' => array('*.dev', gethostname()), // Change this to your local machine hostname.
-    'staging' => array('your-staging-machine-name'),
-    'production' => array('*.com', '*.net', '*.me', 'help.ehumps.me')
-
+    'local' => array('localhost'),
+    'production' => array('plexy.ehumps.me'),
 ));
+
+// dd($env);
 
 /*
 |--------------------------------------------------------------------------

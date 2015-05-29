@@ -12,8 +12,8 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
 
 {{-- Custom CSS --}}
-{{-- <link rel="stylesheet" href="{{asset('assets/stylesheets/css/master.css')}}"> --}}
-<link rel="stylesheet" href="{{asset('assets/stylesheets/css/custom.css')}}">
+{{-- <link rel="stylesheet" href="{{secure_asset('assets/stylesheets/css/master.css')}}"> --}}
+<link rel="stylesheet" href="{{secure_asset('assets/stylesheets/css/custom.css')}}">
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
