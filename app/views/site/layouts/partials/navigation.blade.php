@@ -18,7 +18,7 @@
 							<span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="{{{ URL::to('user/settings') }}}">Settings</a></li>
+							<li><a target="_blank" href="https://cash.me/$ehumps">Donate</a></li>
 							<li><a href="{{{ URL::to('user/logout') }}}">Logout</a></li>
 						</ul>
 					</li>
