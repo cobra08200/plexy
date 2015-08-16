@@ -1,0 +1,83 @@
+/*=============================*\
+  #FORM
+\*=============================*/
+
+.form-container {
+    // @extend %debug;
+}
+
+    .form__header {
+        text-align: center;
+    }
+
+.form {
+    margin: 0 auto;
+    max-width: 500px;
+}
+
+    .form__group {
+        + .form__group {
+            margin-top: 10px;
+        }
+    }
+
+        .form__group-cell {
+            position: relative;
+        }
+
+            .form__label {
+                display: block;
+                margin: 0;
+                font-size: 14px;
+                text-transform: uppercase;
+            }
+
+            .form__control {
+                margin: 5px 0;
+                padding: 15px 8px;
+                height: auto;
+                font-weigth: 100;
+                letter-spacing: 1px;
+                background-color: rgba(#fff, 0.2) !important;
+                border: none;
+                width: 100%;
+            }
+
+                .form__control-toggle-button {
+                    display: block;
+                    position: absolute;
+                    right: 6px;
+                    bottom: 11px;
+                    width: 44px;
+                    height: 42px;
+                    border: 0;
+                    border-radius: 44px;
+                    line-height: 1;
+                    white-space: nowrap;
+                    text-indent: 110%;
+                    overflow: hidden;
+                    // background: rgba($light-gray, 0.8);
+                    background: none;
+                    color: $purple;
+
+                    &:focus,
+                    &:hover {
+                        color: $teal;
+                    }
+
+                    &.is-toggled {
+                        color: $teal;
+                    }
+                }
+
+            .form__group-toggle {
+                font-size: 10px;
+                color: $light-gray;
+                letter-spacing: 1px;
+                font-weight: 100;
+                text-transform: uppercase;
+            }
+
+    .form__action {
+        padding: 20px 0;
+    }

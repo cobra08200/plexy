@@ -1,0 +1,12 @@
+/*------------------------------------*\
+    #ADJUST-INTERNAL-ICON
+\*------------------------------------*/
+
+@mixin adjust-internal-icon($size) {
+    .icon {
+        width: $size;
+        height: $size;
+        font-size: $size;
+        @content;
+    }
+}

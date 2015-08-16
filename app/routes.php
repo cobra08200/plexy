@@ -4,10 +4,10 @@
  *  Force HTTPS while in production
  *  ------------------------------------------
  */
-if ($env = 'production')
-{
-	URL::forceSchema('https');
-}
+// if ($env = 'production')
+// {
+// 	URL::forceSchema('https');
+// }
 
 /** ------------------------------------------
  *  Route Style Guide

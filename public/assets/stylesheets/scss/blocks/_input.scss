@@ -1,0 +1,19 @@
+/*=============================*\
+  #INPUT
+\*=============================*/
+
+/**
+ * * !important override any BOOTSRAP rules
+ */
+
+%text-type-input
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="textarea"],
+input[type="search"],
+input[type="tel"],
+input[type="url"] {
+    border-radius: 0 !important;
+}

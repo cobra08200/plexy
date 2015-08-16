@@ -1,0 +1,17 @@
+/*------------------------------------*\
+    #HIDDEN-IF-JS-ENABLED
+\*------------------------------------*/
+
+@mixin hidden-if-js-enabled {
+    .modernizr-js & {
+        display: none;
+    }
+}
+
+%hidden-if-js-enabled {
+    @include hidden-if-js-enabled;
+}
+
+.hidden-if-js-enabled {
+    @extend %hidden-if-js-enabled;
+}

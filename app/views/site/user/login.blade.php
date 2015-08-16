@@ -9,8 +9,9 @@
 {{-- Content --}}
 @section('content')
 
-<div class="login__card">
-	<h1 class="login__logo">Plexy Logo</h1>
+<div class="login">
+	<h1 class="login__logo">Plexy</h1>
+
 	{{ Confide::makeLoginForm()->render() }}
 </div>
 

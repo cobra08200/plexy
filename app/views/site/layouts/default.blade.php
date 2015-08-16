@@ -7,7 +7,7 @@
 @if(Auth::check())
 <body class="no-js {{ $bodyClass or null}}">
 @else
-<body class="login no-js">
+<body class="page page--login no-js">
 @endif
 	<!-- Container -->
 	<div class="container">
@@ -25,7 +25,7 @@
 		<div id="push"></div>
 
 	</div>
-	
+
 	{{-- plexy modal--}}
 	@include('site/layouts/partials/modal')
 

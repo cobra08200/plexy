@@ -1,0 +1,13 @@
+/*------------------------------------*\
+    #INLINE-ICON
+\*------------------------------------*/
+
+@mixin inline-icon($content: '\f06d', $position: 'before') {
+    &:#{$position} {
+        display: inline-block;
+        position: relative;
+        font-family: $icon-font;
+        vertical-align: middle;
+        content: $content;
+    }
+}
