@@ -211,6 +211,19 @@ class IssueController extends BaseController {
 
 			$issue->save();
 
+			// send pusher notification to admin
+			curl_setopt_array($ch = curl_init(), array(
+			  CURLOPT_URL => "https://api.pushover.net/1/messages.json",
+			  CURLOPT_POSTFIELDS => array(
+			    "token" => "aJUmkhNDN9NgokrBJAF9xjYjdgKtkj",
+			    "user" => "uxHVyUhz7qc4UFWLaZVk7FNQCNGu88",
+			    "message" => Auth::user()->username." added ". $issue->content,
+			  ),
+			  CURLOPT_SAFE_UPLOAD => true,
+			));
+			curl_exec($ch);
+			curl_close($ch);
+
 			// send email
 			$username 		= Auth::user()->username;
 			$email 			= Auth::user()->email;

@@ -10,6 +10,7 @@
 # Laravel
 /bootstrap/compiled.php
 /vendor
+*services.php
 
 # Configuration
 /app/config/local

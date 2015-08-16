@@ -113,6 +113,7 @@ return array(
         'Zizaco\Confide\ServiceProvider', // Confide Provider
         'Zizaco\Entrust\EntrustServiceProvider', // Entrust Provider for roles
         'Bllim\Datatables\DatatablesServiceProvider', // Datatables
+				'Dyaa\Pushover\PushoverServiceProvider', // Pushover
 
         /* Uncomment for use in development */
 //        'Way\Generators\GeneratorsServiceProvider', // Generators
