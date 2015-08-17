@@ -1,6 +1,6 @@
 <div class="form-container">
 
-	<h2 class="form__header visually-hidden">Login</h2>
+	<h2 class="form__header">Login</h2>
 
 	<form class="form" method="POST" action="{{ URL::to('user/login') }}" accept-charset="UTF-8">
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -18,7 +18,7 @@
 				<div class="form__group-cell">
 					<label class="form__label" for="password">Password</label>
 					<input  class="form__control" type="password" tabindex="2" name="password" placeholder="{{ Lang::get('confide::confide.password') }}" id="password">
-					<button  class="form__control-toggle-button icon icon--show" type="button" data-toggle-password=""><span>show/hide password</span></button>
+					<button  class="form__control-toggle-button" type="button" data-toggle-password="passwords"><span class="visually-hidden">show/hide password</span></button>
 				</div>
 
 				<div class="form__group-toggle">
@@ -37,6 +37,8 @@
 		</fieldset>
 	</form>
 
-	{{ link_to('user/create', 'Sign up') }}
+	<p class="form__sign-up">New to Plexy?</p>
+
+	{{ link_to('user/create', 'Sign up', array('class' => 'button button--alt')) }}
 
 </div>

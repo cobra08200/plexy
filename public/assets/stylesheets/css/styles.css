@@ -5830,92 +5830,6 @@ body {
   src: url("../../fonts/icons.eot");
   src: url("../../fonts/icons.eot?#iefix") format("embedded-opentype"), url("../../fonts/icons.woff") format("woff"), url("../../fonts/icons.ttf"); }
 /*------------------------------------*\
-    #ELEMENTS
-\*------------------------------------*/
-/**
- * This file further modifies normalize to provide consistent styling
- * specifically for the WebLinc platform.
- *
- * 1. needed to prevent whitespace in IE9's layout, selector doesn't work in FF,
- *    Safari or Chrome (not necessary).
- * 2. for iOS
- * 3. if a select element is larger than it's parent we want to restrict it's
- *    width.
- * 4. ensure h1 - h6 match global .heading block styles
- */
-html {
-  height: 100%; }
-
-body {
-  position: relative;
-  min-height: 100%;
-  padding: 0;
-  color: #ffffff;
-  font: 14px/1.5 "Roboto", sans-serif; }
-
-a {
-  color: #337ab7;
-  text-decoration: none; }
-  a:hover {
-    text-decoration: underline; }
-
-p {
-  margin: 0 0 15px; }
-
-ul, ol {
-  margin: 0 0 15px 20px;
-  padding: 0; }
-
-li {
-  margin: 0; }
-
-img {
-  width: auto;
-  height: auto;
-  max-width: 100%; }
-
-form {
-  margin: 0; }
-  form div[style*="margin: 0px; padding: 0px; display: inline;"] {
-    /* [1] */
-    display: none; }
-
-fieldset {
-  margin: 0;
-  padding: 0;
-  border: 0; }
-
-button,
-input,
-optgroup,
-select,
-textarea {
-  border-radius: 0; }
-
-input[type="radio"] {
-  border-radius: 10px;
-  /* [2] */ }
-
-input,
-select,
-textarea {
-  font-size: 16px; }
-
-select {
-  max-width: 100%;
-  /* [3] */ }
-
-th,
-td {
-  padding: 5px; }
-
-h1, h2, h3, h4, h5, h6 {
-  /* [4] */ }
-
-/*=============================*\
-  BLOCKS
-\*=============================*/
-/*------------------------------------*\
     #ICON
 \*------------------------------------*/
 /**
@@ -5925,7 +5839,7 @@ h1, h2, h3, h4, h5, h6 {
  *    be made in the template at fonts/icons/fontcustom/templates/_icon.scss
  * A placeholder selector that is extended to the `.icon` class selector
  */
-.icon {
+.icon, .form__control-toggle-button:before {
   display: block;
   text-indent: 200%;
   white-space: nowrap;
@@ -5945,7 +5859,7 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1;
   text-align: center;
   text-transform: none; }
-  .icon:before {
+  .icon:before, .form__control-toggle-button:before {
     position: absolute;
     top: 0;
     left: 0;
@@ -5953,7 +5867,7 @@ h1, h2, h3, h4, h5, h6 {
     height: 100%;
     text-indent: 0;
     content: '\f00d'; }
-  .icon:hover {
+  .icon:hover, .form__control-toggle-button:hover:before {
     text-decoration: none; }
 
 /**
@@ -6114,6 +6028,92 @@ h1, h2, h3, h4, h5, h6 {
 
 /* [4] */
 /* [5] */
+/*------------------------------------*\
+    #ELEMENTS
+\*------------------------------------*/
+/**
+ * This file further modifies normalize to provide consistent styling
+ * specifically for the WebLinc platform.
+ *
+ * 1. needed to prevent whitespace in IE9's layout, selector doesn't work in FF,
+ *    Safari or Chrome (not necessary).
+ * 2. for iOS
+ * 3. if a select element is larger than it's parent we want to restrict it's
+ *    width.
+ * 4. ensure h1 - h6 match global .heading block styles
+ */
+html {
+  height: 100%; }
+
+body {
+  position: relative;
+  min-height: 100%;
+  padding: 0;
+  color: #ffffff;
+  font: 14px/1.5 "Roboto", sans-serif; }
+
+a {
+  color: #337ab7;
+  text-decoration: none; }
+  a:hover {
+    text-decoration: underline; }
+
+p {
+  margin: 0 0 15px; }
+
+ul, ol {
+  margin: 0 0 15px 20px;
+  padding: 0; }
+
+li {
+  margin: 0; }
+
+img {
+  width: auto;
+  height: auto;
+  max-width: 100%; }
+
+form {
+  margin: 0; }
+  form div[style*="margin: 0px; padding: 0px; display: inline;"] {
+    /* [1] */
+    display: none; }
+
+fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0; }
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  border-radius: 0; }
+
+input[type="radio"] {
+  border-radius: 10px;
+  /* [2] */ }
+
+input,
+select,
+textarea {
+  font-size: 16px; }
+
+select {
+  max-width: 100%;
+  /* [3] */ }
+
+th,
+td {
+  padding: 5px; }
+
+h1, h2, h3, h4, h5, h6 {
+  /* [4] */ }
+
+/*=============================*\
+  BLOCKS
+\*=============================*/
 /*=============================*\
   #BUTTON
 \*=============================*/
@@ -6131,7 +6131,7 @@ h1, h2, h3, h4, h5, h6 {
   background: #65c6bb;
   border: 2px solid #65C6BB;
   border-radius: 24px;
-  vertical-align: center;
+  vertical-align: middle;
   transition: all 0.25s ease-out; }
   .button:focus, .button:hover {
     color: #ffffff;
@@ -6140,8 +6140,13 @@ h1, h2, h3, h4, h5, h6 {
     .button {
       width: auto; } }
 
+.button--alt {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-color: #ffffff; }
+
 .button--text {
-  background: none; }
+  background: none;
+  border-color: transparent; }
 
 .button--small {
   font-size: 10px;
@@ -6156,6 +6161,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .login__logo {
   font-size: 64px;
+  margin-bottom: 32px;
   text-align: center;
   text-transform: uppercase;
   opacity: 0.3; }
@@ -6191,13 +6197,29 @@ h1, h2, h3, h4, h5, h6 {
 /*=============================*\
   #FORM
 \*=============================*/
-.form__header {
-  text-align: center; }
-
-.form {
+/**
+ * FORM CONTAINER
+ */
+.form-container {
   margin: 0 auto;
   max-width: 500px; }
 
+.form__header {
+  position: absolute;
+  left: -99999px;
+  top: 0;
+  text-align: center; }
+
+.form__sign-up {
+  font-size: 24px;
+  font-weight: 700;
+  font-style: italic;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7); }
+
+/**
+ * FORM
+ */
 .form__group + .form__group {
   margin-top: 10px; }
 
@@ -6221,8 +6243,8 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%; }
 
 .form__control-toggle-button {
-  display: block;
   position: absolute;
+  display: block;
   right: 6px;
   bottom: 11px;
   width: 44px;
@@ -6231,14 +6253,22 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 44px;
   line-height: 1;
   white-space: nowrap;
-  text-indent: 110%;
+  text-indent: 200%;
   overflow: hidden;
   background: none;
   color: #6620D6; }
+  .form__control-toggle-button:before {
+    display: inline-block;
+    position: relative;
+    font-family: icons;
+    vertical-align: middle;
+    content: ""; }
   .form__control-toggle-button:focus, .form__control-toggle-button:hover {
     color: #65C6BB; }
   .form__control-toggle-button.is-toggled {
     color: #65C6BB; }
+  .form__control-toggle-button:before {
+    position: absolute; }
 
 .form__group-toggle {
   font-size: 10px;
