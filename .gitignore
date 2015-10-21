@@ -1,16 +1,15 @@
 # Ignore all dot files
 .*
 
-
 #except for
 !.gitignore
 !.gitkeep
 !.editorconfig
+!.env_example
 
 # Laravel
 /bootstrap/compiled.php
 /vendor
-*services.php
 
 # Configuration
 /app/config/local
@@ -21,11 +20,15 @@
 composer.phar
 composer.lock
 
-# OS
+# OS / Vagrant / Homestead
 .DS_Store
 .idea/
 vagrant
 .vagrant
+/vendor
+/node_modules
+Homestead.yaml
+Homestead.json
 
 # Packages
 _ide_helper.php
