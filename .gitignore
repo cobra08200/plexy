@@ -5,7 +5,7 @@
 !.gitignore
 !.gitkeep
 !.editorconfig
-!.env_example
+!.env.example
 
 # Laravel
 /bootstrap/compiled.php
