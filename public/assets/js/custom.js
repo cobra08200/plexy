@@ -43,19 +43,3 @@
 // 	}
 // });
 // });
-
-$(document).ready( function () {
-            console.log('init\'d');
-    $('[data-toggle-password]').on('click', function(e) {
-        var $toggle = e.currentTarget;
-            $password = $toggle.closest($toggld.data('togglePassword'));
-
-            console.log($toggle);
-
-        // var $inp = $('input');
-
-        $inp.attr('type') === 'password' ?
-        $inp.attr('type', 'text')
-        : $inp.attr('type', 'password');
-    });
-});

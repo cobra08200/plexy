@@ -1,7 +1,0 @@
-/*------------------------------------*\
-    #PX-TO-PERCENT
-\*------------------------------------*/
-
-@function px-to-percent($target, $context) {
-    @return unquote($target / $context * 100 + '%');
-}

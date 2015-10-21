@@ -1,9 +1,0 @@
-/*------------------------------------*\
-    #RESPOND-TO
-\*------------------------------------*/
-
-@mixin respond-to($breakpoint) {
-    @media screen and (min-width: $breakpoint), print {
-        @content;
-    }
-}

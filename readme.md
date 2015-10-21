@@ -1,81 +1,27 @@
-#Plexy
+## Laravel PHP Framework
 
-Plexy is a issue and request (ticketing system) tracker for Plex.
+[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
+[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
+[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
+[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
+[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
 
-## Features
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
 
-* Bootstrap 3.x
-* Confide for Authentication and Authorization
-* Back-end
-	* User and Role management
-	* CRUD tickets
-* Front-end
-	* User login, registration, forgot password
-* Packages included:
-	* [Confide](https://github.com/zizaco/confide)
-	* [Entrust](https://github.com/zizaco/entrust)
-	* [Ardent](https://github.com/laravelbook/ardent)
-	* [Generators](https://github.com/JeffreyWay/Laravel-4-Generators/blob/master/readme.md)
+Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
 
------
+## Official Documentation
 
-##Requirements
+Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
 
-	Vagrant
+## Contributing
 
-##How to install
-### Step 1: Start Vagrant
-```bash
-$ vagrant up
-```
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
 
-### Step 2: Go to localhost:8080
+## Security Vulnerabilities
 
-### Step 3: Start Page (Three options for proceeding)
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
 
-### User login with commenting permission
+### License
 
-    username : user
-    password : user
-
-## Create a new user
-Create a new user at /user/create
-
-### Admin login
-
-    username: admin
-    password: admin
-
------
-### Production Launch
-
-By default debugging is enabled. Before you go to production you should disable debugging in `app/config/app.php`
-
-```
-    /*
-    |--------------------------------------------------------------------------
-    | Application Debug Mode
-    |--------------------------------------------------------------------------
-    |
-    | When your application is in debug mode, detailed error messages with
-    | stack traces will be shown on every error that occurs within your
-    | application. If disabled, a simple generic error page is shown.
-    |
-    */
-
-    'debug' => false,
-```
-
-## Troubleshooting
-
-## Composer giving you trouble
-
-Try using this with doing the install instead.
-
-```bash
-$ sudo composer install
-```
-
-## License
-
-This is free software distributed under the terms of the MIT license
+The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)

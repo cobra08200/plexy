@@ -2,8 +2,9 @@
   APP STYLE GUIDE
 \*=============================*/
 
-$purple:                #6620D6 !default;
-$light-purple:          #7D3DD3 !default;
+// $purple:                #5E1ED1;
+$purple:                #8E44AD;
+$purple:                #9A12B3;
 // $blue:;
 
 $orange:                #F9690E;
@@ -13,8 +14,7 @@ $gray:                  #000000;
 $lighter-gray:          #ecf0f1;
 $light-gray:            #67809F;
 $dark-gray:             #22313F;
-$white:                 #ffffff;
-$transparent:           transparent;
+
 
 
 
@@ -30,29 +30,8 @@ $body-background-color:      $lighter-gray;
 
 
 /*=============================*\
-  APP STYLES
-\*=============================*/
-$medium-breakpoint:    768px !default;
-$wide-breakpoint:      1024px !default;
-
-
-
-
-
-/*=============================*\
   FONT
 \*=============================*/
 
-$font:                   'Roboto', sans-serif;
-$primary-font:           'Roboto', sans-serif;
-$secondary-font:         'Josefin Sans', sans-serif;
-$icon-font:               icons !default;
-
-
-/**
- * Text sizes
- */
-
-$font-size:                     14px !default;
-$form-control-font-size:        16px !default;
-$line-height:                   1.5 !default;
+$primary-font:           'Josefin Sans', sans-serif;
+$secondary-font:           'Josefin Sans', sans-serif;
