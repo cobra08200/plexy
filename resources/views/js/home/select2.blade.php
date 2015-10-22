@@ -8,7 +8,7 @@ $.ajaxSetup({
 
 $(".js-data-example-ajax").select2({
   ajax: {
-    url: "{{ URL::to('search/movie')",
+    url: "{{ route('search.movie.select2') }}",
     dataType: 'json',
     delay: 250,
     data: function (params) {

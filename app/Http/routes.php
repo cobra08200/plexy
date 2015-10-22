@@ -19,7 +19,10 @@ Route::group(['middleware' => ['auth']], function()
     Route::any('search/submit', ['as' => 'search.submit', 'uses' => 'IssueController@searchSubmit']);
 
     // Search Movies
+    // Typeahead
     Route::get('search/movie/{query}', ['as' => 'search.movie', 'uses' => 'SearchController@movie']);
+    // Select2
+    Route::get('search/movie', ['as' => 'search.movie.select2', 'uses' => 'SearchController@movie']);
 
     // Seach TV Shows
     Route::any('search/tv/{query}', ['as' => 'search.tv', 'uses' => 'SearchController@tv']);

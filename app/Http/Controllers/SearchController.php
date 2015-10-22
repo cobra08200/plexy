@@ -3,17 +3,19 @@
 namespace App\Http\Controllers;
 
 // use App\User;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class SearchController extends Controller
 {
-    public function movie($query)
+    public function movie(Request $request)
     {
+
         $parameters = array(
             'api_key'           => \Config::get('services.tmdb.token'),
             'include_adult'     => 'false',
             'search_type'       => 'ngram',
-            'query'             => $query
+            'query'             => $request->input('query')
         );
 
         $ch = curl_init();
