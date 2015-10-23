@@ -8,6 +8,15 @@ use App\Http\Controllers\Controller;
 
 class SearchController extends Controller
 {
+    public function search(Request $request)
+    {
+        $array['movies']    = $this->movie($request);
+        $array['tv']        = $this->tv($request);
+        $array['music']     = $this->musicAlbum($request);
+
+        return json_encode($array);
+    }
+
     public function movie(Request $request)
     {
 
@@ -31,16 +40,24 @@ class SearchController extends Controller
         $response = curl_exec($ch);
         curl_close($ch);
 
-        return $response;
+        $array = json_decode($response, true);
+
+        $movie_array = array();
+
+        foreach($array['results'] as $item) {
+            $movie_array[] = array_add($item, 'type', 'movies');
+        }
+
+        return $movie_array;
     }
 
-    public function tv($query)
+    public function tv(Request $request)
     {
         $parameters = array(
             'api_key'           => \Config::get('services.tmdb.token'),
             'include_adult'     => 'false',
             'search_type'       => 'ngram',
-            'query'             => $query
+            'query'             => $request->input('query')
         );
 
         $ch = curl_init();
@@ -56,7 +73,15 @@ class SearchController extends Controller
         $response = curl_exec($ch);
         curl_close($ch);
 
-        return $response;
+        $array = json_decode($response, true);
+
+        $tv_array = array();
+
+        foreach($array['results'] as $item) {
+            $tv_array[] = array_add($item, 'type', 'tv');
+        }
+
+        return $tv_array;
     }
 
     public function tvSeries($id)
@@ -119,14 +144,14 @@ class SearchController extends Controller
         return $response;
     }
 
-    public function musicArtist($query)
+    public function musicArtist(Request $request)
     {
 
         $parameters = array(
             'client_id' => \Config::get('services.tmdb.token'),
             'type'      => 'artist',
             'limit'     => '8',
-            'q'         => $query
+            'q'         => $request->input('query')
         );
 
         $ch = curl_init();
@@ -145,7 +170,7 @@ class SearchController extends Controller
         return $response;
     }
 
-    public function musicAlbum($query)
+    public function musicAlbum(Request $request)
     {
 
         $parameters = array(
@@ -153,7 +178,7 @@ class SearchController extends Controller
             'type'      => 'album',
             'limit'     => '8',
             'market'    => 'US',
-            'q'         => $query
+            'q'         => $request->input('query')
         );
 
         $ch = curl_init();
@@ -169,7 +194,15 @@ class SearchController extends Controller
         $response = curl_exec($ch);
         curl_close($ch);
 
-        return $response;
+        $array = json_decode($response, true);
+
+        $music_album_array = array();
+
+        foreach($array['albums']['items'] as $item) {
+            $music_album_array[] = array_add($item, 'type', 'music');
+        }
+
+        return $music_album_array;
     }
 
     public function musicAlbumTracks($query)

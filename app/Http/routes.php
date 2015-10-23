@@ -18,6 +18,9 @@ Route::group(['middleware' => ['auth']], function()
     // Add issue
     Route::any('search/submit', ['as' => 'search.submit', 'uses' => 'IssueController@searchSubmit']);
 
+    // Search Movies, TV Shows, and Music
+    Route::get('search', ['as' => 'search.select2', 'uses' => 'SearchController@search']);
+
     // Search Movies
     // Typeahead
     Route::get('search/movie/{query}', ['as' => 'search.movie', 'uses' => 'SearchController@movie']);

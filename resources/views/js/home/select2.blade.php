@@ -8,63 +8,76 @@ $('select').select2();
 
 $(".media_query").select2({
     ajax: {
-        url: "{{ route('search.movie.select2') }}",
+        url: "{{ route('search.select2') }}",
         dataType: 'json',
         delay: 250,
         data: function (params) {
             return {
-                query: params.term, // search term
-                page: params.page
+                query: params.term
             };
         },
-        processResults: function (data, page) {
-            // parse the results into the format expected by Select2.
-            // since we are using custom formatting functions we do not need to
-            // alter the remote JSON data
+        processResults: function (data) {
+            // return {
+            //     results: data
+            // };
             return {
-                results: data.results
+                results: $.map(data, function (data) {
+                    return {
+                        results: data,
+                    }
+                })
             };
         },
         cache: true
     },
-    escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+    escapeMarkup: function (markup) {
+        return markup;
+    },
     minimumInputLength: 1,
     templateResult: formatSearch,
     templateSelection: formatSearchSelection
 });
 
-function formatSearch (item) {
-    if (item.loading) return item.text;
+function formatSearch (data) {
+    if (data.loading) return data.text;
 
-    if (item.release_date) {
-        if (item.poster_path) {
-            var markup = '<div class="clearfix">' +
-            '<div style="max-width: 250px">' +
-            '<img src="https://image.tmdb.org/t/p/w780' + item.poster_path + '" style="max-width: 50px" />' +
-            '</div>' +
-            '<div style="max-width: 250px">' +
-            '<div class="clearfix">' +
-            '<div style="max-width: 250px"">' + item.title + ' - ' + (item.release_date.substr(0, 4)) + '</div>' +
-            '<div style="max-width: 250px"">' + item.vote_average + '</div>' +
-            '</div>';
+    console.log(data);
 
-            if (item.description) {
-                markup += '<div>' + item.description + '</div>';
-            }
-            markup += '</div></div>';
+    // var markup = data;
 
-            return markup;
-        }
+    if (data.type == 'movies') {
+        console.log(data);
     }
+
+    // if (data.release_date) {
+    //     if (data.poster_path) {
+    //         var markup = '<div class="clearfix">' +
+    //         '<div style="max-width: 250px">' +
+    //         '<img src="https://image.tmdb.org/t/p/w780' + data.poster_path + '" style="max-width: 50px" />' +
+    //         '</div>' +
+    //         '<div style="max-width: 250px">' +
+    //         '<div class="clearfix">' +
+    //         '<div style="max-width: 250px"">' + data.title + ' - ' + (data.release_date.substr(0, 4)) + '</div>' +
+    //         '<div style="max-width: 250px"">' + data.vote_average + '</div>' +
+    //         '</div>';
+    //
+    //         if (data.description) {
+    //             markup += '<div>' + data.description + '</div>';
+    //         }
+    //         markup += '</div></div>';
+    //
+    //         return markup;
+    //     }
+    // }
 }
 
-function formatSearchSelection (item) {
-    document.getElementById("title").value = item.title;
-    document.getElementById("year").value = item.release_date;
-    document.getElementById("tmdb").value = item.id;
-    document.getElementById("poster").value = item.poster_path;
-    document.getElementById("backdrop").value = item.backdrop_path;
-    document.getElementById("topic").value = item.new_uncreated_json_key_value_for_source;
-    document.getElementById("vote_average").value = item.vote_average;
-    return item.title || item.text;
+function formatSearchSelection (data) {
+    document.getElementById("title").value = data.title;
+    document.getElementById("year").value = data.release_date;
+    document.getElementById("tmdb").value = data.id;
+    document.getElementById("poster").value = data.poster_path;
+    document.getElementById("backdrop").value = data.backdrop_path;
+    document.getElementById("topic").value = data.new_uncreated_json_key_value_for_source;
+    document.getElementById("vote_average").value = data.vote_average;
+    return data.title || data.text;
 }
