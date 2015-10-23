@@ -13,32 +13,32 @@
 @include('site/layouts/partials/select2_search')
 
 @if(count($movie_requests) > 0 )
-    @include('site/layouts/partials/issue_request_module', ['module' => $movie_requests, 'header' => 'MOVIE REQUESTS'])
+    {{-- @include('site/layouts/partials/issue_request_module', ['module' => $movie_requests, 'header' => 'MOVIE REQUESTS']) --}}
 @endif
 
 @if(count($tv_requests) > 0 )
-    @include('site/layouts/partials/issue_request_module', ['module' => $tv_requests, 'header' => 'TV REQUESTS'])
+    {{-- @include('site/layouts/partials/issue_request_module', ['module' => $tv_requests, 'header' => 'TV REQUESTS']) --}}
 @endif
 
 @if(count($music_requests) > 0 )
-    @include('site/layouts/partials/issue_request_module', ['module' => $music_requests, 'header' => 'MUSIC REQUESTS'])
+    {{-- @include('site/layouts/partials/issue_request_module', ['module' => $music_requests, 'header' => 'MUSIC REQUESTS']) --}}
 @endif
 
 @if(count($movie_issues) > 0 )
-    @include('site/layouts/partials/issue_request_module', ['module' => $movie_issues, 'header' => 'MOVIE ISSUES'])
+    {{-- @include('site/layouts/partials/issue_request_module', ['module' => $movie_issues, 'header' => 'MOVIE ISSUES']) --}}
 @endif
 
 @if(count($tv_issues) > 0 )
-    @include('site/layouts/partials/issue_request_module', ['module' => $tv_issues, 'header' => 'TV ISSUES'])
+    {{-- @include('site/layouts/partials/issue_request_module', ['module' => $tv_issues, 'header' => 'TV ISSUES']) --}}
 @endif
 
 @if(count($music_issues) > 0 )
-    @include('site/layouts/partials/issue_request_module', ['module' => $music_issues, 'header' => 'MUSIC ISSUES'])
+    {{-- @include('site/layouts/partials/issue_request_module', ['module' => $music_issues, 'header' => 'MUSIC ISSUES']) --}}
 @endif
 
 @if(count($closed) > 0)
-    @include('site/layouts/partials/issue_request_module', ['module' => $closed, 'header' => 'CLOSED'])
-	{{$closed->links()}}
+    {{-- @include('site/layouts/partials/issue_request_module', ['module' => $closed, 'header' => 'CLOSED']) --}}
+	{{-- {{$closed->links()}} --}}
 @endif
 
 

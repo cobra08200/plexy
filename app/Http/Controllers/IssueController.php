@@ -22,6 +22,8 @@ class IssueController extends Controller {
 	*/
 	public function searchSubmit(Request $request)
 	{
+		dd($request->all());
+
 		// This determines which submission round the request/issue is going through.
 		$round = $request->input('round');
 
