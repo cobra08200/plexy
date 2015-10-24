@@ -38,7 +38,7 @@
 
 @if(count($closed) > 0)
     @include('site/layouts/partials/issue_request_module', ['module' => $closed, 'header' => 'CLOSED'])
-	{{$closed->links()}}
+	{{$closed->render()}}
 @endif
 
 

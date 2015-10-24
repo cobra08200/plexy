@@ -14,13 +14,6 @@ $(".media_query").select2({
             return {
                 results: data.results
             };
-            // return {
-            //     results: $.map(data, function (item) {
-            //         return {
-            //             results: item,
-            //         }
-            //     })
-            // };
         },
         cache: true
     },
