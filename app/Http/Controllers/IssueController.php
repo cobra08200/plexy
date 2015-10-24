@@ -231,7 +231,7 @@ class IssueController extends Controller {
 
 		// if ($request->ajax())
 		// {
-			return View::make('site/pages/advanced_issues', compact('issue', 'series', 'last_season_number', 'first_season_episodes'));
+			return View::make('site/pages/advanced_issues', compact('issue', 'series', 'first_season_number', 'last_season_number', 'first_season_episodes'));
 		// }
 	}
 
@@ -284,7 +284,7 @@ class IssueController extends Controller {
 			}
 		// }
 
-		// return Redirect::to('/');
+		return Redirect::to('/');
 
 	}
 

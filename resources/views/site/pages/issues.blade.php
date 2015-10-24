@@ -25,13 +25,19 @@
 	</select>
 </form>
 @else
-	Status: {{ ucwords($issue->status) }}
+	<p>
+		Status: {{ ucwords($issue->status) }}
+	</p>
 @endif
 
-Added: {{ ucwords($issue->created_at->diffForHumans()) }}
+<p>
+	Added: {{ ucwords($issue->created_at->diffForHumans()) }}
+</p>
 
 @if($issue->type === 'issue' && !empty($issue->report_option))
-	Issue: {{ $issue->report_option}}
+	<p>
+		Issue: {{ $issue->report_option}}
+	</p>
 @endif
 
 <form class="" action="{{ route('delete.issue', ['id' => $issue->id]) }}" method="post">
@@ -49,22 +55,20 @@ Added: {{ ucwords($issue->created_at->diffForHumans()) }}
 @endif --}}
 
 {{-- Messages--}}
-@if(count($messages) > 0)
-
 <div>Messages</div>
 
-@if($issue->topic === 'movies' && !empty($issue->issue_description))
+@if(!empty($issue->issue_description))
 	<p>{{ $issue->created_at->diffForHumans() }} by {{ $issue->user->name }}</p>
 	<p>{{ $issue->issue_description }}</p>
 @endif
+
+@if(count($messages) > 0)
 
 @foreach($messages as $message)
 	<p>{{ $message->created_at->diffForHumans() }} by {{ $message->user->name }}</p>
 	<p>{{ $message->body }}</p>
 @endforeach
 
-@else
-<div>Add Message</div>
 @endif
 
 {{-- Add Message --}}

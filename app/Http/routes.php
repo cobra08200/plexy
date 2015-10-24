@@ -33,6 +33,9 @@ Route::group(['middleware' => ['auth']], function()
     // Specfic tv show season
     Route::any('search/tv/series/{id}', ['as' => 'search.tv.series', 'uses' => 'SearchController@tvSeries']);
 
+    // Epsisodes of a season of a series
+    Route::any('search/tv/series/{id}/season/{season}', ['as' => 'search.tv.series.season.episodes', 'uses' => 'SearchController@tvSeasonEpisodes']);
+
     // Search Music Albums
     Route::any('search/music/album/{query}', ['as' => 'search.music.album', 'uses' => 'SearchController@musicAlbum']);
 

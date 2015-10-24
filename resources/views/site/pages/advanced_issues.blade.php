@@ -38,8 +38,8 @@
 			Which Season?
 		</div>
 		<div class="col span_1_of_2">
-			<select class="season_option" name="season">
-				@for ($i = 0; $i <= $last_season_number; $i++)
+			<select class="season_option" id="season_option" name="season">
+				@for ($i = $first_season_number; $i <= $last_season_number; $i++)
 					@if($i == 0)
 					<option value="{{ $i }}" label="Specials">
 					@else
@@ -53,10 +53,10 @@
 			Which Episode?
 		</div>
 		<div class="col span_1_of_2">
-			<select class="episode_option" name="episode">
+			<select class="episode_option" id="episode_option" name="episode">
 				@foreach ($first_season_episodes as $episodes)
 					@foreach ($episodes as $episode)
-						<option value="{{ $episode['episode_number'] }}" label="Episode {{ $episode['episode_number'] }} - {{ $episode['name'] }}">
+						<option value="{{ $episode['episode_number'] }}" label="Episode {{ $episode['episode_number'] }}">
 					@endforeach
 				@endforeach
 			</select>
@@ -107,3 +107,35 @@
 </div>
 
 @stop
+
+@section('scripts')
+<script>
+$.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+});
+$('.season_option').on('change',function()
+{
+	var selectedSeason=$(this).find('option:selected').val();
+	$.ajax({
+		url:'{{ url('search/tv/series/') }}/{{ $issue->tmdb }}/season/'+selectedSeason,
+		type:'POST',
+		dataType:'json',
+		contentType: "application/json",
+		data: JSON.stringify(selectedSeason),
+		success: function (data) {
+			$('#episode_option').empty();
+		    $.each(data.episodes, function (value) {
+				console.log(value + 1);
+				var newValue = parseInt(value) + 1;
+				$('#episode_option').append('<option value="' + newValue + '">Episode ' + newValue + '</option>');
+		    });
+		},
+		error: function (data) {
+		    // display any unhandled error
+		}
+	});
+});
+</script>
+@endsection
