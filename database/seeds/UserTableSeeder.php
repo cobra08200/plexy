@@ -30,7 +30,7 @@ class UserTableSeeder extends Seeder
 
         $user = User::create(array(
             'name' => 'super_admin',
-            'email' => 'super_admin@super_admin.org',
+            'email' => 'super_admin@superadmin.org',
             'password' => bcrypt('super_admin'),
             ));
         $user->makeRole('super_admin');
