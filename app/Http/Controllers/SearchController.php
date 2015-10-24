@@ -10,11 +10,16 @@ class SearchController extends Controller
 {
     public function search(Request $request)
     {
-        $array['movies']    = $this->movie($request);
-        $array['tv']        = $this->tv($request);
-        $array['music']     = $this->musicAlbum($request);
+        $movies = $this->movie($request);
+        $tv     = $this->tv($request);
+        $music  = $this->musicAlbum($request);
 
-        return json_encode($array);
+        $part_one = array_merge($movies, $tv);
+        $part_two['results'] = array_merge($part_one, $music);
+
+        // $nested['results'] = $array;
+
+        return json_encode($part_two);
     }
 
     public function movie(Request $request)
