@@ -17,8 +17,6 @@ class SearchController extends Controller
         $part_one = array_merge($movies, $tv);
         $part_two['results'] = array_merge($part_one, $music);
 
-        // $nested['results'] = $array;
-
         return json_encode($part_two);
     }
 
@@ -110,43 +108,37 @@ class SearchController extends Controller
         curl_close($ch);
 
         // $series_json_decoded = json_decode($series_response, true);
-        $series_json_decoded = json_decode($series_response);
-
-        // bundle series info to response
-        $response['series_info'] = $series_json_decoded;
-
-        // loop seasons to grab episode info
-        foreach($series_json_decoded->seasons as $season )
-        {
-            // series episode info
-            $parameters = array(
-                'api_key' => \Config::get('services.tmdb.token')
-            );
-
-            $ch = curl_init();
-
-            // curl_setopt($ch, CURLOPT_URL, "https://api.themoviedb.org/3/tv/" . $id . "/season/". $season['season_number'] . "?" . http_build_query($parameters));
-            curl_setopt($ch, CURLOPT_URL, "https://api.themoviedb.org/3/tv/" . $id . "/season/". $season->season_number . "?" . http_build_query($parameters));
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-            curl_setopt($ch, CURLOPT_HEADER, FALSE);
-
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-              "Accept: application/json"
-            ));
-
-            $episodes_response = curl_exec($ch);
-            curl_close($ch);
-
-            // $episodes_json_decoded = json_decode($episodes_response, true);
-            $episodes_json_decoded = json_decode($episodes_response);
-
-            // bundle episode info to response
-            // $response['season_'.$season['season_number'].'_episode_info'] = $episodes_json_decoded;
-            $response['season_'.$season->season_number.'_episode_info'] = $episodes_json_decoded;
-
-        }
+        $response = json_decode($series_response);
 
         return $response;
+        // return json_encode($response);
+    }
+
+    public function tvSeasonEpisodes($id, $season)
+    {
+        // series episode info
+        $parameters = array(
+            'api_key' => \Config::get('services.tmdb.token')
+        );
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, "https://api.themoviedb.org/3/tv/" . $id . "/season/". $season . "?" . http_build_query($parameters));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_HEADER, FALSE);
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+          "Accept: application/json"
+        ));
+
+        $episodes_response = curl_exec($ch);
+        curl_close($ch);
+
+        $response = json_decode($episodes_response, true);
+
+        $episodes = array_only($response, 'episodes');
+
+        return $episodes;
     }
 
     public function musicArtist(Request $request)

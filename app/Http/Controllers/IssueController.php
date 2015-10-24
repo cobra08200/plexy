@@ -9,6 +9,7 @@ use App\Issue;
 use App\User;
 use App\Message;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
@@ -22,7 +23,7 @@ class IssueController extends Controller {
 	*/
 	public function searchSubmit(Request $request)
 	{
-		dd($request->all());
+		// dd($request->all());
 
 		// This determines which submission round the request/issue is going through.
 		$round = $request->input('round');
@@ -134,10 +135,8 @@ class IssueController extends Controller {
 				if($issue->topic == 'tv')
 				{
 					// add extra details to reported issue
-					$season_episode = explode('|', $request->input('season_episode'));
-
-					$issue->tv_season_number = $season_episode[0];
-					$issue->tv_episode_number = $season_episode[1];
+					$issue->tv_season_number = $request->input('season');
+					$issue->tv_episode_number = $request->input('episode');
 					// $issue->tv_episode_overview = $request->input('tv_episode_overview');
 					// $issue->tv_episode_still_path = $request->input('still_path');
 					// $issue->vote_average = $request->input('vote_average');
@@ -145,11 +144,11 @@ class IssueController extends Controller {
 			}
 		}
 
-		if($request->ajax())
-		{
+		// if($request->ajax())
+		// {
 			// plexy advanced issue capture
 			// issue detector -> need to gather more info from user
-			if($issue->type == 'issue')
+			if($issue->type == 'issue' && $round != 'advanced')
 			{
 				// if tv show
 				if($issue->topic == 'tv')
@@ -159,16 +158,14 @@ class IssueController extends Controller {
 				}
 
 				// if movie
-				// if tv show
 				if($issue->topic == 'movies')
 				{
 					//return to view with current issue info and get season + episode
 					return $this->issue_movie($issue);
 				}
 
-				// if movie
 			}
-		}
+		// }
 
 		$issue->save();
 
@@ -210,31 +207,32 @@ class IssueController extends Controller {
 			});
 		}
 		//return after form submit
-		return Redirect::back();
+		return Redirect::to('/');
 	}
 
 	public function issue_tv($issue)
 	{
 		$id = $issue->tmdb;
 
-		$series = App::make('SearchController')->tvSeries($id);
+		$series = app('App\Http\Controllers\SearchController')->tvSeries($id);
 
-		// dd($series);
+		$first_season 	= reset($series->seasons);
+		$last_season 	= end($series->seasons);
 
-		$episodes = $series;
-		unset($episodes['series_info']);
-		$episodes = array_pluck($episodes, 'episodes');
-		$episodes_flat = array_flatten($episodes);
-		$episodes_collection = new Illuminate\Support\Collection($episodes_flat);
+		$first_season_number 	= $first_season->season_number;
+		$last_season_number 	= $last_season->season_number;
 
-		// dd($episodes_collection);
+		// SearchController@tvSeasonEpisodes requires variable $season
+		// I want to pull down the first seasons episodes for the inital view load below
+		// Additional season will load via ajax on the view
+		$season = $first_season_number;
 
-		$seasons_total = $episodes_collection->last()->season_number;
+		$first_season_episodes = app('App\Http\Controllers\SearchController')->tvSeasonEpisodes($id, $season);
 
-		if ($request->ajax())
-		{
-			return View::make('site/pages/advanced_issues', compact('issue', 'series', 'episodes_collection', 'seasons_total', 'value'));
-		}
+		// if ($request->ajax())
+		// {
+			return View::make('site/pages/advanced_issues', compact('issue', 'series', 'last_season_number', 'first_season_episodes'));
+		// }
 	}
 
 	public function issue_movie($issue)
@@ -255,10 +253,10 @@ class IssueController extends Controller {
 
 		// $seasons_total = $episodes_collection->last()->season_number;
 
-		if ($request->ajax())
-		{
+		// if ($request->ajax())
+		// {
 			return View::make('site/pages/advanced_issues', compact('issue'));
-		}
+		// }
 	}
 
 	public function getIssueView($id)

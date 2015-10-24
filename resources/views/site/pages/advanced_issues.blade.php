@@ -3,10 +3,11 @@
 @section('content')
 
 <div class="cd-fold-content single-page">
-	<em>{{ $issue->content }}</em>
-	<img src="{{ $issue->poster_url }}" width="100%" alt="{{ $issue->content }}">
+	<p>{{ $issue->content }}</p>
+	<img src="{{ $issue->poster_url }}" width="200px" alt="{{ $issue->content }}">
 
-	{{ Form::open(array('route' => 'api.search')) }}
+	<form class="" action="{{ route('search.submit') }}" method="post">
+	{!! csrf_field() !!}
 
 	<div class="section group">
 		<div class="col span_1_of_2">
@@ -34,33 +35,30 @@
 		@if($issue->topic == 'tv')
 
 		<div class="col span_1_of_2">
-			Which episode?
+			Which Season?
 		</div>
 		<div class="col span_1_of_2">
-			<select class="season_episode_option" name="season_episode">
-				@for ($i = 0; $i <= $seasons_total; $i++)
+			<select class="season_option" name="season">
+				@for ($i = 0; $i <= $last_season_number; $i++)
 					@if($i == 0)
-					<optgroup label="Specials">
+					<option value="{{ $i }}" label="Specials">
 					@else
-					<optgroup label="Season {{ $i }}">
+					<option value="{{ $i }}" label="Season {{ $i }}">
 					@endif
-					@foreach($episodes_collection as $episode)
-						@if($episode->season_number == $i)
-							{{-- <option>Episode {{ $episode->episode_number }} - {{ $episode->name}}</option> --}}
-							@if($episode->season_number < 10 && $episode->episode_number < 10)
-							<option value="{{ $episode->season_number }}|{{ $episode->episode_number }}">S0{{ $episode->season_number }}E0{{ $episode->episode_number }} - {{ $episode->name}}</option>
-							@elseif($episode->season_number < 10 && $episode->episode_number >= 10)
-							<option value="{{ $episode->season_number }}|{{ $episode->episode_number }}">S0{{ $episode->season_number }}E{{ $episode->episode_number }} - {{ $episode->name}}</option>
-							@elseif($episode->season_number >= 10 && $episode->episode_number >= 10)
-							<option value="{{ $episode->season_number }}|{{ $episode->episode_number }}">S{{ $episode->season_number }}E{{ $episode->episode_number }} - {{ $episode->name}}</option>
-							@elseif($episode->season_number >= 10 && $episode->episode_number < 10)
-							<option value="{{ $episode->season_number }}|{{ $episode->episode_number }}">S{{ $episode->season_number }}E0{{ $episode->episode_number }} - {{ $episode->name}}</option>
-							@endif
-						@endif
-					@endforeach
-					</optgroup>
+					</option>
 				@endfor
-				{{-- <option>All Episodes</option> --}}
+			</select>
+		</div>
+		<div class="col span_1_of_2">
+			Which Episode?
+		</div>
+		<div class="col span_1_of_2">
+			<select class="episode_option" name="episode">
+				@foreach ($first_season_episodes as $episodes)
+					@foreach ($episodes as $episode)
+						<option value="{{ $episode['episode_number'] }}" label="Episode {{ $episode['episode_number'] }} - {{ $episode['name'] }}">
+					@endforeach
+				@endforeach
 			</select>
 		</div>
 		@endif
@@ -103,7 +101,8 @@
 	<div class="search__request__full">
 	    <button type="submit" name="type" value="issue" class="btn">Report</button>
 	</div>
-	{{ Form::close() }}
+
+</form>
 
 </div>
 
