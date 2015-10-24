@@ -83,36 +83,49 @@ function formatSearch (data) {
     }
     // Music
     if (data.type == 'album') {
-        if (data.first_air_date) {
-            if (data.poster_path) {
-                var markup = '<div class="clearfix">' + '<h2>Music</h2>' +
-                '<div style="max-width: 250px">' +
-                '<img src="' + data.images.url + '" style="max-width: 50px" />' +
-                '</div>' +
-                '<div style="max-width: 250px">' +
-                '<div class="clearfix">' +
-                '<div style="max-width: 250px"">' + data.name + ' - ' + (data.first_air_date.substr(0, 4)) + '</div>' +
-                '<div style="max-width: 250px"">' + data.vote_average + '</div>' +
-                '</div>';
+        var markup = '<div class="clearfix">' + '<h2>Music</h2>' +
+        '<div style="max-width: 250px">' +
+        '<img src="' + data.images[0].url + '" style="max-width: 50px" />' +
+        '</div>' +
+        '<div style="max-width: 250px">' +
+        '<div class="clearfix">' +
+        '<div style="max-width: 250px"">' + data.name + '</div>' +
+        '</div>';
 
-                // if (data.overview) {
-                //     markup += '<div>' + data.overview + '</div>';
-                // }
-                markup += '</div></div>';
+        // if (data.overview) {
+        //     markup += '<div>' + data.overview + '</div>';
+        // }
+        markup += '</div></div>';
 
-                return markup;
-            }
-        }
+        return markup;
     }
 }
 
 function formatSearchSelection (data) {
-    document.getElementById("title").value = data.title;
-    document.getElementById("year").value = data.release_date;
-    document.getElementById("tmdb").value = data.id;
-    document.getElementById("poster").value = data.poster_path;
-    document.getElementById("backdrop").value = data.backdrop_path;
-    document.getElementById("topic").value = data.type;
-    document.getElementById("vote_average").value = data.vote_average;
-    return data.title || data.text;
+    if (data.type == 'movies') {
+        document.getElementById("title").value = data.title ;
+        document.getElementById("year").value = data.release_date.substr(0, 4);
+        document.getElementById("tmdb").value = data.id;
+        document.getElementById("poster").value = data.poster_path;
+        document.getElementById("backdrop").value = data.backdrop_path;
+        document.getElementById("topic").value = data.type;
+        document.getElementById("vote_average").value = data.vote_average;
+    }
+    if (data.type == 'tv') {
+        document.getElementById("title").value = data.name;
+        document.getElementById("year").value = data.first_air_date.substr(0, 4);
+        document.getElementById("tmdb").value = data.id;
+        document.getElementById("poster").value = data.poster_path;
+        document.getElementById("backdrop").value = data.backdrop_path;
+        document.getElementById("topic").value = data.type;
+        document.getElementById("vote_average").value = data.vote_average;
+    }
+    if (data.type == 'album') {
+        document.getElementById("title").value = data.name;
+        document.getElementById("tmdb").value = data.id;
+        document.getElementById("poster").value = data.images[0].url;
+        document.getElementById("topic").value = data.type;
+    }
+
+    return data.title || data.name || data.text;
 }
