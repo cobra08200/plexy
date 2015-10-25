@@ -37,6 +37,54 @@ class PlexController extends Controller
         return $json;
     }
 
+    public function plexFriends()
+    {
+        $parameters = array(
+            'X-Plex-Token' => \Config::get('services.plex.token')
+        );
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, "https://plex.tv/pms/friends/all?" . http_build_query($parameters));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_HEADER, FALSE);
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+          "Accept: application/json"
+        ));
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        $xml = simplexml_load_string($response);
+
+        $json = json_encode($xml);
+
+        $array = json_decode($json, true);
+
+        $friends = array_only($array, 'User');
+
+        // $flat = array_only($friends, '@attributes');
+
+        return $friends;
+        return $flat;
+
+        $i = 2;
+        echo count($friends);
+        foreach($friends as $friend) {
+            echo "<pre>";
+            echo $friend[$i]['@attributes']['email'];
+            echo "</pre>";
+            $i++;
+        }
+
+        dd('idk');
+
+        return $friends;
+
+        return json_decode($json, true);
+    }
+
     public function plexServerInfo()
     {
         $parameters = array(
@@ -68,6 +116,29 @@ class PlexController extends Controller
         $ch = curl_init();
 
         curl_setopt($ch, CURLOPT_URL, \Config::get('services.plex.url') . "status/sessions?" . http_build_query($parameters));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_HEADER, FALSE);
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+          "Accept: application/json"
+        ));
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        return json_decode($response, true);
+    }
+
+    public function plexServerSearch($query)
+    {
+        $parameters = array(
+            'X-Plex-Token'  => \Config::get('services.plex.token'),
+            'query'         => $query,
+        );
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, \Config::get('services.plex.url') . "search?" . http_build_query($parameters));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
 

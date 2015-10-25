@@ -60,9 +60,13 @@ Route::group(['middleware' => ['auth']], function()
     // Plex Routes
     // Return Plex Authorization Header
     Route::get('plex/authorize', ['as' => 'plex.authorize', 'uses' => 'PlexController@plexAuthorize']);
+    // Return Plex Friends
+    Route::get('plex/friends', ['as' => 'plex.friends', 'uses' => 'PlexController@plexFriends']);
     // Plex Server Info
     Route::get('plex/server/info', ['as' => 'plex.server.info', 'uses' => 'PlexController@plexServerInfo']);
     // Plex Server Sessions
     Route::get('plex/server/sessions', ['as' => 'plex.server.sessions', 'uses' => 'PlexController@plexServerSessions']);
+    // Plex Server Search
+    Route::get('plex/server/search/{query}', ['as' => 'plex.server.search', 'uses' => 'PlexController@plexServerSearch']);
 
 });
