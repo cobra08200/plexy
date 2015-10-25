@@ -1,4 +1,8 @@
-var elixir = require('laravel-elixir');
+var elixir = require('laravel-elixir'),
+    CONFIG = {
+        'sass_watch_dir': 'resources/assets/stylesheets/**',
+        'js_watch_dir': 'resources/assets/js/**'
+    };
 
 /*
  |--------------------------------------------------------------------------
@@ -11,6 +15,28 @@ var elixir = require('laravel-elixir');
  |
  */
 
+
 elixir(function(mix) {
-    mix.sass('app.scss');
+    mix.sass([
+        '../stylesheets/app.scss'
+    ]);
+
+    mix.scripts([
+        'app.js'
+    ]);
+
+    mix.version([
+        '/css/app.css',
+        '/js/all.js'
+    ]);
 });
+
+
+/**
+ |--------------------------------------------------------------------------
+ | Elixir Custom Configuration
+ |--------------------------------------------------------------------------
+ */
+
+elixir.Task.find('sass').watch(CONFIG.sass_watch_dir);
+elixir.Task.find('scripts').watch(CONFIG.js_watch_dir);
