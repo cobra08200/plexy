@@ -202,7 +202,7 @@ class SearchController extends Controller
         return $music_album_array;
     }
 
-    public function musicAlbumTracks($query)
+    public function musicAlbumTracks($id)
     {
 
         // $parameters = array(
@@ -215,7 +215,7 @@ class SearchController extends Controller
 
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, "https://api.spotify.com/v1/albums/" . $query);
+        curl_setopt($ch, CURLOPT_URL, "https://api.spotify.com/v1/albums/" . $id);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -226,6 +226,10 @@ class SearchController extends Controller
         $response = curl_exec($ch);
         curl_close($ch);
 
-        return $response;
+        $tracks_response = json_decode($response, true);
+
+        $tracks = array_only($tracks_response, 'tracks');
+
+        return $tracks['tracks']['items'];
     }
 }

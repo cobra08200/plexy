@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="cd-fold-content single-page">
-	<p>{{ $issue->content }}</p>
+	<p>{{ $issue->content }}@if($issue->topic == 'music') - {{ $tracks[0]['artists'][0]['name'] }}@endif</p>
 	<img src="{{ $issue->poster_url }}" width="200px" alt="{{ $issue->content }}">
 
 	<form class="" action="{{ route('search.submit') }}" method="post">
@@ -21,7 +21,9 @@
 				@endif
 				<option>Incorrect Information</option>
 				<option>Bad Quality</option>
+				@if($issue->topic != 'music')
 				<option>Subtitles</option>
+				@endif
 				<option>Other</option>
 			</select>
 		</div>
@@ -62,35 +64,31 @@
 			</select>
 		</div>
 		@endif
-		{{-- <div class="col span_1_of_2">
-		</div> --}}
 
 		{{-- MUSIC --}}
 
-		{{-- @if($issue->topic == 'music')
+		@if($issue->topic == 'music')
 		<div class="section group">
 			<div class="col span_1_of_2">
 				Track Listing
 			</div>
 			<div class="col span_1_of_2">
-				Track Title
-			</div>
-			<div class="col span_1_of_2">
-				Track Title
-			</div>
-			<div class="col span_1_of_2">
-				Track Title
-			</div>
-			<div class="col span_1_of_2">
-				Track Title
+				<select class="tracklist_option" name="tracklist_option" name="track">
+					@foreach ($tracks as $track)
+						<option value="{{ $track['track_number'] }}" label="{{ $track['name'] }}">
+							{{-- {{ $track['track_number'] }}. {{ $track['name'] }}
+							<audio controls>
+								<source src="{{ $track['preview_url'] }}" type="audio/mpeg">
+								Your browser does not support the audio element.
+							</audio> --}}
+					@endforeach
+				</select>
 			</div>
 		</div>
-		@endif --}}
+		@endif
 
 	</div>
 
-
-	{{-- <input type="hidden" id="token" 		value="{{ csrf_token() }}"> --}}
 	<input type="hidden" name="title" 			value="{{ $issue->content }}">
 	<input type="hidden" name="tmdb" 			value="{{ $issue->tmdb }}">
 	<input type="hidden" name="poster" 			value="{{ $issue->poster_url }}">
@@ -109,6 +107,7 @@
 @stop
 
 @section('scripts')
+
 <script>
 $.ajaxSetup({
         headers: {
@@ -138,4 +137,5 @@ $('.season_option').on('change',function()
 	});
 });
 </script>
+
 @endsection

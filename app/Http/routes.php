@@ -15,7 +15,7 @@ Route::group(['middleware' => ['auth']], function()
     // Homepage
     Route::get('/', ['as' => 'home', 'uses' => 'IssueController@getIndex']);
 
-    // Add issue
+    // Add Issue
     Route::any('search/submit', ['as' => 'search.submit', 'uses' => 'IssueController@searchSubmit']);
 
     // Search Movies, TV Shows, and Music
@@ -27,30 +27,42 @@ Route::group(['middleware' => ['auth']], function()
     // Select2
     Route::get('search/movie', ['as' => 'search.movie.select2', 'uses' => 'SearchController@movie']);
 
-    // Seach TV Shows
+    // Search TV Shows
     Route::any('search/tv/{query}', ['as' => 'search.tv', 'uses' => 'SearchController@tv']);
 
-    // Specfic tv show season
+    // Return Specfic TV Show Series Info
     Route::any('search/tv/series/{id}', ['as' => 'search.tv.series', 'uses' => 'SearchController@tvSeries']);
 
-    // Epsisodes of a season of a series
+    // Return Epsisodes Of a single season of a TV Show
     Route::any('search/tv/series/{id}/season/{season}', ['as' => 'search.tv.series.season.episodes', 'uses' => 'SearchController@tvSeasonEpisodes']);
 
     // Search Music Albums
     Route::any('search/music/album/{query}', ['as' => 'search.music.album', 'uses' => 'SearchController@musicAlbum']);
 
-    // TV issue
+    // Get Album Tracklist
+    Route::any('search/music/album/tracklist/{query}', ['as' => 'search.music.album.tracks', 'uses' => 'SearchController@musicAlbumTracks']);
+
+    // TV Issue
     Route::any('api/tv/advanced', ['as' => 'tv.issue.advanced', 'uses' => 'IssueController@issue_tv']);
 
-    // Add message to issue
+    // Add Message to Issue
     Route::post('message/add/', ['as' => 'message.add', 'uses' => 'MessageController@messageAdd']);
 
+    // Return Issue/Request View
     Route::get('issue/{id}', ['as' => 'issue.id', 'uses' => 'IssueController@getIssueView']);
 
-    // update issue status
+    // Update Issue Status
     Route::post('issues/update/{id}', ['as' => 'update.issue', 'uses' => 'IssueController@updateIssueStatus']);
 
-    // delete issue/request
+    // Delete Issue/Request
     Route::delete('issues/delete/{id}', ['as' => 'delete.issue', 'uses' => 'IssueController@destroyIssue']);
+
+    // Plex Routes
+    // Return Plex Authorization Header
+    Route::get('plex/authorize', ['as' => 'plex.authorize', 'uses' => 'PlexController@plexAuthorize']);
+    // Plex Server Info
+    Route::get('plex/server/info', ['as' => 'plex.server.info', 'uses' => 'PlexController@plexServerInfo']);
+    // Plex Server Sessions
+    Route::get('plex/server/sessions', ['as' => 'plex.server.sessions', 'uses' => 'PlexController@plexServerSessions']);
 
 });

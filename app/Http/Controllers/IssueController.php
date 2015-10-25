@@ -164,6 +164,13 @@ class IssueController extends Controller {
 					return $this->issue_movie($issue);
 				}
 
+				// if music
+				if($issue->topic == 'music')
+				{
+					//return to view with current issue info and get season + episode
+					return $this->issue_music($issue);
+				}
+
 			}
 		// }
 
@@ -257,6 +264,15 @@ class IssueController extends Controller {
 		// {
 			return View::make('site/pages/advanced_issues', compact('issue'));
 		// }
+	}
+
+	public function issue_music($issue)
+	{
+		$id = $issue->tmdb;
+
+		$tracks = app('App\Http\Controllers\SearchController')->musicAlbumTracks($id);
+
+		return View::make('site/pages/advanced_issues', compact('issue', 'tracks'));
 	}
 
 	public function getIssueView($id)

@@ -6,14 +6,14 @@
 <title>Plexy</title>
 
 @if(App::environment() == 'production')
-<link rel="stylesheet" href="{{secure_asset('assets/stylesheets/css/reset.css')}}">
-<link rel="stylesheet" href="{{secure_asset('assets/stylesheets/css/normalize.css')}}">
+{{-- <link rel="stylesheet" href="{{secure_asset('assets/stylesheets/css/reset.css')}}"> --}}
+{{-- <link rel="stylesheet" href="{{secure_asset('assets/stylesheets/css/normalize.css')}}"> --}}
 <link rel="stylesheet" href="{{secure_asset('assets/stylesheets/css/select2.min.css')}}">
 {{-- <link rel="stylesheet" href="{{secure_asset('assets/stylesheets/css/style.css')}}"> --}}
 <script src="{{secure_asset('assets/js/modernizr.js')}}"></script>
 @else
-<link rel="stylesheet" href="{{asset('assets/stylesheets/css/reset.css')}}">
-<link rel="stylesheet" href="{{asset('assets/stylesheets/css/normalize.css')}}">
+{{-- <link rel="stylesheet" href="{{asset('assets/stylesheets/css/reset.css')}}"> --}}
+{{-- <link rel="stylesheet" href="{{asset('assets/stylesheets/css/normalize.css')}}"> --}}
 <link rel="stylesheet" href="{{asset('assets/stylesheets/css/select2.min.css')}}">
 {{-- <link rel="stylesheet" href="{{asset('assets/stylesheets/css/style.css')}}"> --}}
 <script src="{{asset('assets/js/modernizr.js')}}"></script>
