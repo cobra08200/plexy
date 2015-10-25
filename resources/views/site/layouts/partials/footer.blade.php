@@ -1,3 +1,4 @@
+
 @if(App::environment() == 'production')
 <script src="{{secure_asset('assets/js/jquery-2.1.1.js')}}"></script>
 {{-- <script src="{{secure_asset('assets/js/main.js')}}"></script> --}}
@@ -5,6 +6,7 @@
 <script src="{{secure_asset('assets/js/handlebars.min.js')}}"></script>
 <script src="{{secure_asset('assets/js/typeahead.bundle.min.js')}}"></script>
 <script src="{{secure_asset('assets/js/select2.full.js')}}"></script>
+<script src="{{ elixir('js/all.js') }}"></script>
 {{-- <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js" type="text/javascript"></script> --}}
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -22,6 +24,7 @@
 <script src="{{asset('assets/js/handlebars.min.js')}}"></script>
 <script src="{{asset('assets/js/typeahead.bundle.min.js')}}"></script>
 <script src="{{asset('assets/js/select2.full.js')}}"></script>
+<script src="{{asset('js/all.js')}}"></script>
 {{-- <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js" type="text/javascript"></script> --}}
 @endif
 @yield('scripts')

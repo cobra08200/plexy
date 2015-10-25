@@ -34,6 +34,7 @@ Homestead.json
 _ide_helper.php
 
 # SASS
+*.js.map
 *.css.map
 /public/assets/stylesheets/css/master.css
 /public/assets/stylesheets/css/master.css.map
