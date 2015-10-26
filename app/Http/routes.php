@@ -15,11 +15,14 @@ Route::group(['middleware' => ['auth']], function()
     // Homepage
     Route::get('/', ['as' => 'home', 'uses' => 'IssueController@getIndex']);
 
-    // Add Issue
+    // Add Issue/Request
     Route::any('search/submit', ['as' => 'search.submit', 'uses' => 'IssueController@searchSubmit']);
 
     // Search Movies, TV Shows, and Music
-    Route::get('search', ['as' => 'search.select2', 'uses' => 'SearchController@search']);
+    // Reports
+    Route::get('search/report', ['as' => 'report.search.select2', 'uses' => 'SearchController@search']);
+    // Requests
+    Route::get('search/request', ['as' => 'request.search.select2', 'uses' => 'SearchController@search']);
 
     // Search Movies
     // Typeahead

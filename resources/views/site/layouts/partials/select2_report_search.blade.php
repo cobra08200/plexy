@@ -11,17 +11,10 @@
 {{--
 <input placeholder="Search..." name="title" type="text" value="">
  --}}
-<select class="media_query" width="860px">
-    <optgroup label="Movies">
+<select class="report_search" width="860px">
         <option selected="selected">Search...</option>
-    </optgroup>
-    <optgroup label="TV Shows">
-    </optgroup>
-    <optgroup label="Music">
-    </optgroup>
 </select>
 
-<button type="submit" name="type" value="request">Request</button>
 <button type="submit" name="type" value="issue">Report</button>
 </form>
 

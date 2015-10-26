@@ -4,13 +4,18 @@
 
 {{-- <header id="title_big">PLEXY</header> --}}
 
-{{-- @if(!$user->hasRole("admin")) --}}
-{{-- typeahead --}}
-{{-- @include('site/layouts/partials/typeahead_search') --}}
-{{-- @endif --}}
-
 {{-- select2 --}}
-@include('site/layouts/partials/select2_search')
+<button type="button" id="show_report" name="button">Report</button>
+<button type="button" id="show_request" name="button">Request</button>
+
+<div id="report">
+@include('site/layouts/partials/select2_report_search')
+<button type="button" id="cancel_report" name="button">Cancel</button>
+</div>
+<div id="request">
+@include('site/layouts/partials/select2_request_search')
+<button type="button" id="cancel_request" name="button">Cancel</button>
+</div>
 
 @if(count($movie_requests) > 0 )
     @include('site/layouts/partials/issue_request_module', ['module' => $movie_requests, 'header' => 'MOVIE REQUESTS'])
@@ -53,7 +58,36 @@
 
 <script>
 
-{{-- @include('js/home/typeahead') --}}
+$("#report").hide();
+$("#request").hide();
+$(document).ready(function(){
+    $("#show_report").click(function(){
+        $("#report").show();
+        $("#report").insertBefore("#request");
+        $("#request").hide();
+        $("#show_report").hide();
+        $("#show_request").hide();
+    });
+    $("#show_request").click(function(){
+        $("#request").show();
+        $("#request").insertBefore("#report");
+        $("#report").hide();
+        $("#show_request").hide();
+        $("#show_report").hide();
+    });
+	$("#cancel_report").click(function(){
+        $("#show_report").show();
+        $("#show_request").show();
+        $("#report").hide();
+        $("#request").hide();
+    });
+	$("#cancel_request").click(function(){
+        $("#show_report").show();
+        $("#show_request").show();
+        $("#report").hide();
+        $("#request").hide();
+    });
+});
 @include('js/home/select2')
 
 </script>

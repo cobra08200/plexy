@@ -1,8 +1,33 @@
 $('select').select2();
 
-$(".media_query").select2({
+$(".report_search").select2({
     ajax: {
-        url: "{{ route('search.select2') }}",
+        url: "{{ route('report.search.select2') }}",
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+            return {
+                query: params.term
+            };
+        },
+        processResults: function (data) {
+            return {
+                results: data.results
+            };
+        },
+        cache: true
+    },
+    escapeMarkup: function (markup) {
+        return markup;
+    },
+    minimumInputLength: 1,
+    templateResult: formatSearch,
+    templateSelection: formatSearchSelection
+});
+
+$(".request_search").select2({
+    ajax: {
+        url: "{{ route('request.search.select2') }}",
         dataType: 'json',
         delay: 250,
         data: function (params) {
