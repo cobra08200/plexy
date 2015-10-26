@@ -129,11 +129,11 @@ class PlexController extends Controller
         return json_decode($response, true);
     }
 
-    public function plexServerSearch($query)
+    public function plexServerSearch(Request $request)
     {
         $parameters = array(
             'X-Plex-Token'  => \Config::get('services.plex.token'),
-            'query'         => $query,
+            'query'         => $request->input('query'),
         );
 
         $ch = curl_init();
@@ -149,7 +149,17 @@ class PlexController extends Controller
         $response = curl_exec($ch);
         curl_close($ch);
 
-        return json_decode($response, true);
+        $array = json_decode($response, true);
+
+        $plex_array = array();
+
+        foreach($array['_children'] as $item) {
+            $plex_array[] = $item;
+        }
+
+        $plex_final_array['results'] = $plex_array;
+
+        return $plex_final_array;
     }
 
 }

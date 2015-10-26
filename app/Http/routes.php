@@ -70,6 +70,6 @@ Route::group(['middleware' => ['auth']], function()
     // Plex Server Sessions
     Route::get('plex/server/sessions', ['as' => 'plex.server.sessions', 'uses' => 'PlexController@plexServerSessions']);
     // Plex Server Search
-    Route::get('plex/server/search/{query}', ['as' => 'plex.server.search', 'uses' => 'PlexController@plexServerSearch']);
+    Route::get('plex/server/search', ['as' => 'plex.server.search', 'uses' => 'PlexController@plexServerSearch']);
 
 });
