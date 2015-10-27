@@ -53,69 +53,129 @@ $(".request_search").select2({
 function formatSearch (data) {
     if (data.loading) return data.text;
 
-    // Movies
-    if (data.type == 'movies') {
-        if (data.release_date) {
-            if (data.poster_path) {
-                var markup = '<div class="clearfix">' + '<h2>Movies</h2>' +
-                '<div style="max-width: 250px">' +
-                '<img src="https://image.tmdb.org/t/p/w780' + data.poster_path + '" style="max-width: 50px" />' +
-                '</div>' +
-                '<div style="max-width: 250px">' +
-                '<div class="clearfix">' +
-                '<div style="max-width: 250px"">' + data.title + ' - ' + (data.release_date.substr(0, 4)) + '</div>' +
-                '<div style="max-width: 250px"">' + data.vote_average + '</div>' +
-                '</div>';
+    if (data.results_from == 'plex_server')
+        // Movies
+        if (data.librarySectionTitle == 'Movies') {
+            var markup = '<div class="clearfix">' + '<h2>Movies</h2>' +
+            '<div style="max-width: 250px">' +
+            // '<img src="URL' + data.thumb + 'PARAMS' + '" style="max-width: 50px" />' +
+            '</div>' +
+            '<div style="max-width: 250px">' +
+            '<div class="clearfix">' +
+            '<div style="max-width: 250px"">' + data.title + ' - ' + data.year + '</div>' +
+            '<div style="max-width: 250px"">' + data.rating + '</div>' +
+            '</div>';
 
-                // if (data.overview) {
-                //     markup += '<div>' + data.overview + '</div>';
-                // }
-                markup += '</div></div>';
+            // if (data.overview) {
+            //     markup += '<div>' + data.overview + '</div>';
+            // }
+            markup += '</div></div>';
 
-                return markup;
+            return markup;
+        }
+        // TV Shows
+        if (data.librarySectionTitle == 'TV Shows') {
+            var markup = '<div class="clearfix">' + '<h2>TV Shows</h2>' +
+            '<div style="max-width: 250px">' +
+            // '<img src="URL' + data.thumb + 'PARAMS' + '" style="max-width: 50px" />' +
+            '</div>' +
+            '<div style="max-width: 250px">' +
+            '<div class="clearfix">' +
+            '<div style="max-width: 250px"">' + data.title + ' - ' + data.year + '</div>' +
+            '<div style="max-width: 250px"">' + data.rating + '</div>' +
+            '</div>';
+
+            // if (data.overview) {
+            //     markup += '<div>' + data.overview + '</div>';
+            // }
+            markup += '</div></div>';
+
+            return markup;
+        }
+        // Music
+        if (data.librarySectionTitle == 'album') {
+            var markup = '<div class="clearfix">' + '<h2>Music</h2>' +
+            '<div style="max-width: 250px">' +
+            '<img src="' + data.images[0].url + '" style="max-width: 50px" />' +
+            '</div>' +
+            '<div style="max-width: 250px">' +
+            '<div class="clearfix">' +
+            '<div style="max-width: 250px"">' + data.name + '</div>' +
+            '</div>';
+
+            // if (data.overview) {
+            //     markup += '<div>' + data.overview + '</div>';
+            // }
+            markup += '</div></div>';
+
+            return markup;
+        }
+    } else {
+
+        // Movies
+        if (data.type == 'movies') {
+            if (data.release_date) {
+                if (data.poster_path) {
+                    var markup = '<div class="clearfix">' + '<h2>Movies</h2>' +
+                    '<div style="max-width: 250px">' +
+                    '<img src="https://image.tmdb.org/t/p/w780' + data.poster_path + '" style="max-width: 50px" />' +
+                    '</div>' +
+                    '<div style="max-width: 250px">' +
+                    '<div class="clearfix">' +
+                    '<div style="max-width: 250px"">' + data.title + ' - ' + (data.release_date.substr(0, 4)) + '</div>' +
+                    '<div style="max-width: 250px"">' + data.vote_average + '</div>' +
+                    '</div>';
+
+                    // if (data.overview) {
+                    //     markup += '<div>' + data.overview + '</div>';
+                    // }
+                    markup += '</div></div>';
+
+                    return markup;
+                }
             }
         }
-    }
-    // TV Shows
-    if (data.type == 'tv') {
-        if (data.first_air_date) {
-            if (data.poster_path) {
-                var markup = '<div class="clearfix">' + '<h2>TV Shows</h2>' +
-                '<div style="max-width: 250px">' +
-                '<img src="https://image.tmdb.org/t/p/w780' + data.poster_path + '" style="max-width: 50px" />' +
-                '</div>' +
-                '<div style="max-width: 250px">' +
-                '<div class="clearfix">' +
-                '<div style="max-width: 250px"">' + data.name + ' - ' + (data.first_air_date.substr(0, 4)) + '</div>' +
-                '<div style="max-width: 250px"">' + data.vote_average + '</div>' +
-                '</div>';
+        // TV Shows
+        if (data.type == 'tv') {
+            if (data.first_air_date) {
+                if (data.poster_path) {
+                    var markup = '<div class="clearfix">' + '<h2>TV Shows</h2>' +
+                    '<div style="max-width: 250px">' +
+                    '<img src="https://image.tmdb.org/t/p/w780' + data.poster_path + '" style="max-width: 50px" />' +
+                    '</div>' +
+                    '<div style="max-width: 250px">' +
+                    '<div class="clearfix">' +
+                    '<div style="max-width: 250px"">' + data.name + ' - ' + (data.first_air_date.substr(0, 4)) + '</div>' +
+                    '<div style="max-width: 250px"">' + data.vote_average + '</div>' +
+                    '</div>';
 
-                // if (data.overview) {
-                //     markup += '<div>' + data.overview + '</div>';
-                // }
-                markup += '</div></div>';
+                    // if (data.overview) {
+                    //     markup += '<div>' + data.overview + '</div>';
+                    // }
+                    markup += '</div></div>';
 
-                return markup;
+                    return markup;
+                }
             }
         }
-    }
-    // Music
-    if (data.type == 'album') {
-        var markup = '<div class="clearfix">' + '<h2>Music</h2>' +
-        '<div style="max-width: 250px">' +
-        '<img src="' + data.images[0].url + '" style="max-width: 50px" />' +
-        '</div>' +
-        '<div style="max-width: 250px">' +
-        '<div class="clearfix">' +
-        '<div style="max-width: 250px"">' + data.name + '</div>' +
-        '</div>';
+        // Music
+        if (data.type == 'album') {
+            var markup = '<div class="clearfix">' + '<h2>Music</h2>' +
+            '<div style="max-width: 250px">' +
+            '<img src="' + data.images[0].url + '" style="max-width: 50px" />' +
+            '</div>' +
+            '<div style="max-width: 250px">' +
+            '<div class="clearfix">' +
+            '<div style="max-width: 250px"">' + data.name + '</div>' +
+            '</div>';
 
-        // if (data.overview) {
-        //     markup += '<div>' + data.overview + '</div>';
-        // }
-        markup += '</div></div>';
+            // if (data.overview) {
+            //     markup += '<div>' + data.overview + '</div>';
+            // }
+            markup += '</div></div>';
 
-        return markup;
+            return markup;
+        }
     }
 }
 

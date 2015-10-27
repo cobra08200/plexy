@@ -115,7 +115,7 @@ class PlexController extends Controller
 
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, \Config::get('services.plex.url') . "status/sessions?" . http_build_query($parameters));
+        curl_setopt($ch, CURLOPT_URL, \Config::get('services.plex.url') . "/status/sessions?" . http_build_query($parameters));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -138,7 +138,7 @@ class PlexController extends Controller
 
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, \Config::get('services.plex.url') . "search?" . http_build_query($parameters));
+        curl_setopt($ch, CURLOPT_URL, config('services.plex.url') . "/search?" . http_build_query($parameters));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -151,15 +151,28 @@ class PlexController extends Controller
 
         $array = json_decode($response, true);
 
-        $plex_array = array();
-
         foreach($array['_children'] as $item) {
-            $plex_array[] = $item;
+            $thumbArray[] = array_get($item, 'thumb');
         }
 
-        $plex_final_array['results'] = $plex_array;
+        foreach($thumbArray as $item) {
+            // if($item != null) {
+                 $path = config('services.plex.url') . $item . '?X-Plex-Token='. config('services.plex.token');
+                 $type = pathinfo($path, PATHINFO_EXTENSION);
+                 $data = file_get_contents($path);
+                 $newThumbArray[] = $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+            // }
+        }
 
-        return $plex_final_array;
+        return $newThumbArray;
+
+        foreach($array['_children'] as $item) {
+            $plexArray[] = array_add($item, 'results_from', 'plex_server');
+        }
+
+        $plexFinalArray['results'] = $plexArray;
+
+        return $plexFinalArray;
     }
 
 }
