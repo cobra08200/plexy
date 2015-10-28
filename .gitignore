@@ -6,6 +6,7 @@
 !.gitkeep
 !.editorconfig
 !.env.example
+!/public/.htaccess
 
 # Laravel
 /bootstrap/compiled.php

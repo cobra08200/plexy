@@ -1,5 +1,8 @@
 <?php
-Route::get('/', ['as' => 'base', 'uses' => 'IssueController@getIndex']);
+Route::get('/home', function() {
+    return redirect()->route('home');
+});
+
 Route::group(['middleware' => ['blocked']], function()
 {
     Route::get('setup', 'SetupController@firstRun');
@@ -21,7 +24,7 @@ Route::group(['middleware' => ['first.run']], function()
     Route::group(['middleware' => ['auth']], function()
     {
         // Homepage
-        Route::get('/home', ['as' => 'home', 'uses' => 'IssueController@getIndex']);
+        Route::get('/', ['as' => 'home', 'uses' => 'IssueController@getIndex']);
 
         // Add Issue/Request
         Route::any('search/submit', ['as' => 'search.submit', 'uses' => 'IssueController@searchSubmit']);
