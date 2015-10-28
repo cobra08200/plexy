@@ -1,4 +1,5 @@
-$('select').select2();
+$('.report_select').select2();
+$('.request_select').select2();
 
 $(".report_search").select2({
     ajax: {
@@ -185,30 +186,56 @@ function formatSearch (data) {
 }
 
 function formatSearchSelection (data) {
-    if (data.type == 'movies') {
-        document.getElementById("title").value = data.title ;
-        document.getElementById("year").value = data.release_date.substr(0, 4);
-        document.getElementById("tmdb").value = data.id;
-        document.getElementById("poster").value = 'https://image.tmdb.org/t/p/w780' + data.poster_path;
-        document.getElementById("backdrop").value = 'https://image.tmdb.org/t/p/w780' + data.backdrop_path;
-        document.getElementById("topic").value = data.type;
-        document.getElementById("vote_average").value = data.vote_average;
+    if (data.results_from == 'plex_server') {
+        if (data.type == 'movies') {
+            document.getElementById("title").value = data.title ;
+            document.getElementById("year").value = data.release_date.substr(0, 4);
+            document.getElementById("tmdb").value = data.id;
+            document.getElementById("poster").value = 'https://image.tmdb.org/t/p/w780' + data.poster_path;
+            document.getElementById("backdrop").value = 'https://image.tmdb.org/t/p/w780' + data.backdrop_path;
+            document.getElementById("topic").value = data.type;
+            document.getElementById("vote_average").value = data.vote_average;
+        }
+        if (data.type == 'tv') {
+            document.getElementById("title").value = data.name;
+            document.getElementById("year").value = data.first_air_date.substr(0, 4);
+            document.getElementById("tmdb").value = data.id;
+            document.getElementById("poster").value = 'https://image.tmdb.org/t/p/w780' + data.poster_path;
+            document.getElementById("backdrop").value = 'https://image.tmdb.org/t/p/w780' + data.backdrop_path;
+            document.getElementById("topic").value = data.type;
+            document.getElementById("vote_average").value = data.vote_average;
+        }
+        if (data.type == 'album') {
+            document.getElementById("title").value = data.name;
+            document.getElementById("tmdb").value = data.id;
+            document.getElementById("poster").value = data.images[0].url;
+            document.getElementById("topic").value = 'music';
+        }
+    } else {
+        if (data.type == 'movies') {
+            document.getElementById("title").value = data.title ;
+            document.getElementById("year").value = data.release_date.substr(0, 4);
+            document.getElementById("tmdb").value = data.id;
+            document.getElementById("poster").value = 'https://image.tmdb.org/t/p/w780' + data.poster_path;
+            document.getElementById("backdrop").value = 'https://image.tmdb.org/t/p/w780' + data.backdrop_path;
+            document.getElementById("topic").value = data.type;
+            document.getElementById("vote_average").value = data.vote_average;
+        }
+        if (data.type == 'tv') {
+            document.getElementById("title").value = data.name;
+            document.getElementById("year").value = data.first_air_date.substr(0, 4);
+            document.getElementById("tmdb").value = data.id;
+            document.getElementById("poster").value = 'https://image.tmdb.org/t/p/w780' + data.poster_path;
+            document.getElementById("backdrop").value = 'https://image.tmdb.org/t/p/w780' + data.backdrop_path;
+            document.getElementById("topic").value = data.type;
+            document.getElementById("vote_average").value = data.vote_average;
+        }
+        if (data.type == 'album') {
+            document.getElementById("title").value = data.name;
+            document.getElementById("tmdb").value = data.id;
+            document.getElementById("poster").value = data.images[0].url;
+            document.getElementById("topic").value = 'music';
+        }
     }
-    if (data.type == 'tv') {
-        document.getElementById("title").value = data.name;
-        document.getElementById("year").value = data.first_air_date.substr(0, 4);
-        document.getElementById("tmdb").value = data.id;
-        document.getElementById("poster").value = 'https://image.tmdb.org/t/p/w780' + data.poster_path;
-        document.getElementById("backdrop").value = 'https://image.tmdb.org/t/p/w780' + data.backdrop_path;
-        document.getElementById("topic").value = data.type;
-        document.getElementById("vote_average").value = data.vote_average;
-    }
-    if (data.type == 'album') {
-        document.getElementById("title").value = data.name;
-        document.getElementById("tmdb").value = data.id;
-        document.getElementById("poster").value = data.images[0].url;
-        document.getElementById("topic").value = 'music';
-    }
-
     return data.title || data.name || data.text;
 }
