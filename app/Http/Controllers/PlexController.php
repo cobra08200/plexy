@@ -12,8 +12,8 @@ class PlexController extends Controller
     public function plexAuthorize()
     {
         $host = "https://plex.tv/users/sign_in.json";
-        $username = \Config::get('services.plex.username');
-        $password = \Config::get('services.plex.password');
+        $username = config('services.plex.username');
+        $password = config('services.plex.password');
         $header = array(
             'Content-Type: application/xml; charset=utf-8',
             'Content-Length: 0',
@@ -40,7 +40,7 @@ class PlexController extends Controller
     public function plexFriends()
     {
         $parameters = array(
-            'X-Plex-Token' => \Config::get('services.plex.token')
+            'X-Plex-Token' => config('services.plex.token')
         );
 
         $ch = curl_init();
@@ -88,12 +88,12 @@ class PlexController extends Controller
     public function plexServerInfo()
     {
         $parameters = array(
-            'X-Plex-Token' => \Config::get('services.plex.token')
+            'X-Plex-Token' => config('services.plex.token')
         );
 
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, \Config::get('services.plex.url') . "?" . http_build_query($parameters));
+        curl_setopt($ch, CURLOPT_URL, config('services.plex.url') . "?" . http_build_query($parameters));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -110,12 +110,12 @@ class PlexController extends Controller
     public function plexServerSessions()
     {
         $parameters = array(
-            'X-Plex-Token' => \Config::get('services.plex.token')
+            'X-Plex-Token' => config('services.plex.token')
         );
 
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, \Config::get('services.plex.url') . "status/sessions?" . http_build_query($parameters));
+        curl_setopt($ch, CURLOPT_URL, config('services.plex.url') . "status/sessions?" . http_build_query($parameters));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -132,13 +132,13 @@ class PlexController extends Controller
     public function plexServerSearch(Request $request)
     {
         $parameters = array(
-            'X-Plex-Token'  => \Config::get('services.plex.token'),
+            'X-Plex-Token'  => config('services.plex.token'),
             'query'         => $request->input('query'),
         );
 
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, \Config::get('services.plex.url') . "search?" . http_build_query($parameters));
+        curl_setopt($ch, CURLOPT_URL, config('services.plex.url') . "/search?" . http_build_query($parameters));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -151,15 +151,23 @@ class PlexController extends Controller
 
         $array = json_decode($response, true);
 
-        $plex_array = array();
+        foreach($array['_children'] as &$item) {
 
-        foreach($array['_children'] as $item) {
-            $plex_array[] = $item;
+            if(isset($item['thumb'])) {
+
+                $thumbPath = config('services.plex.url') . $item['thumb'] . '?X-Plex-Token='. config('services.plex.token');
+                $thumbType = pathinfo($thumbPath, PATHINFO_EXTENSION);
+                $thumbData = file_get_contents($thumbPath);
+                $item['thumb'] = $base64 = 'data:image/' . $thumbType . ';base64,' . base64_encode($thumbData);
+
+            }
+
+            $plexArray[] = array_add($item, 'results_from', 'plex_server');
+            
         }
 
-        $plex_final_array['results'] = $plex_array;
+        $plexFinalArray['results'] = $plexArray;
 
-        return $plex_final_array;
+        return $plexFinalArray;
     }
-
 }
