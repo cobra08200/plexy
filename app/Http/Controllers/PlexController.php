@@ -163,7 +163,7 @@ class PlexController extends Controller
             }
 
             $plexArray[] = array_add($item, 'results_from', 'plex_server');
-            
+
         }
 
         $plexFinalArray['results'] = $plexArray;
