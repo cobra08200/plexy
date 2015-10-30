@@ -187,28 +187,28 @@ function formatSearch (data) {
 
 function formatSearchSelection (data) {
     if (data.results_from == 'plex_server') {
-        if (data.type == 'movies') {
+        if (data.librarySectionTitle == 'Movies') {
             document.getElementById("title").value = data.title ;
-            document.getElementById("year").value = data.release_date.substr(0, 4);
-            document.getElementById("tmdb").value = data.id;
-            document.getElementById("poster").value = 'https://image.tmdb.org/t/p/w780' + data.poster_path;
-            document.getElementById("backdrop").value = 'https://image.tmdb.org/t/p/w780' + data.backdrop_path;
-            document.getElementById("topic").value = data.type;
-            document.getElementById("vote_average").value = data.vote_average;
+            document.getElementById("year").value = data.year;
+            document.getElementById("tmdb").value = data.ratingKey;
+            document.getElementById("poster").value = data.thumb;
+            // document.getElementById("backdrop").value = 'https://image.tmdb.org/t/p/w780' + data.backdrop_path;
+            document.getElementById("topic").value = 'movies';
+            document.getElementById("vote_average").value = data.rating;
         }
-        if (data.type == 'tv') {
-            document.getElementById("title").value = data.name;
-            document.getElementById("year").value = data.first_air_date.substr(0, 4);
-            document.getElementById("tmdb").value = data.id;
-            document.getElementById("poster").value = 'https://image.tmdb.org/t/p/w780' + data.poster_path;
-            document.getElementById("backdrop").value = 'https://image.tmdb.org/t/p/w780' + data.backdrop_path;
-            document.getElementById("topic").value = data.type;
-            document.getElementById("vote_average").value = data.vote_average;
+        if (data.librarySectionTitle == 'TV Shows') {
+            document.getElementById("title").value = data.title;
+            document.getElementById("year").value = data.year;
+            document.getElementById("tmdb").value = data.ratingKey;
+            document.getElementById("poster").value = data.thumb;
+            // document.getElementById("backdrop").value = 'https://image.tmdb.org/t/p/w780' + data.backdrop_path;
+            document.getElementById("topic").value = 'tv';
+            document.getElementById("vote_average").value = data.rating;
         }
-        if (data.type == 'album') {
-            document.getElementById("title").value = data.name;
+        if (data.librarySectionTitle == 'Music') {
+            document.getElementById("title").value = data.title;
             document.getElementById("tmdb").value = data.id;
-            document.getElementById("poster").value = data.images[0].url;
+            document.getElementById("poster").value = data.thumb;
             document.getElementById("topic").value = 'music';
         }
     } else {
@@ -239,3 +239,12 @@ function formatSearchSelection (data) {
     }
     return data.title || data.name || data.text;
 }
+
+var $loading = $('#loadingDiv').hide();
+$(document)
+    .ajaxStart(function () {
+        $loading.show();
+    })
+    .ajaxStop(function () {
+        $loading.hide();
+    });

@@ -151,6 +151,8 @@ class PlexController extends Controller
 
         $array = json_decode($response, true);
 
+        $id = 1;
+
         foreach($array['_children'] as &$item) {
 
             if(isset($item['thumb'])) {
@@ -162,11 +164,14 @@ class PlexController extends Controller
 
             }
 
-            $plexArray[] = array_add($item, 'results_from', 'plex_server');
+            $item['results_from'] = 'plex_server';
+            $item['id'] = $id;
+
+            $id++;
 
         }
 
-        $plexFinalArray['results'] = $plexArray;
+        $plexFinalArray['results'] = $array;
 
         return $plexFinalArray;
     }
