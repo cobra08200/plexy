@@ -82,5 +82,7 @@ Route::group(['middleware' => ['first.run']], function()
         Route::get('plex/server/sessions', ['as' => 'plex.server.sessions', 'uses' => 'PlexController@plexServerSessions']);
         // Plex Server Search
         Route::get('plex/server/search', ['as' => 'plex.server.search', 'uses' => 'PlexController@plexServerSearch']);
+        // Plex Thumb Preview
+        Route::get('plex/thumbs/{ratingKey}.{thumbExtension}', ['as' => 'plex.thumb.preview', 'uses' => 'PlexController@previewPlexThumb']);
     });
 });
