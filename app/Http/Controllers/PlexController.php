@@ -159,7 +159,7 @@ class PlexController extends Controller
         foreach($array['_children'] as &$item) {
 
             // Check if the search element has an associated thumbnail, if so, save it.
-            // We do this so images can be accessed without plex server token authentication.
+            // We do this so images can be accessed later without plex server token authentication.
             if(isset($item['thumb'])) {
 
                 // Directly access the thumbnail on the Plex server and save it the URL as a variable.
@@ -197,7 +197,7 @@ class PlexController extends Controller
         }
 
         // Final touches for Select2 data reults array.
-        $plexFinalArray['results'] = $array;
+        $plexFinalArray['results'] = $array['_children'];
 
         return $plexFinalArray;
     }

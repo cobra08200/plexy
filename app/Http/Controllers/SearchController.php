@@ -22,9 +22,8 @@ class SearchController extends Controller
 
     public function movie(Request $request)
     {
-
         $parameters = array(
-            'api_key'           => \Config::get('services.tmdb.token'),
+            'api_key'           => config('services.tmdb.token'),
             'include_adult'     => 'false',
             'search_type'       => 'ngram',
             'query'             => $request->input('query')
@@ -57,7 +56,7 @@ class SearchController extends Controller
     public function tv(Request $request)
     {
         $parameters = array(
-            'api_key'           => \Config::get('services.tmdb.token'),
+            'api_key'           => config('services.tmdb.token'),
             'include_adult'     => 'false',
             'search_type'       => 'ngram',
             'query'             => $request->input('query')
@@ -91,7 +90,7 @@ class SearchController extends Controller
     {
         // base series info
         $parameters = array(
-            'api_key' => \Config::get('services.tmdb.token')
+            'api_key' => config('services.tmdb.token')
         );
 
         $ch = curl_init();
@@ -118,7 +117,7 @@ class SearchController extends Controller
     {
         // series episode info
         $parameters = array(
-            'api_key' => \Config::get('services.tmdb.token')
+            'api_key' => config('services.tmdb.token')
         );
 
         $ch = curl_init();
@@ -145,7 +144,7 @@ class SearchController extends Controller
     {
 
         $parameters = array(
-            'client_id' => \Config::get('services.tmdb.token'),
+            'client_id' => config('services.tmdb.token'),
             'type'      => 'artist',
             'limit'     => '8',
             'q'         => $request->input('query')
@@ -171,7 +170,7 @@ class SearchController extends Controller
     {
 
         $parameters = array(
-            'client_id' => \Config::get('services.tmdb.token'),
+            'client_id' => config('services.tmdb.token'),
             'type'      => 'album',
             'limit'     => '8',
             'market'    => 'US',
@@ -206,7 +205,7 @@ class SearchController extends Controller
     {
 
         // $parameters = array(
-        //     'client_id' => \Config::get('services.tmdb.token'),
+        //     'client_id' => config('services.tmdb.token'),
         //     'type'      => 'album',
         //     'limit'     => '8',
         //     'market'    => 'US',
