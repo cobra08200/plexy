@@ -1,8 +1,12 @@
+// Load Laravel elixir
 var elixir = require('laravel-elixir'),
-    CONFIG = {
+    config = {
         'sass_watch_dir': 'resources/assets/stylesheets/**',
         'js_watch_dir': 'resources/assets/js/**'
     };
+
+// Load elixir busting, this append a new elixir task called "busting"
+require('elixir-busting');
 
 /*
  |--------------------------------------------------------------------------
@@ -15,20 +19,23 @@ var elixir = require('laravel-elixir'),
  |
  */
 
-
 elixir(function(mix) {
     mix.sass([
-        '../stylesheets/app.scss'
+        '../stylesheets/**'
     ]);
 
     mix.scripts([
         'app.js'
     ]);
 
-    mix.version([
-        '/css/app.css',
-        '/js/all.js'
-    ]);
+    // Instead used a mix.version() task, use a mix.busting() task
+    mix.busting([
+       // replace css files path with yours
+       '/css/app.css',
+
+       // replace script files path with yours
+       '/js/all.js'
+   ]);
 });
 
 
@@ -38,5 +45,5 @@ elixir(function(mix) {
  |--------------------------------------------------------------------------
  */
 
-elixir.Task.find('sass').watch(CONFIG.sass_watch_dir);
-elixir.Task.find('scripts').watch(CONFIG.js_watch_dir);
+elixir.Task.find('sass').watch(config.sass_watch_dir);
+elixir.Task.find('scripts').watch(config.js_watch_dir);

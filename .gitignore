@@ -39,3 +39,8 @@ _ide_helper.php
 *.css.map
 /public/assets/stylesheets/css/master.css
 /public/assets/stylesheets/css/master.css.map
+
+# Node
+logs
+*.log
+npm-debug.log*

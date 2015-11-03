@@ -24,7 +24,7 @@
 {{-- <script src="{{asset('assets/js/handlebars.min.js')}}"></script> --}}
 {{-- <script src="{{asset('assets/js/typeahead.bundle.min.js')}}"></script> --}}
 <script src="{{asset('assets/js/select2.full.js')}}"></script>
-<script src="{{asset('js/all.js')}}"></script>
+<script src="{{ elixir('js/all.js') }}"></script>
 {{-- <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js" type="text/javascript"></script> --}}
 @endif
 @yield('scripts')
