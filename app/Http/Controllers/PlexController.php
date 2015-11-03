@@ -202,7 +202,7 @@ class PlexController extends Controller
         return $plexFinalArray;
     }
 
-    public function previewPlexThumb($ratingKey)
+    public function previewPlexThumb($ratingKey, $thumbExtension)
     {
         // // This single line will display an image if a route hits this with a 200 response
         // return response()->download(storage_path('app/plex/thumbs/'.$ratingKey.'.'.$thumbExtension), null, [], null);
