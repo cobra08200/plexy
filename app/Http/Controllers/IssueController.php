@@ -176,14 +176,14 @@ class IssueController extends Controller {
 
 		$issue->save();
 
-		if (\Config::get('app_env') == ('production'))
+		if (config('app_env') == ('production'))
 		{
 			// send pusher notification to admin
 			curl_setopt_array($ch = curl_init(), array(
 				CURLOPT_URL => "https://api.pushover.net/1/messages.json",
 				CURLOPT_POSTFIELDS => array(
-					"token" => \Config::get('services.pushover.token'),
-					"user" => \Config::get('services.pushover.user'),
+					"token" => config('services.pushover.token'),
+					"user" => config('services.pushover.user'),
 					"message" => Auth::user()->username." added ". $issue->content,
 				),
 				CURLOPT_SAFE_UPLOAD => true,

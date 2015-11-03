@@ -17,6 +17,10 @@
 <button type="button" id="cancel_request" name="button">Cancel</button>
 </div>
 
+<div id="loadingDiv">
+    {{-- <img src="{{ asset('assets/img/01-progress.gif') }}" alt="" /> --}}
+</div>
+
 @if(count($movie_requests) > 0 )
     @include('site/layouts/partials/issue_request_module', ['module' => $movie_requests, 'header' => 'MOVIE REQUESTS'])
 @endif

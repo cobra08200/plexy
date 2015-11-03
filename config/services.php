@@ -36,7 +36,7 @@ return [
     ],
 
     'tmdb' => [
-      'token'    => env('TMDB_TOKEN'),
+      'token'   => env('TMDB_TOKEN'),
     ],
 
     'spotify' => [
@@ -47,8 +47,8 @@ return [
     'plex' => [
       'username'=> env('PLEX_USERNAME'),
       'password'=> env('PLEX_PASSWORD'),
-      'token'=> env('PLEX_TOKEN'),
-      'url'=> env('PLEX_SERVER_URL'),
+      'token'   => env('PLEX_TOKEN'),
+      'url'     => env('PLEX_SERVER_URL'),
     ],
 
 ];
