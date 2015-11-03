@@ -270,7 +270,7 @@ class IssueController extends Controller {
 	{
 		$id = $issue->tmdb;
 
-		$tracks = app('App\Http\Controllers\SearchController')->musicAlbumTracks($id);
+		// $tracks = app('App\Http\Controllers\SearchController')->musicAlbumTracks($id);
 
 		return View::make('site/pages/advanced_issues', compact('issue', 'tracks'));
 	}

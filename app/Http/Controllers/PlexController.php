@@ -202,7 +202,7 @@ class PlexController extends Controller
         return $plexFinalArray;
     }
 
-    public function previewPlexThumb($ratingKey, $thumbExtension)
+    public function previewPlexThumb($ratingKey)
     {
         // // This single line will display an image if a route hits this with a 200 response
         // return response()->download(storage_path('app/plex/thumbs/'.$ratingKey.'.'.$thumbExtension), null, [], null);
@@ -249,5 +249,29 @@ class PlexController extends Controller
         ));
 
         return Response::make(file_get_contents($path), 200, $headers);
+    }
+
+    public function plexTVShowEpisodes($ratingKey)
+    {
+        $parameters = array(
+            'X-Plex-Token'  => config('services.plex.token'),
+        );
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, config('services.plex.url') . "/library/metadata/" . $ratingKey . "/allLeaves?" . http_build_query($parameters));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_HEADER, FALSE);
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+          "Accept: application/json"
+        ));
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        $array = json_decode($response, true);
+
+        return $array;
     }
 }
