@@ -219,26 +219,26 @@ class IssueController extends Controller {
 
 	public function issue_tv($issue)
 	{
-		$id = $issue->tmdb;
+		$ratingKey = $issue->tmdb;
 
-		$series = app('App\Http\Controllers\SearchController')->tvSeries($id);
+		$series = app('App\Http\Controllers\plexController')->plexTVShowEpisodes($ratingKey);
 
-		$first_season 	= reset($series->seasons);
-		$last_season 	= end($series->seasons);
+		$first_season 	= head($series);
+		$last_season 	= last($series);
 
-		$first_season_number 	= $first_season->season_number;
-		$last_season_number 	= $last_season->season_number;
+		$first_season_number 	= $first_season['parentIndex'];
+		$last_season_number 	= $last_season['parentIndex'];
 
 		// SearchController@tvSeasonEpisodes requires variable $season
 		// I want to pull down the first seasons episodes for the inital view load below
 		// Additional season will load via ajax on the view
-		$season = $first_season_number;
+		// $season = $first_season_number;
 
-		$first_season_episodes = app('App\Http\Controllers\SearchController')->tvSeasonEpisodes($id, $season);
+		// $first_season_episodes = app('App\Http\Controllers\SearchController')->tvSeasonEpisodes($id, $season);
 
 		// if ($request->ajax())
 		// {
-			return View::make('site/pages/advanced_issues', compact('issue', 'series', 'first_season_number', 'last_season_number', 'first_season_episodes'));
+			return View::make('site/pages/advanced_issues', compact('issue', 'series', 'first_season_number', 'last_season_number'));
 		// }
 	}
 

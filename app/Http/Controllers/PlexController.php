@@ -272,6 +272,19 @@ class PlexController extends Controller
 
         $array = json_decode($response, true);
 
+        return $array['_children'];
+    }
+
+    public function plexTVShowSeasonEpisodes($ratingKey, $seasonNumber)
+    {
+        $seasonEpisodes = app('App\Http\Controllers\plexController')->plexTVShowEpisodes($ratingKey);
+
+        $array = array_where($seasonEpisodes, function ($key, $value) {
+            dd($key);
+            if ($value['parentIndex'] = $seasonNumber)
+            return $value;
+        });
+
         return $array;
     }
 }

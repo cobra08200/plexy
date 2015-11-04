@@ -56,13 +56,25 @@
 		</div>
 		<div class="col span_1_of_2">
 			<select class="episode_option" id="episode_option" name="episode">
+				@for ($i = $first_season_number; $i <= $first_season_number; $i++)
+					@foreach($series as $episode)
+						@if($i == $episode['parentIndex'])
+						<option value="{{ $episode['index'] }}" label="Episode {{ $episode['index'] }}">
+						@endif
+						</option>
+					@endforeach
+				@endfor
+			</select>
+		</div>
+		{{-- <div class="col span_1_of_2">
+			<select class="episode_option" id="episode_option" name="episode">
 				@foreach ($first_season_episodes as $episodes)
 					@foreach ($episodes as $episode)
 						<option value="{{ $episode['episode_number'] }}" label="Episode {{ $episode['episode_number'] }}">
 					@endforeach
 				@endforeach
 			</select>
-		</div>
+		</div> --}}
 		@endif
 
 		{{-- MUSIC --}}
