@@ -6,6 +6,7 @@ use Storage;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 
 class PlexController extends Controller
@@ -233,9 +234,7 @@ class PlexController extends Controller
             'Etag' => $header_etag
         );
 
-        /**
-        * Is the resource cached?
-        */
+        // Is the resource cached?
         $h1 = isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && $_SERVER['HTTP_IF_MODIFIED_SINCE'] == $header_last_modified;
         $h2 = isset($_SERVER['HTTP_IF_NONE_MATCH']) && str_replace('"', '', stripslashes($_SERVER['HTTP_IF_NONE_MATCH'])) == $header_etag;
 
@@ -249,6 +248,22 @@ class PlexController extends Controller
         ));
 
         return Response::make(file_get_contents($path), 200, $headers);
+    }
+
+    public function updatePlexThumbnail($thumbKey, $thumbExtension)
+    {
+        $thumbPath = config('services.plex.url') . '/library/metadata/' . $thumbKey . '/thumb' . '?X-Plex-Token='. config('services.plex.token');
+
+        // I could potentially update the item in the DB to allow the correct file extension
+        // but for now I will replace the existing file with the old extention
+        // $thumbExtension = image_type_to_extension(exif_imagetype($thumbPath));
+
+        Storage::put(
+            'plex/thumbs/' . $thumbKey . '.' . $thumbExtension,
+            file_get_contents($thumbPath)
+        );
+
+        return Redirect::to('/');
     }
 
     public function plexTVShowEpisodes($ratingKey)
@@ -286,5 +301,29 @@ class PlexController extends Controller
         }
 
         return $seasonNumberEpisodes;
+    }
+
+    public function plexAlbumTracks($ratingKey)
+    {
+        $parameters = array(
+            'X-Plex-Token'  => config('services.plex.token'),
+        );
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, config('services.plex.url') . "/library/metadata/" . $ratingKey . "/children?" . http_build_query($parameters));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_HEADER, FALSE);
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+          "Accept: application/json"
+        ));
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        $array = json_decode($response, true);
+
+        return $array['_children'];
     }
 }

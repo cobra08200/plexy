@@ -3,7 +3,11 @@
 @section('content')
 
 <div class="cd-fold-content single-page">
-	<p>{{ $issue->content }}@if($issue->topic == 'music') - {{ $tracks[0]['artists'][0]['name'] }}@endif</p>
+	<p>{{ $issue->content }}
+		{{-- @if($issue->topic == 'music')
+			- {{ $tracks[0]['artists'][0]['name'] }}
+		@endif --}}
+	</p>
 	<img src="{{ $issue->poster_url }}" width="200px" alt="{{ $issue->content }}">
 
 	<form class="" action="{{ route('search.submit') }}" method="post">
@@ -14,10 +18,13 @@
 			What's up?
 		</div>
 		<div class="col span_1_of_2">
-			<select class="report_option" name="report_option">
+			<select class="report_option" id="report_option" name="report_option">
 				<option>Playback Error</option>
 				@if($issue->topic == 'tv')
 				<option>Missing Episode</option>
+				@endif
+				@if($issue->topic == 'music')
+				<option>Missing Track</option>
 				@endif
 				<option>Incorrect Information</option>
 				<option>Bad Quality</option>
@@ -51,50 +58,38 @@
 				@endfor
 			</select>
 		</div>
-		<div class="col span_1_of_2">
-			Which Episode?
+		<div id="episodes">
+			<div class="col span_1_of_2">
+				Which Episode?
+			</div>
+			<div class="col span_1_of_2">
+				<select class="episode_option" id="episode_option" name="episode">
+						@foreach($series as $episode)
+							@if ($first_season_number == $episode['parentIndex'])
+							<option value="{{ $episode['index'] }}" label="Episode {{ $episode['index'] }}">
+							@endif
+							</option>
+						@endforeach
+				</select>
+			</div>
 		</div>
-		<div class="col span_1_of_2">
-			<select class="episode_option" id="episode_option" name="episode">
-				@for ($i = $first_season_number; $i <= $first_season_number; $i++)
-					@foreach($series as $episode)
-						@if ($i == $episode['parentIndex'])
-						<option value="{{ $episode['index'] }}" label="Episode {{ $episode['index'] }}">
-						@endif
-						</option>
-					@endforeach
-				@endfor
-			</select>
-		</div>
-		{{-- <div class="col span_1_of_2">
-			<select class="episode_option" id="episode_option" name="episode">
-				@foreach ($first_season_episodes as $episodes)
-					@foreach ($episodes as $episode)
-						<option value="{{ $episode['episode_number'] }}" label="Episode {{ $episode['episode_number'] }}">
-					@endforeach
-				@endforeach
-			</select>
-		</div> --}}
 		@endif
 
 		{{-- MUSIC --}}
 
 		@if($issue->topic == 'music')
-		<div class="section group">
-			<div class="col span_1_of_2">
-				Track Listing
-			</div>
-			<div class="col span_1_of_2">
-				<select class="tracklist_option" name="tracklist_option" name="track">
-					@foreach ($tracks as $track)
-						<option value="{{ $track['track_number'] }}" label="{{ $track['name'] }}">
-							{{-- {{ $track['track_number'] }}. {{ $track['name'] }}
-							<audio controls>
-								<source src="{{ $track['preview_url'] }}" type="audio/mpeg">
-								Your browser does not support the audio element.
-							</audio> --}}
-					@endforeach
-				</select>
+		<div id="tracklist">
+			<div class="section group">
+				<div class="col span_1_of_2">
+					Which track?
+				</div>
+				<div class="col span_1_of_2">
+					<select class="tracklist_option" id="tracklist_option" name="track">
+						@foreach ($album as $track)
+							<option value="{{ $track['index'] }}" label="{{ $track['index'] }}. {{ $track['title'] }}">
+						@endforeach
+					</select>
+				</div>
 			</div>
 		</div>
 		@endif
@@ -109,7 +104,7 @@
 	<input type="hidden" name="vote_average" 	value="{{ $issue->vote_average }}">
 	<input type="hidden" name="round" 			value="advanced">
 	<div class="search__request__full">
-	    <button type="submit" name="type" value="issue" class="btn">Report</button>
+	    <button type="submit" id="submit_button" name="type" value="issue" class="btn">Report</button>
 	</div>
 
 </form>
@@ -121,13 +116,25 @@
 @section('scripts')
 
 <script>
+var $episodes = $('#episodes');
+var $tracks = $('#tracklist');
+
+$('.report_option').on('change',function() {
+	if ($(this).val() == 'Missing Episode' || $(this).val() == 'Missing Track') {
+		$episodes.hide();
+		$tracks.hide();
+	} else {
+		$episodes.show();
+		$tracks.show();
+	}
+});
+
 $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
 });
-$('.season_option').on('change',function()
-{
+$('.season_option').on('change',function() {
 	var selectedSeason=$(this).find('option:selected').val();
 	$.ajax({
 		url:'{{ url('plex/tv/') }}/{{ $issue->tmdb }}/season/'+selectedSeason+'/episodes',
@@ -137,17 +144,32 @@ $('.season_option').on('change',function()
 		data: JSON.stringify(selectedSeason),
 		success: function (data) {
 			$('#episode_option').empty();
-		    $.each(data, function (value) {
-				console.log(value + 1);
-				var newValue = parseInt(value) + 1;
-				$('#episode_option').append('<option value="' + newValue + '">Episode ' + newValue + '</option>');
-		    });
+			for (var key in data) {
+				if (data.hasOwnProperty(key)) {
+					var obj = data[key];
+					for (var prop in obj) {
+						if (obj.hasOwnProperty(prop)) {
+							if (prop == 'index') {
+								$('#episode_option').append('<option value="' + obj[prop] + '">Episode ' + obj[prop] + '</option>');
+							}
+						}
+					}
+				}
+			}
 		},
 		error: function (data) {
-		    // display any unhandled error
 		}
 	});
 });
+$(document)
+    .ajaxStart(function () {
+        $("#episode_option").prop("disabled", true);
+        $("#submit_button").prop("disabled", true);
+    })
+    .ajaxStop(function () {
+        $("#episode_option").prop("disabled", false);
+        $("#submit_button").prop("disabled", false);
+    });
 </script>
 
 @endsection

@@ -12,9 +12,9 @@ Route::group(['middleware' => ['blocked']], function()
 Route::group(['middleware' => ['first.run']], function()
 {
     // Authentication routes...
-    Route::get('auth/login', 'Auth\AuthController@getLogin');
+    Route::get('auth/login', ['as' => 'login', 'uses' => 'Auth\AuthController@getLogin']);
     Route::post('auth/login', 'Auth\AuthController@postLogin');
-    Route::get('auth/logout', 'Auth\AuthController@getLogout');
+    Route::get('auth/logout', ['as' => 'logout', 'uses' => 'Auth\AuthController@getLogout']);
 
     // Registration routes...
     Route::get('auth/register', 'Auth\AuthController@getRegister');
@@ -84,9 +84,13 @@ Route::group(['middleware' => ['first.run']], function()
         Route::get('plex/server/search', ['as' => 'plex.server.search', 'uses' => 'PlexController@plexServerSearch']);
         // Plex Thumb Preview
         Route::get('plex/thumbs/{ratingKey}.{thumbExtension}', ['as' => 'plex.thumb.preview', 'uses' => 'PlexController@previewPlexThumb']);
+        // Force update Plex Thumb Image on Server
+        Route::get('update/plex/thumbs/{ratingKey}.{thumbExtension}', ['as' => 'update.plex.thumb.preview', 'uses' => 'PlexController@updatePlexThumbnail']);
         // Plex TV Show Episodes
         Route::get('plex/tv/{ratingKey}/episodes', ['as' => 'plex.tv.episodes', 'uses' => 'PlexController@plexTVShowEpisodes']);
         // Plex TV Show Season Specific Episodes
         Route::any('plex/tv/{ratingKey}/season/{seasonNumber}/episodes', ['as' => 'plex.tv.season.episodes', 'uses' => 'PlexController@plexTVShowSeasonEpisodes']);
+        // Plex Album Details + Tracks
+        Route::get('plex/album/{ratingKey}', ['as' => 'plex.album.tracks', 'uses' => 'PlexController@plexAlbumTracks']);
     });
 });

@@ -56,66 +56,60 @@ function formatSearch (data) {
 
     if (data.results_from == 'plex_server') {
         // Movies
-        if (data.librarySectionTitle == 'Movies') {
-            if (data.type == 'movie') {
-                var markup = '<div class="clearfix">' + '<h2>Movies</h2>' +
-                '<div style="max-width: 250px">' +
-                '<img src="' + data.thumb + '" style="max-width: 50px" />' +
-                '</div>' +
-                '<div style="max-width: 250px">' +
-                '<div class="clearfix">' +
-                '<div style="max-width: 250px"">' + data.title + ' - ' + data.year + '</div>' +
-                '<div style="max-width: 250px"">' + data.rating + '</div>' +
-                '</div>';
+        if (data.type == 'movie') {
+            var markup = '<div class="clearfix">' + '<h2>Movies</h2>' +
+            '<div style="max-width: 250px">' +
+            '<img src="' + data.thumb + '" style="max-width: 50px" />' +
+            '</div>' +
+            '<div style="max-width: 250px">' +
+            '<div class="clearfix">' +
+            '<div style="max-width: 250px"">' + data.title + ' - ' + data.year + '</div>' +
+            '<div style="max-width: 250px"">' + data.rating + '</div>' +
+            '</div>';
 
-                // if (data.overview) {
-                //     markup += '<div>' + data.overview + '</div>';
-                // }
-                markup += '</div></div>';
+            // if (data.overview) {
+            //     markup += '<div>' + data.overview + '</div>';
+            // }
+            markup += '</div></div>';
 
-                return markup;
-            }
+            return markup;
         }
         // TV Shows
-        if (data.librarySectionTitle == 'TV Shows') {
-            if (data.type == 'show') {
-                var markup = '<div class="clearfix">' + '<h2>TV Shows</h2>' +
-                '<div style="max-width: 250px">' +
-                '<img src="' + data.thumb + '" style="max-width: 50px" />' +
-                '</div>' +
-                '<div style="max-width: 250px">' +
-                '<div class="clearfix">' +
-                '<div style="max-width: 250px"">' + data.title + ' - ' + data.year + '</div>' +
-                '<div style="max-width: 250px"">' + data.rating + '</div>' +
-                '</div>';
+        if (data.type == 'show') {
+            var markup = '<div class="clearfix">' + '<h2>TV Shows</h2>' +
+            '<div style="max-width: 250px">' +
+            '<img src="' + data.thumb + '" style="max-width: 50px" />' +
+            '</div>' +
+            '<div style="max-width: 250px">' +
+            '<div class="clearfix">' +
+            '<div style="max-width: 250px"">' + data.title + ' - ' + data.year + '</div>' +
+            '<div style="max-width: 250px"">' + data.rating + '</div>' +
+            '</div>';
 
-                // if (data.overview) {
-                //     markup += '<div>' + data.overview + '</div>';
-                // }
-                markup += '</div></div>';
+            // if (data.overview) {
+            //     markup += '<div>' + data.overview + '</div>';
+            // }
+            markup += '</div></div>';
 
-                return markup;
-            }
+            return markup;
         }
         // Music
-        if (data.librarySectionTitle == 'Music') {
-            if (data.type == 'album') {
-                var markup = '<div class="clearfix">' + '<h2>Music</h2>' +
-                '<div style="max-width: 250px">' +
-                '<img src="' + data.thumb + '" style="max-width: 50px" />' +
-                '</div>' +
-                '<div style="max-width: 250px">' +
-                '<div class="clearfix">' +
-                '<div style="max-width: 250px"">' + data.title + '</div>' +
-                '</div>';
+        if (data.type == 'album') {
+            var markup = '<div class="clearfix">' + '<h2>Music</h2>' +
+            '<div style="max-width: 250px">' +
+            '<img src="' + data.thumb + '" style="max-width: 50px" />' +
+            '</div>' +
+            '<div style="max-width: 250px">' +
+            '<div class="clearfix">' +
+            '<div style="max-width: 250px"">' + data.title + '</div>' +
+            '</div>';
 
-                // if (data.overview) {
-                //     markup += '<div>' + data.overview + '</div>';
-                // }
-                markup += '</div></div>';
+            // if (data.overview) {
+            //     markup += '<div>' + data.overview + '</div>';
+            // }
+            markup += '</div></div>';
 
-                return markup;
-            }
+            return markup;
         }
     } else {
         // Movies
@@ -187,7 +181,7 @@ function formatSearch (data) {
 
 function formatSearchSelection (data) {
     if (data.results_from == 'plex_server') {
-        if (data.librarySectionTitle == 'Movies') {
+        if (data.type == 'movie') {
             document.getElementById("title").value = data.title ;
             document.getElementById("year").value = data.year;
             document.getElementById("tmdb").value = data.ratingKey;
@@ -196,7 +190,7 @@ function formatSearchSelection (data) {
             document.getElementById("topic").value = 'movies';
             document.getElementById("vote_average").value = data.rating;
         }
-        if (data.librarySectionTitle == 'TV Shows') {
+        if (data.type == 'show') {
             document.getElementById("title").value = data.title;
             document.getElementById("year").value = data.year;
             document.getElementById("tmdb").value = data.ratingKey;
@@ -205,9 +199,9 @@ function formatSearchSelection (data) {
             document.getElementById("topic").value = 'tv';
             document.getElementById("vote_average").value = data.rating;
         }
-        if (data.librarySectionTitle == 'Music') {
+        if (data.type == 'album') {
             document.getElementById("title").value = data.title;
-            document.getElementById("tmdb").value = data.id;
+            document.getElementById("tmdb").value = data.ratingKey;
             document.getElementById("poster").value = data.thumb;
             document.getElementById("topic").value = 'music';
         }
@@ -241,10 +235,11 @@ function formatSearchSelection (data) {
 }
 
 var $loading = $('#loadingDiv').hide();
+
 $(document)
-    .ajaxStart(function () {
-        $loading.show();
-    })
-    .ajaxStop(function () {
-        $loading.hide();
-    });
+.ajaxStart(function () {
+    $loading.show();
+})
+.ajaxStop(function () {
+    $loading.hide();
+});

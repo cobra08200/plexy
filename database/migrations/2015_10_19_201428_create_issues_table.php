@@ -33,6 +33,7 @@ class CreateIssuesTable extends Migration
             //if it is a tv show, get season/episode
             $table->string('tv_season_number')->nullable(); //season number
             $table->string('tv_episode_number')->nullable(); //episode number
+            $table->string('album_track_number')->nullable(); //episode number
             // $table->string('tv_episode_name')->nullable(); //episode name
             // $table->string('tv_episode_overview')->nullable(); //episode overview
             // $table->string('tv_episode_still_path')->nullable(); //episode still path

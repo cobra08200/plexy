@@ -8,6 +8,7 @@
 @if(Auth::user()->hasRole('admin'))
 <form class="" action="{{ route('update.issue', ['id' => $issue->id]) }}" method="post">
 	{!! csrf_field() !!}
+	Status:
 	<select class="status_option" name="status" onchange="this.form.submit()">
 		@if($issue->status === 'open')
 		<option selected="selected">{{ ucwords($issue->status) }}</option>
@@ -40,33 +41,44 @@
 	</p>
 @endif
 
-<form class="" action="{{ route('delete.issue', ['id' => $issue->id]) }}" method="post">
-	{!! method_field('DELETE') !!}
-	{!! csrf_field() !!}
-	<input type="submit" value="Delete This">
-</form>
-
-{{-- @if($issue->topic == 'music')
+@if($issue->type === 'issue' && !empty($issue->tv_season_number))
 <div class="section group">
 	<div class="col span_1_of_2">
-		Track Listing
+		Season and/or Episode Details: Season {{ $issue->tv_season_number }}
+		@if(!empty($issue->tv_episode_number))
+			- Episode {{ $issue->tv_episode_number }}
+		@endif
 	</div>
 </div>
-@endif --}}
+@endif
+
+@if($issue->type === 'issue' && !empty($issue->album_track_number))
+<div class="section group">
+	<div class="col span_1_of_2">
+		Track: {{ $issue->album_track_number }}
+	</div>
+</div>
+@endif
 
 {{-- Messages--}}
-<div>Messages</div>
+<div>
+	<p>
+		Messages:
+	</p>
+</div>
 
 @if(!empty($issue->issue_description))
-	<p>{{ $issue->created_at->diffForHumans() }} by {{ $issue->user->name }}</p>
-	<p>{{ $issue->issue_description }}</p>
+	<p>
+		{{ $issue->created_at->diffForHumans() }} by {{ $issue->user->name }}: {{ $issue->issue_description }}
+	</p>
 @endif
 
 @if(count($messages) > 0)
 
 @foreach($messages as $message)
-	<p>{{ $message->created_at->diffForHumans() }} by {{ $message->user->name }}</p>
-	<p>{{ $message->body }}</p>
+	<p>
+		{{ $message->created_at->diffForHumans() }} by {{ $message->user->name }}: {{ $message->body }}
+	</p>
 @endforeach
 
 @endif
@@ -77,10 +89,19 @@
 	<textarea rows="3" name="body" placeholder="Type message here..."></textarea>
 	<input type="hidden" name="issue_id" value="{{ $issue->id }}">
 	<input type="hidden" name="user_id" value="{{ $issue->user_id }}">
+	<br>
 	<input type="submit" value="Submit">
 </form>
 {{-- /Add Message --}}
 
 {{-- /Messages--}}
+
+<hr>
+
+<form class="" action="{{ route('delete.issue', ['id' => $issue->id]) }}" method="post">
+	{!! method_field('DELETE') !!}
+	{!! csrf_field() !!}
+	<input type="submit" value="Delete This">
+</form>
 
 @stop

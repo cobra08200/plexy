@@ -129,6 +129,28 @@ class IssueController extends Controller {
 		{
 			if($issue->type == 'issue')
 			{
+				$rules = array(
+					'issue_description'	=> 'required'
+				);
+
+				$validator = Validator::make($request->all(), $rules);
+
+				if($validator->fails())
+				{
+					if($issue->topic == 'tv') {
+						return $this->issue_tv($issue)
+							->with('warning', "Woops.  You need to describe the issue first.");
+					}
+					if($issue->topic == 'music') {
+						return $this->issue_music($issue)
+							->with('warning', "Woops.  You need to describe the issue first.");
+					}
+					if($issue->topic == 'movies') {
+						return $this->issue_movie($issue)
+							->with('warning', "Woops.  You need to describe the issue first.");
+					}
+				}
+
 				$issue->report_option = $request->input('report_option');
 				$issue->issue_description = $request->input('issue_description');
 				// if tv show
@@ -136,10 +158,19 @@ class IssueController extends Controller {
 				{
 					// add extra details to reported issue
 					$issue->tv_season_number = $request->input('season');
-					$issue->tv_episode_number = $request->input('episode');
+					if ($issue->report_option != 'Missing Episode') {
+						$issue->tv_episode_number = $request->input('episode');
+					}
 					// $issue->tv_episode_overview = $request->input('tv_episode_overview');
 					// $issue->tv_episode_still_path = $request->input('still_path');
 					// $issue->vote_average = $request->input('vote_average');
+				}
+				if($issue->topic == 'music')
+				{
+					// add extra details to reported issue
+					if ($issue->report_option != 'Missing Track') {
+						$issue->album_track_number = $request->input('track');
+					}
 				}
 			}
 		}
@@ -221,20 +252,13 @@ class IssueController extends Controller {
 	{
 		$ratingKey = $issue->tmdb;
 
-		$series = app('App\Http\Controllers\plexController')->plexTVShowEpisodes($ratingKey);
+		$series = app('App\Http\Controllers\PlexController')->plexTVShowEpisodes($ratingKey);
 
 		$first_season 	= head($series);
 		$last_season 	= last($series);
 
 		$first_season_number 	= $first_season['parentIndex'];
 		$last_season_number 	= $last_season['parentIndex'];
-
-		// SearchController@tvSeasonEpisodes requires variable $season
-		// I want to pull down the first seasons episodes for the inital view load below
-		// Additional season will load via ajax on the view
-		// $season = $first_season_number;
-
-		// $first_season_episodes = app('App\Http\Controllers\SearchController')->tvSeasonEpisodes($id, $season);
 
 		// if ($request->ajax())
 		// {
@@ -246,20 +270,6 @@ class IssueController extends Controller {
 	{
 		$id = $issue->tmdb;
 
-		// $series = App::make('SearchController')->tvSeries($id);
-
-		// dd($series);
-
-		// $episodes = $series;
-		// unset($episodes['series_info']);
-		// $episodes = array_pluck($episodes, 'episodes');
-		// $episodes_flat = array_flatten($episodes);
-		// $episodes_collection = new Illuminate\Support\Collection($episodes_flat);
-
-		// dd($episodes_collection);
-
-		// $seasons_total = $episodes_collection->last()->season_number;
-
 		// if ($request->ajax())
 		// {
 			return View::make('site/pages/advanced_issues', compact('issue'));
@@ -268,11 +278,11 @@ class IssueController extends Controller {
 
 	public function issue_music($issue)
 	{
-		$id = $issue->tmdb;
+		$ratingKey = $issue->tmdb;
 
-		// $tracks = app('App\Http\Controllers\SearchController')->musicAlbumTracks($id);
+		$album = app('App\Http\Controllers\PlexController')->plexAlbumTracks($ratingKey);
 
-		return View::make('site/pages/advanced_issues', compact('issue', 'tracks'));
+		return View::make('site/pages/advanced_issues', compact('issue', 'album'));
 	}
 
 	public function getIssueView($id)

@@ -21,6 +21,8 @@
     {{-- <img src="{{ asset('assets/img/01-progress.gif') }}" alt="" /> --}}
 </div>
 
+<hr>
+
 @if(count($movie_requests) > 0 )
     @include('site/layouts/partials/issue_request_module', ['module' => $movie_requests, 'header' => 'MOVIE REQUESTS'])
 @endif
