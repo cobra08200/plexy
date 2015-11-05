@@ -279,12 +279,12 @@ class PlexController extends Controller
     {
         $seasonEpisodes = app('App\Http\Controllers\plexController')->plexTVShowEpisodes($ratingKey);
 
-        $array = array_where($seasonEpisodes, function ($key, $value) {
-            dd($key);
-            if ($value['parentIndex'] = $seasonNumber)
-            return $value;
-        });
+        foreach ($seasonEpisodes as $episode) {
+            if ($episode['parentIndex'] == $seasonNumber) {
+                $seasonNumberEpisodes[] = $episode;
+            }
+        }
 
-        return $array;
+        return $seasonNumberEpisodes;
     }
 }

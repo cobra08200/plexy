@@ -58,7 +58,7 @@
 			<select class="episode_option" id="episode_option" name="episode">
 				@for ($i = $first_season_number; $i <= $first_season_number; $i++)
 					@foreach($series as $episode)
-						@if($i == $episode['parentIndex'])
+						@if ($i == $episode['parentIndex'])
 						<option value="{{ $episode['index'] }}" label="Episode {{ $episode['index'] }}">
 						@endif
 						</option>
@@ -130,14 +130,14 @@ $('.season_option').on('change',function()
 {
 	var selectedSeason=$(this).find('option:selected').val();
 	$.ajax({
-		url:'{{ url('search/tv/series/') }}/{{ $issue->tmdb }}/season/'+selectedSeason,
+		url:'{{ url('plex/tv/') }}/{{ $issue->tmdb }}/season/'+selectedSeason+'/episodes',
 		type:'POST',
 		dataType:'json',
 		contentType: "application/json",
 		data: JSON.stringify(selectedSeason),
 		success: function (data) {
 			$('#episode_option').empty();
-		    $.each(data.episodes, function (value) {
+		    $.each(data, function (value) {
 				console.log(value + 1);
 				var newValue = parseInt(value) + 1;
 				$('#episode_option').append('<option value="' + newValue + '">Episode ' + newValue + '</option>');

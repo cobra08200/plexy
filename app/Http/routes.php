@@ -87,6 +87,6 @@ Route::group(['middleware' => ['first.run']], function()
         // Plex TV Show Episodes
         Route::get('plex/tv/{ratingKey}/episodes', ['as' => 'plex.tv.episodes', 'uses' => 'PlexController@plexTVShowEpisodes']);
         // Plex TV Show Season Specific Episodes
-        Route::get('plex/tv/{ratingKey}/season/{seasonNumber}/episodes', ['as' => 'plex.tv.season.episodes', 'uses' => 'PlexController@plexTVShowSeasonEpisodes']);
+        Route::any('plex/tv/{ratingKey}/season/{seasonNumber}/episodes', ['as' => 'plex.tv.season.episodes', 'uses' => 'PlexController@plexTVShowSeasonEpisodes']);
     });
 });
