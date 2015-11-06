@@ -292,6 +292,8 @@ class IssueController extends Controller {
 		// {
 			$issue = Issue::find($id);
 
+			$thumbExtension = last(explode(".", $issue->poster_url));
+
 			if (Issue::where('id', '=', $id)->exists())
 			{
 				$issue = Issue::find($id);
@@ -301,11 +303,7 @@ class IssueController extends Controller {
 				{
 					$messages = Message::where('issue_id', '=', $id)->get();
 
-					// dd($issue);
-
-					// App::make('HomeController')->musicAlbumTracks($params);
-
-					return View::make('site/pages/issues', compact('issue', 'messages'));
+					return View::make('site/pages/issues', compact('issue', 'messages', 'thumbExtension'));
 				}
 			}
 		// }
@@ -316,10 +314,6 @@ class IssueController extends Controller {
 
 	public function getIndex()
 	{
-
-		// $search_url = Request::getQueryString();
-		// parse_str($search_url, $search);
-
 		$users 	= User::all();
 		$user 	= Auth::user();
 		$id 	= Auth::id();
@@ -332,7 +326,6 @@ class IssueController extends Controller {
 			$tv_issues 		= Issue::where('type', '=', 'issue')->where('topic', '=', 'tv')->where('status', '!=', 'closed')->get();
 			$music_requests = Issue::where('type', '=', 'request')->where('topic', '=', 'music')->where('status', '!=', 'closed')->get();
 			$music_issues 	= Issue::where('type', '=', 'issue')->where('topic', '=', 'music')->where('status', '!=', 'closed')->get();
-
 			$closed	= Issue::where('status', '=', 'closed')->paginate(4);
 		} else {
 			$movie_requests = Issue::where('user_id', '=', $id)->where('type', '=', 'request')->where('topic', '=', 'movies')->where('status', '!=', 'closed')->get();
@@ -341,21 +334,8 @@ class IssueController extends Controller {
 			$tv_issues		= Issue::where('user_id', '=', $id)->where('type', '=', 'issue')->where('topic', '=', 'tv')->where('status', '!=', 'closed')->get();
 			$music_requests = Issue::where('user_id', '=', $id)->where('type', '=', 'request')->where('topic', '=', 'music')->where('status', '!=', 'closed')->get();
 			$music_issues	= Issue::where('user_id', '=', $id)->where('type', '=', 'issue')->where('topic', '=', 'music')->where('status', '!=', 'closed')->get();
-
 			$closed	= Issue::where('user_id', '=', $id)->where('status', '=', 'closed')->paginate(4);
 		};
-		// if($user->hasRole('admin') && $request->input('status'))
-		// {
-		// 	$issues 	= Issue::where('status', Request::only('status'))->paginate(10);
-		// }
-		// if($user->hasRole('admin') && $request->input('topic'))
-		// {
-		// 	$issues 	= Issue::where('topic', Request::only('topic'))->paginate(10);
-		// }
-		// if($user->hasRole('admin') && $request->input('status') && $request->input('topic'))
-		// {
-		// 	$issues 	= Issue::where('status', Request::only('status'))->where('topic', Request::only('topic'))->paginate(10);
-		// }
 
 		return View::make('site.pages.home', compact('search', 'users', 'user', 'id', 'movie_requests', 'tv_requests', 'movie_issues', 'tv_issues', 'music_requests', 'music_issues', 'closed', 'bodyClass'));
 	}

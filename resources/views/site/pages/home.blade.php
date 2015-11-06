@@ -8,13 +8,14 @@
 <button type="button" id="show_report" name="button">Report</button>
 <button type="button" id="show_request" name="button">Request</button>
 
-<div id="report">
-@include('site/layouts/partials/select2_report_search')
-<button type="button" id="cancel_report" name="button">Cancel</button>
+<div id="report" style="display:none">
+    @include('site/layouts/partials/select2_report_search')
+    <button type="button" id="cancel_report" name="button">Cancel</button>
 </div>
-<div id="request">
-@include('site/layouts/partials/select2_request_search')
-<button type="button" id="cancel_request" name="button">Cancel</button>
+
+<div id="request" style="display:none">
+    @include('site/layouts/partials/select2_request_search')
+    <button type="button" id="cancel_request" name="button">Cancel</button>
 </div>
 
 <div id="loadingDiv">
@@ -64,8 +65,6 @@
 
 <script>
 
-$("#report").hide();
-$("#request").hide();
 $(document).ready(function(){
     $("#show_report").click(function(){
         $("#report").show();

@@ -3,7 +3,15 @@
 @section('content')
 
 <p>{{ $issue->content }}</p>
+
+@if(Auth::user()->hasRole('admin'))
+{{-- Admin's can force update the thumbnail in case the plex server had the wrong art at the time of being added --}}
+<a href="{{ route('update.plex.thumb.preview', ['ratingKey' => $issue->tmdb, 'thumbExtension' => $thumbExtension]) }}">
+	<img src="{{ $issue->poster_url }}" width="200px" alt="Click to refresh thumbnail from Plex">
+</a>
+@else
 <img src="{{ $issue->poster_url }}" width="200px" alt="{{ $issue->content }}">
+@endif
 
 @if(Auth::user()->hasRole('admin'))
 <form class="" action="{{ route('update.issue', ['id' => $issue->id]) }}" method="post">
@@ -26,9 +34,9 @@
 	</select>
 </form>
 @else
-	<p>
-		Status: {{ ucwords($issue->status) }}
-	</p>
+<p>
+	Status: {{ ucwords($issue->status) }}
+</p>
 @endif
 
 <p>
@@ -36,15 +44,15 @@
 </p>
 
 @if($issue->type === 'issue' && !empty($issue->report_option))
-	<p>
-		Issue: {{ $issue->report_option}}
-	</p>
+<p>
+	Issue: {{ $issue->report_option}}
+</p>
 @endif
 
 @if($issue->type === 'issue' && !empty($issue->tv_season_number))
 <div class="section group">
 	<div class="col span_1_of_2">
-		Season and/or Episode Details: Season {{ $issue->tv_season_number }}
+		Season {{ $issue->tv_season_number }}
 		@if(!empty($issue->tv_episode_number))
 			- Episode {{ $issue->tv_episode_number }}
 		@endif
@@ -61,26 +69,16 @@
 @endif
 
 {{-- Messages--}}
-<div>
-	<p>
-		Messages:
-	</p>
-</div>
+<p>Messages:</p>
 
 @if(!empty($issue->issue_description))
-	<p>
-		{{ $issue->created_at->diffForHumans() }} by {{ $issue->user->name }}: {{ $issue->issue_description }}
-	</p>
+<p>{{ $issue->created_at->diffForHumans() }} by {{ $issue->user->name }}: {{ $issue->issue_description }}</p>
 @endif
 
 @if(count($messages) > 0)
-
 @foreach($messages as $message)
-	<p>
-		{{ $message->created_at->diffForHumans() }} by {{ $message->user->name }}: {{ $message->body }}
-	</p>
+	<p>{{ $message->created_at->diffForHumans() }} by {{ $message->user->name }}: {{ $message->body }}</p>
 @endforeach
-
 @endif
 
 {{-- Add Message --}}
