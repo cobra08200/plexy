@@ -62,11 +62,17 @@ Route::group(['middleware' => ['first.run']], function()
         // Add Message to Issue
         Route::post('message/add/', ['as' => 'message.add', 'uses' => 'MessageController@messageAdd']);
 
+        // Update Issue Description
+        Route::post('issues/update/{id}/message/{messageId}', ['as' => 'update.message', 'uses' => 'MessageController@updateMessage']);
+
         // Return Issue/Request View
         Route::get('issue/{id}', ['as' => 'issue.id', 'uses' => 'IssueController@getIssueView']);
 
         // Update Issue Status
         Route::post('issues/update/{id}', ['as' => 'update.issue', 'uses' => 'IssueController@updateIssueStatus']);
+
+        // Update Issue Description
+        Route::post('issues/update/description/{id}', ['as' => 'update.issue_description', 'uses' => 'IssueController@updateIssueDescription']);
 
         // Delete Issue/Request
         Route::delete('issues/delete/{id}', ['as' => 'delete.issue', 'uses' => 'IssueController@destroyIssue']);
