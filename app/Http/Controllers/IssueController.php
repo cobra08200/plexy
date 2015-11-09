@@ -347,7 +347,38 @@ class IssueController extends Controller {
 		$issue->save();
 
 		return Redirect::to('issue/'.$id)
-			->with('info', "Successfully updated the issue!");;;
+			->with('info', "Successfully updated the issue!");
+	}
+
+	public function updateIssueDescription($id, Request $request)
+	{
+		$issue = Issue::find($id);
+
+		if($request->input('issue_description') === $issue->issue_description)
+		{
+			return back()
+				->with('warning', "If you want to update the description of the issue you need to actually change it!");
+		}
+
+		$rules = array(
+			'issue_description'	=> 'required'
+		);
+
+		$validator = Validator::make($request->all(), $rules);
+
+		if($validator->fails())
+		{
+			return back()
+				->with('warning', "You need to write a description of the issue!");
+		}
+
+		$issue->issue_description = $request->input('issue_description');
+		$issue->save();
+
+		// send update email eventually here
+
+		return Redirect::to('issue/'.$id)
+			->with('info', "Successfully updated the issue description!");
 	}
 
 	public function destroyIssue($id)
@@ -356,7 +387,7 @@ class IssueController extends Controller {
 		$issue->delete();
 
 		return Redirect::to('/')
-			->with('info', "Successfully deleted the issue!");;
+			->with('info', "Successfully deleted the issue!");
 	}
 
 }

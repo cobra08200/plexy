@@ -90,4 +90,37 @@ class MessageController extends Controller
 
         return Redirect::back();
     }
+
+    public function updateMessage($id, $messageId, Request $request)
+    {
+        $issue = Issue::find($id);
+        $message = Message::find($messageId);
+
+        if($request->input('message_body') === $message->body)
+        {
+            return back()
+                ->with('warning', "If you want to update the message you need to actually change it!");
+        }
+
+        $rules = array(
+            'message_body'	=> 'required'
+        );
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if($validator->fails())
+        {
+            return back()
+                ->with('warning', "You need to write a message!");
+        }
+
+        $message->body = $request->input('message_body');
+        $message->save();
+
+        // Send update email eventually here
+
+        return Redirect::to('issue/'.$id)
+            ->with('info', "Successfully updated the message!");
+    }
+
 }

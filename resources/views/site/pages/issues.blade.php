@@ -4,8 +4,8 @@
 
 <p>{{ $issue->content }}</p>
 
-@if(Auth::user()->hasRole('admin'))
 {{-- Admin's can force update the thumbnail in case the plex server had the wrong art at the time of being added --}}
+@if(Auth::user()->hasRole('admin'))
 <a href="{{ route('update.plex.thumb.preview', ['ratingKey' => $issue->tmdb, 'thumbExtension' => $thumbExtension]) }}">
 	<img src="{{ $issue->poster_url }}" width="200px" alt="Click to refresh thumbnail from Plex">
 </a>
@@ -72,12 +72,30 @@
 <p>Messages:</p>
 
 @if(!empty($issue->issue_description))
-<p>{{ $issue->created_at->diffForHumans() }} by {{ $issue->user->name }}: {{ $issue->issue_description }}</p>
+<div class="view_message">
+	{{ $issue->created_at->diffForHumans() }} by {{ $issue->user->name }}: {{ $issue->issue_description }}
+	<button type="button" name="button" class="edit_message">Edit</button>
+</div>
+<form class="edit_message_input" action="{{ route('update.issue_description', ['id' => $issue->id]) }}" style="display: none;" method="post">
+	{!! csrf_field() !!}
+	<input type="text" name="issue_description" value="{{ $issue->issue_description }}">
+	<button type="submit" name="button">Submit</button>
+	<button type="button" name="button" class="cancel">Cancel</button>
+</form>
 @endif
 
-@if(count($messages) > 0)
+@if(!empty($messages))
 @foreach($messages as $message)
-	<p>{{ $message->created_at->diffForHumans() }} by {{ $message->user->name }}: {{ $message->body }}</p>
+<div class="view_message">
+	{{ $message->created_at->diffForHumans() }} by {{ $message->user->name }}: {{ $message->body }}
+	<button type="button" name="button" class="edit_message">Edit</button>
+</div>
+<form class="edit_message_input" action="{{ route('update.message', ['id' => $issue->id, 'messageId' => $message->id]) }}" style="display: none;" method="post">
+	{!! csrf_field() !!}
+	<input type="text" name="message_body" value="{{ $message->body }}">
+	<button type="submit" name="button">Submit</button>
+	<button type="button" name="button" class="cancel">Cancel</button>
+</form>
 @endforeach
 @endif
 
@@ -101,5 +119,27 @@
 	{!! csrf_field() !!}
 	<input type="submit" value="Delete This">
 </form>
+
+@stop
+
+@section('scripts')
+
+<script>
+
+$(function() {
+    $(".edit_message").on('click', function() {
+        $(this).parent().toggle();
+        $(this).parent().next(".edit_message_input").toggle();
+    });
+})
+
+$(function() {
+    $(".cancel").on('click', function() {
+        $(this).parent().toggle();
+        $(this).parent().prev(".view_message").toggle();
+    });
+})
+
+</script>
 
 @stop
