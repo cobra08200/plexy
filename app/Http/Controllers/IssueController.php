@@ -292,6 +292,10 @@ class IssueController extends Controller {
 		// {
 			$issue = Issue::find($id);
 
+			if(empty($issue)) {
+				return Redirect::to('/');
+			}
+
 			$thumbExtension = last(explode(".", $issue->poster_url));
 
 			if (Issue::where('id', '=', $id)->exists())
