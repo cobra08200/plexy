@@ -15,40 +15,44 @@ return [
     */
 
     'mailgun' => [
-        'domain' => env('MAILGUN_DOMAIN'),
-        'secret' => env('MAILGUN_SECRET'),
+        'domain'    => env('MAILGUN_DOMAIN'),
+        'secret'    => env('MAILGUN_SECRET'),
     ],
 
     'mandrill' => [
-        'secret' => env('MANDRILL_SECRET'),
+        'secret'    => env('MANDRILL_SECRET'),
     ],
 
     'ses' => [
-        'key'    => env('SES_KEY'),
-        'secret' => env('SES_SECRET'),
-        'region' => 'us-east-1',
+        'key'       => env('SES_KEY'),
+        'secret'    => env('SES_SECRET'),
+        'region'    => 'us-east-1',
     ],
 
     'stripe' => [
-        'model'  => App\User::class,
-        'key'    => env('STRIPE_KEY'),
-        'secret' => env('STRIPE_SECRET'),
+        'model'     => App\User::class,
+        'key'       => env('STRIPE_KEY'),
+        'secret'    => env('STRIPE_SECRET'),
+    ],
+
+    'email' => [
+        'from'      => env('MAIL_FROM_ADDRESS'),
     ],
 
     'tmdb' => [
-      'token'   => env('TMDB_TOKEN'),
+        'token'     => env('TMDB_TOKEN'),
     ],
 
     'spotify' => [
-      'id'      => env('SPOTIFY_ID'),
-      'secret'  => env('SPOTIFY_SECRET'),
+        'id'        => env('SPOTIFY_ID'),
+        'secret'    => env('SPOTIFY_SECRET'),
     ],
 
     'plex' => [
-      'username'=> env('PLEX_USERNAME'),
-      'password'=> env('PLEX_PASSWORD'),
-      'token'   => env('PLEX_TOKEN'),
-      'url'     => env('PLEX_SERVER_URL'),
+        'username'  => env('PLEX_USERNAME'),
+        'password'  => env('PLEX_PASSWORD'),
+        'token'     => env('PLEX_TOKEN'),
+        'url'       => env('PLEX_SERVER_URL'),
     ],
 
 ];

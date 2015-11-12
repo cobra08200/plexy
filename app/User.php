@@ -38,6 +38,46 @@ class User extends Model implements AuthenticatableContract,
 	protected $hidden = ['password', 'remember_token'];
 
 	/**
+    * Boot the model.
+    *
+    * @return void
+    */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            $user->token = str_random(30);
+        });
+    }
+
+	/**
+	* Set the password attribute.
+	*
+	* @param string $password
+	*/
+	public function setPasswordAttribute($password)
+	{
+		$this->attributes['password'] = bcrypt($password);
+	}
+
+	/**
+	* Confirm the user.
+	*
+	* @return void
+	*/
+	public function confirmEmail()
+	{
+		$roles = array_fetch(Role::all()->toArray(), 'name');
+
+		$this->verified = true;
+		$this->token = null;
+		$this->roles()->attach($this->getIdInArray($roles, 'user'));
+
+		$this->save();
+	}
+
+	/**
 	* Get the messages a user has
 	*/
 	public function messages()
@@ -109,12 +149,10 @@ class User extends Model implements AuthenticatableContract,
 		switch ($title) {
 			case 'super_admin':
 			$assigned_roles[] = $this->getIdInArray($roles, 'super_admin');
-	//  $assigned_roles[] = $this->getIdInArray($roles, 'delete_customer');
 			case 'admin':
 			$assigned_roles[] = $this->getIdInArray($roles, 'admin');
 			case 'user':
 			$assigned_roles[] = $this->getIdInArray($roles, 'user');
-	//  $assigned_roles[] = $this->getIdInArray($roles, 'redeem_points');
 			break;
 	//  default:
 	//  throw new \Exception("The user status entered does not exist");

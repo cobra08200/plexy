@@ -12,13 +12,14 @@ Route::group(['middleware' => ['blocked']], function()
 Route::group(['middleware' => ['first.run']], function()
 {
     // Authentication routes...
-    Route::get('auth/login', ['as' => 'login', 'uses' => 'Auth\AuthController@getLogin']);
-    Route::post('auth/login', 'Auth\AuthController@postLogin');
-    Route::get('auth/logout', ['as' => 'logout', 'uses' => 'Auth\AuthController@getLogout']);
+    Route::get('login', ['as' => 'login', 'uses' => 'SessionsController@login']);
+    Route::post('login', 'SessionsController@postLogin');
+    Route::get('logout', ['as' => 'logout', 'uses' => 'SessionsController@logout']);
 
     // Registration routes...
-    Route::get('auth/register', 'Auth\AuthController@getRegister');
-    Route::post('auth/register', 'Auth\AuthController@postRegister');
+    Route::get('register', ['as' => 'register', 'uses' => 'RegistrationController@register']);
+    Route::post('register', 'RegistrationController@postRegister');
+    Route::get('register/confirm/{token}', ['as' => 'register.confirm', 'uses' => 'RegistrationController@confirmEmail']);
 
     // Routes That Require Authentication
     Route::group(['middleware' => ['auth']], function()
