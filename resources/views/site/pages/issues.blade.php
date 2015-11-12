@@ -88,14 +88,16 @@
 @foreach($messages as $message)
 <div class="view_message">
 	{{ $message->created_at->diffForHumans() }} by {{ $message->user->name }}: {{ $message->body }}
-	<button type="button" name="button" class="edit_message">Edit</button>
-</div>
-<form class="edit_message_input" action="{{ route('update.message', ['id' => $issue->id, 'messageId' => $message->id]) }}" style="display: none;" method="post">
-	{!! csrf_field() !!}
-	<input type="text" name="message_body" value="{{ $message->body }}">
-	<button type="submit" name="button">Submit</button>
-	<button type="button" name="button" class="cancel">Cancel</button>
-</form>
+	@if($message['user_id'] === Auth::id() || Auth::user()->hasRole('admin'))
+		<button type="button" name="button" class="edit_message">Edit</button>
+	</div>
+	<form class="edit_message_input" action="{{ route('update.message', ['id' => $issue->id, 'messageId' => $message->id]) }}" style="display: none;" method="post">
+		{!! csrf_field() !!}
+		<input type="text" name="message_body" value="{{ $message->body }}">
+		<button type="submit" name="button">Submit</button>
+		<button type="button" name="button" class="cancel">Cancel</button>
+	</form>
+	@endif
 @endforeach
 @endif
 

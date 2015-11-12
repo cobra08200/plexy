@@ -5,7 +5,7 @@ var movies = new Bloodhound({
 	queryTokenizer: Bloodhound.tokenizers.whitespace,
 	limit: 8,
 	remote: {
-		@if(App::environment('production'))
+		@if (env('APP_ENV') == 'production')
 		url: '{{ URL::to('search/movie', $secure) }}/%QUERY',
 		@else
 		url: '{{ URL::to('search/movie') }}/%QUERY',
@@ -18,7 +18,7 @@ var movies = new Bloodhound({
         					tmdb: movie.id,
         					value: movie.title,
         					year: (movie.release_date !== null ? movie.release_date.substr(0, 4) : ''),
-							@if(App::environment('production'))
+							@if (env('APP_ENV') == 'production')
                             poster_path: (movie.poster_path !== null ? 'https://image.tmdb.org/t/p/w780' + movie.poster_path : '{{secure_asset('assets/img/no-poster.jpg')}}'),
         					backdrop_path: (movie.backdrop_path !== null ? 'https://image.tmdb.org/t/p/w780' + movie.backdrop_path : '{{secure_asset('assets/img/no-backdrop.jpg')}}'),
 							@else
@@ -42,7 +42,7 @@ var tvshows = new Bloodhound({
 	queryTokenizer: Bloodhound.tokenizers.whitespace,
 	limit: 8,
 	remote: {
-		@if(App::environment('production'))
+		@if (env('APP_ENV') == 'production')
 		url: '{{ URL::to('search/tv', $secure) }}/%QUERY',
 		@else
 		url: '{{ URL::to('search/tv') }}/%QUERY',
@@ -55,7 +55,7 @@ var tvshows = new Bloodhound({
         					tmdb: tvshow.id,
         					value: tvshow.name,
         					year: (tvshow.first_air_date !== null ? tvshow.first_air_date.substr(0, 4) : ''),
-                            @if(App::environment('production'))
+                            @if (env('APP_ENV') == 'production')
         					poster_path: (tvshow.poster_path !== null ? 'https://image.tmdb.org/t/p/w780' + tvshow.poster_path : '{{secure_asset('assets/img/no-poster.jpg')}}'),
         					backdrop_path: (tvshow.backdrop_path !== null ? 'https://image.tmdb.org/t/p/w780' + tvshow.backdrop_path : '{{asset('assets/img/no-backdrop.jpg')}}'),
                             @else
@@ -79,7 +79,7 @@ var albums = new Bloodhound({
 	queryTokenizer: Bloodhound.tokenizers.whitespace,
 	limit: 8,
 	remote: {
-		@if(App::environment('production'))
+		@if (env('APP_ENV') == 'production')
 		url: '{{ URL::to('search/music/album', $secure) }}/%QUERY',
 		@else
 		url: '{{ URL::to('search/music/album') }}/%QUERY',

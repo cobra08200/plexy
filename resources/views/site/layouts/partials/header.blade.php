@@ -6,7 +6,7 @@
 <title>Plexy</title>
 
 
-@if(App::environment() == 'production')
+@if (env('APP_ENV') == 'production')
 <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
 {{-- <link rel="stylesheet" href="{{secure_asset('assets/stylesheets/css/reset.css')}}"> --}}
 {{-- <link rel="stylesheet" href="{{secure_asset('assets/stylesheets/css/normalize.css')}}"> --}}

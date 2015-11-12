@@ -88,7 +88,7 @@
 					{{--
 					<tr>
 						<td class="container-padding header" align="left" style="font-family:Helvetica, Arial, sans-serif;font-size:24px;font-weight:bold;padding-bottom:12px;color:#DF4726;padding-left:24px;padding-right:24px">
-							{{ $title }}
+							{{ $issue['content'] }}
 						</td>
 					</tr>
 					--}}
@@ -97,7 +97,7 @@
 							<br>
 
 							<div class="title" style="font-family:Helvetica, Arial, sans-serif;font-size:18px;font-weight:600;color:#374550">
-								New message posted on {{ $title }}
+								New message posted on {{ $issue['content'] }}
 							</div>
 							<br>
 
@@ -111,14 +111,10 @@
 								</a>
 								--}}
 								<center>
-									<img src="{{ $poster_url }}">
+									<img src="{{ $issue['poster_url'] }}">
 								</center>
 								<br><br>
-								@if(Auth::user()->id == 1)
-								<h2>{{ $admin_username }} said: {{ $comment }}</h2>
-								@else
-								<h2>{{ $user_username }} said: {{ $comment }}</h2>
-								@endif
+								<h2>{{ $user['name'] }} said: {{ $comment['body'] }}</h2>
 								<br><br>
 							</div>
 
@@ -138,7 +134,7 @@
 								Springfield, MA 12345<br>
 							</span>
 							--}}
-							<a href="http://help.ehumps.me" style="color:#aaaaaa">plexy.ehumps.me</a><br>
+							<a href="http://plexy.ehumps.me" style="color:#aaaaaa">plexy.ehumps.me</a><br>
 
 							<br><br>
 

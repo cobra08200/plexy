@@ -8,6 +8,7 @@ use Session;
 use App\Issue;
 use App\User;
 use App\Message;
+use App\Mailers\AppMailer;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
@@ -21,7 +22,7 @@ class IssueController extends Controller {
 	*
 	* URL: search/submit
 	*/
-	public function searchSubmit(Request $request)
+	public function searchSubmit(Request $request, AppMailer $mailer)
 	{
 		// dd($request->all());
 
@@ -95,10 +96,10 @@ class IssueController extends Controller {
 		}
 
 		$report_to_request_checker = Issue::where('type', '=', 'issue')
-		->where('tmdb', '=', $request->input('tmdb'))
-		->where('status', '!=', 'closed')
-		->where('user_id', '=', Auth::id())
-		->count();
+			->where('tmdb', '=', $request->input('tmdb'))
+			->where('status', '!=', 'closed')
+			->where('user_id', '=', Auth::id())
+			->count();
 
 		// if ($report_to_request_checker > 0)
 		// {
@@ -207,42 +208,27 @@ class IssueController extends Controller {
 
 		$issue->save();
 
-		if (config('app_env') == ('production'))
+		if (env('APP_ENV') == 'production')
 		{
 			// send pusher notification to admin
-			curl_setopt_array($ch = curl_init(), array(
-				CURLOPT_URL => "https://api.pushover.net/1/messages.json",
-				CURLOPT_POSTFIELDS => array(
-					"token" => config('services.pushover.token'),
-					"user" => config('services.pushover.user'),
-					"message" => Auth::user()->username." added ". $issue->content,
-				),
-				CURLOPT_SAFE_UPLOAD => true,
-			));
-			curl_exec($ch);
-			curl_close($ch);
+			// curl_setopt_array($ch = curl_init(), array(
+			// 	CURLOPT_URL => "https://api.pushover.net/1/messages.json",
+			// 	CURLOPT_POSTFIELDS => array(
+			// 		"token" => config('services.pushover.token'),
+			// 		"user" => config('services.pushover.user'),
+			// 		"message" => Auth::user()->username." added ". $issue->content,
+			// 	),
+			// 	CURLOPT_SAFE_UPLOAD => true,
+			// ));
+			// curl_exec($ch);
+			// curl_close($ch);
 
 			// send email
-			$username 		= Auth::user()->username;
-			$email 			= Auth::user()->email;
-			$issue_id 		= $issue->id;
-			$poster_url 	= $issue->poster_url;
-			$title 			= $issue->content;
 
-			$data = array(
-				'user' 			=> Auth::user(),
-				'username' 		=> $username,
-				'email' 		=> $email,
-				'issue_id' 		=> $issue_id,
-				'poster_url' 	=> $poster_url,
-				'title' 		=> $title
-			);
+			$user = Auth::user();
 
-			Mail::later(5, 'emails.newrequest', $data, function($message) use ($username, $email, $issue_id, $poster_url, $title)
-			{
-				$message->from('plexy@ehumps.me', 'Plexy');
-				$message->to($email, $username)->subject('Plexy - Ticket #'.$issue_id);
-			});
+			$mailer->sendNewRequestEmailTo($user, $issue);
+
 		}
 		//return after form submit
 		return Redirect::to('/');
@@ -292,12 +278,6 @@ class IssueController extends Controller {
 		// {
 			$issue = Issue::find($id);
 
-			if(empty($issue)) {
-				return Redirect::to('/');
-			}
-
-			$thumbExtension = last(explode(".", $issue->poster_url));
-
 			if (Issue::where('id', '=', $id)->exists())
 			{
 				$issue = Issue::find($id);
@@ -306,6 +286,7 @@ class IssueController extends Controller {
 				if (Auth::user()->hasRole('admin') || Auth::id() == $issue->user_id)
 				{
 					$messages = Message::where('issue_id', '=', $id)->get();
+					$thumbExtension = last(explode(".", $issue->poster_url));
 
 					return View::make('site/pages/issues', compact('issue', 'messages', 'thumbExtension'));
 				}

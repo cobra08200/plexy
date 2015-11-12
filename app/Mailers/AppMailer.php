@@ -3,6 +3,8 @@
 namespace App\Mailers;
 
 use App\User;
+use App\Issue;
+use App\Message;
 use Illuminate\Contracts\Mail\Mailer;
 
 class AppMailer
@@ -64,6 +66,39 @@ class AppMailer
         $this->to = $user->email;
         $this->view = 'site.emails.confirm';
         $this->data = compact('user');
+        $this->subject = 'Plexy - Email Confirmation';
+
+        $this->deliver();
+    }
+
+    /**
+     * Deliver the newly requested confirmation.
+     *
+     * @param  User $user, Issue $issue
+     * @return void
+     */
+    public function sendNewRequestEmailTo(User $user, $issue)
+    {
+        $this->to = $user->email;
+        $this->view = 'site.emails.newRequest';
+        $this->data = compact('user', 'issue');
+        $this->subject = 'Plexy - Ticket #'.$issue['id'];
+
+        $this->deliver();
+    }
+
+    /**
+     * Deliver the newly requested confirmation.
+     *
+     * @param  User $user
+     * @return void
+     */
+    public function sendNewMessageEmailTo(User $user, $issue, $comment)
+    {
+        $this->to = $user->email;
+        $this->view = 'site.emails.newMessage';
+        $this->data = compact('user', 'issue', 'comment');
+        $this->subject = 'Plexy - New Message - Ticket #'.$issue['id'];
 
         $this->deliver();
     }
@@ -77,7 +112,8 @@ class AppMailer
     {
         $this->mailer->send($this->view, $this->data, function ($message) {
             $message->from($this->from, 'Plexy')
-                    ->to($this->to);
+                ->to($this->to)
+                ->subject($this->subject);
         });
     }
 }

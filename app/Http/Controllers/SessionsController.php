@@ -13,7 +13,7 @@ class SessionsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('guest', ['except' => 'logout']);
     }
 
     /**
@@ -34,17 +34,19 @@ class SessionsController extends Controller
      */
     public function postLogin(Request $request)
     {
-        $this->validate($request, ['email' => 'required|email', 'password' => 'required']);
+        $this->validate($request, [
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
 
         if ($this->signIn($request)) {
-            // flash('Welcome back!');
 
-            return redirect()->intended('/home');
+            return redirect()->intended('/home')
+                ->with('info', "Welcome back!");
         }
 
-        // flash('Could not sign you in.');
-
-        return redirect()->back();
+        return redirect()->back()
+            ->with('warning', "Could not sign you in.");
     }
 
     /**
@@ -56,9 +58,8 @@ class SessionsController extends Controller
     {
         Auth::logout();
 
-        // flash('You have now been signed out. See ya.');
-
-        return redirect('login');
+        return redirect('login')
+            ->with('info', "You have now been signed out. See ya.");
     }
 
     /**

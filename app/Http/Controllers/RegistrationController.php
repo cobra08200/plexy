@@ -46,9 +46,8 @@ class RegistrationController extends Controller
 
         $mailer->sendEmailConfirmationTo($user);
 
-        // flash('Please confirm your email address.');
-
-        return redirect()->back();
+        return redirect()->back()
+            ->with('warning', "Please confirm your email address.");
     }
 
     /**
@@ -61,8 +60,7 @@ class RegistrationController extends Controller
     {
         User::whereToken($token)->firstOrFail()->confirmEmail();
 
-        // flash('You are now confirmed. Please login.');
-
-        return redirect('login');
+        return redirect('login')
+            ->with('info', "You are now confirmed. Please login.");
     }
 }

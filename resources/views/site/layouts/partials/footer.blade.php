@@ -1,5 +1,5 @@
 
-@if(App::environment() == 'production')
+@if (env('APP_ENV') == 'production')
 <script src="{{secure_asset('assets/js/jquery-2.1.1.js')}}"></script>
 {{-- <script src="{{secure_asset('assets/js/main.js')}}"></script> --}}
 {{-- <script src="{{secure_asset('assets/js/fittext.js')}}"></script> --}}

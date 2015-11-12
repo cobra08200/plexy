@@ -147,8 +147,6 @@ class User extends Model implements AuthenticatableContract,
 		$roles = array_fetch(Role::all()->toArray(), 'name');
 
 		switch ($title) {
-			case 'super_admin':
-			$assigned_roles[] = $this->getIdInArray($roles, 'super_admin');
 			case 'admin':
 			$assigned_roles[] = $this->getIdInArray($roles, 'admin');
 			case 'user':
