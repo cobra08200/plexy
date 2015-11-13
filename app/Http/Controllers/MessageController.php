@@ -46,7 +46,7 @@ class MessageController extends Controller
 
         $message->save();
 
-        if (env('APP_ENV') == 'production')
+        if(env('APP_ENV') == 'production')
         {
             $comment = $message;
             // send email to opposite end of conversation

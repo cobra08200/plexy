@@ -84,13 +84,13 @@ class IssueController extends Controller {
 
 			// redirect our user back to the form with the errors from the validator
 			// current user already requested this
-			if ($requester_checker_current_user > 0) {
+			if($requester_checker_current_user > 0) {
 				return Redirect::back()
 					->with('info', "You already requested this.");
 			}
 
 			// someone else requested this
-			if ($requester_checker_anyone > 0) {
+			if($requester_checker_anyone > 0) {
 				return Redirect::back()
 					->with('info', "Someone else already requested this, I'm working on it.");
 			}
@@ -283,12 +283,12 @@ class IssueController extends Controller {
 		// {
 			$issue = Issue::find($id);
 
-			if (Issue::where('id', '=', $id)->exists())
+			if(Issue::where('id', '=', $id)->exists())
 			{
 				$issue = Issue::find($id);
 
 				// security to make sure logged in user is admin OR ticket owner
-				if (Auth::user()->hasRole('admin') || Auth::id() == $issue->user_id)
+				if(Auth::user()->hasRole('admin') || Auth::id() == $issue->user_id)
 				{
 					$messages = Message::where('issue_id', '=', $id)->get();
 					$thumbExtension = last(explode(".", $issue->poster_url));

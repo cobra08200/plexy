@@ -18,7 +18,7 @@ class PlexController extends Controller
         $username = config('services.plex.username');
         $password = config('services.plex.password');
         $header = array(
-            'Content-Type: application/xml; charset=utf-8',
+            'Content-Type: application/json',
             'Content-Length: 0',
             'X-Plex-Client-Identifier: 8334-8A72-4C28-FDAF-29AB-479E-4069-C3A3',
             'X-Plex-Product: Test',
@@ -46,46 +46,15 @@ class PlexController extends Controller
             'X-Plex-Token' => config('services.plex.token')
         );
 
-        $ch = curl_init();
+        $url = "https://plex.tv/pms/friends/all?" . http_build_query($parameters);
 
-        curl_setopt($ch, CURLOPT_URL, "https://plex.tv/pms/friends/all?" . http_build_query($parameters));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HEADER, FALSE);
-
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-          "Accept: application/json"
-        ));
-
-        $response = curl_exec($ch);
-        curl_close($ch);
-
-        $xml = simplexml_load_string($response);
+        $xml = simplexml_load_string($this->c($url));
 
         $json = json_encode($xml);
 
         $array = json_decode($json, true);
 
-        $friends = array_only($array, 'User');
-
-        // $flat = array_only($friends, '@attributes');
-
-        return $friends;
-        return $flat;
-
-        $i = 2;
-        echo count($friends);
-        foreach($friends as $friend) {
-            echo "<pre>";
-            echo $friend[$i]['@attributes']['email'];
-            echo "</pre>";
-            $i++;
-        }
-
-        dd('idk');
-
-        return $friends;
-
-        return json_decode($json, true);
+        return $array['User'];
     }
 
     public function plexServerInfo()
@@ -94,20 +63,9 @@ class PlexController extends Controller
             'X-Plex-Token' => config('services.plex.token')
         );
 
-        $ch = curl_init();
+        $url = config('services.plex.url') . "?" . http_build_query($parameters);
 
-        curl_setopt($ch, CURLOPT_URL, config('services.plex.url') . "?" . http_build_query($parameters));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HEADER, FALSE);
-
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-          "Accept: application/json"
-        ));
-
-        $response = curl_exec($ch);
-        curl_close($ch);
-
-        return json_decode($response, true);
+        return json_decode($this->c($url), true);
     }
 
     public function plexServerSessions()
@@ -116,20 +74,9 @@ class PlexController extends Controller
             'X-Plex-Token' => config('services.plex.token')
         );
 
-        $ch = curl_init();
+        $url = config('services.plex.url') . "status/sessions?" . http_build_query($parameters);
 
-        curl_setopt($ch, CURLOPT_URL, config('services.plex.url') . "status/sessions?" . http_build_query($parameters));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HEADER, FALSE);
-
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-          "Accept: application/json"
-        ));
-
-        $response = curl_exec($ch);
-        curl_close($ch);
-
-        return json_decode($response, true);
+        return json_decode($this->c($url), true);
     }
 
     public function plexServerSearch(Request $request)
@@ -139,20 +86,9 @@ class PlexController extends Controller
             'query'         => $request->input('query'),
         );
 
-        $ch = curl_init();
+        $url = config('services.plex.url') . "/search?" . http_build_query($parameters);
 
-        curl_setopt($ch, CURLOPT_URL, config('services.plex.url') . "/search?" . http_build_query($parameters));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HEADER, FALSE);
-
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-          "Accept: application/json"
-        ));
-
-        $response = curl_exec($ch);
-        curl_close($ch);
-
-        $array = json_decode($response, true);
+        $array = json_decode($this->c($url), true);
 
         // Add id key to array so Select2 can highlight and select.
         $id = 1;
@@ -272,20 +208,9 @@ class PlexController extends Controller
             'X-Plex-Token'  => config('services.plex.token'),
         );
 
-        $ch = curl_init();
+        $url = config('services.plex.url') . "/library/metadata/" . $ratingKey . "/allLeaves?" . http_build_query($parameters);
 
-        curl_setopt($ch, CURLOPT_URL, config('services.plex.url') . "/library/metadata/" . $ratingKey . "/allLeaves?" . http_build_query($parameters));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HEADER, FALSE);
-
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-          "Accept: application/json"
-        ));
-
-        $response = curl_exec($ch);
-        curl_close($ch);
-
-        $array = json_decode($response, true);
+        $array = json_decode($this->c($url), true);
 
         return $array['_children'];
     }
@@ -309,9 +234,18 @@ class PlexController extends Controller
             'X-Plex-Token'  => config('services.plex.token'),
         );
 
+        $url = config('services.plex.url') . "/library/metadata/" . $ratingKey . "/children?" . http_build_query($parameters);
+
+        $array = json_decode($this->c($url), true);
+
+        return $array['_children'];
+    }
+
+    public function c($url)
+    {
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, config('services.plex.url') . "/library/metadata/" . $ratingKey . "/children?" . http_build_query($parameters));
+        curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -322,8 +256,6 @@ class PlexController extends Controller
         $response = curl_exec($ch);
         curl_close($ch);
 
-        $array = json_decode($response, true);
-
-        return $array['_children'];
+        return $response;
     }
 }
