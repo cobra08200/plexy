@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-// use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -29,20 +28,9 @@ class SearchController extends Controller
             'query'             => $request->input('query')
         );
 
-        $ch = curl_init();
+        $url = "https://api.themoviedb.org/3/search/movie?" . http_build_query($parameters);
 
-        curl_setopt($ch, CURLOPT_URL, "https://api.themoviedb.org/3/search/movie?" . http_build_query($parameters));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HEADER, FALSE);
-
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-          "Accept: application/json"
-        ));
-
-        $response = curl_exec($ch);
-        curl_close($ch);
-
-        $array = json_decode($response, true);
+        $array = json_decode($this->c($url), true);
 
         $movie_array = array();
 
@@ -62,20 +50,9 @@ class SearchController extends Controller
             'query'             => $request->input('query')
         );
 
-        $ch = curl_init();
+        $url = "https://api.themoviedb.org/3/search/tv?" . http_build_query($parameters);
 
-        curl_setopt($ch, CURLOPT_URL, "https://api.themoviedb.org/3/search/tv?" . http_build_query($parameters));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HEADER, FALSE);
-
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-          "Accept: application/json"
-        ));
-
-        $response = curl_exec($ch);
-        curl_close($ch);
-
-        $array = json_decode($response, true);
+        $array = json_decode($this->c($url), true);
 
         $tv_array = array();
 
@@ -88,52 +65,26 @@ class SearchController extends Controller
 
     public function tvSeries($id)
     {
-        // base series info
         $parameters = array(
             'api_key' => config('services.tmdb.token')
         );
 
-        $ch = curl_init();
+        $url = "https://api.themoviedb.org/3/tv/" . $id . "?" . http_build_query($parameters);
 
-        curl_setopt($ch, CURLOPT_URL, "https://api.themoviedb.org/3/tv/" . $id . "?" . http_build_query($parameters));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HEADER, FALSE);
-
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-          "Accept: application/json"
-        ));
-
-        $series_response = curl_exec($ch);
-        curl_close($ch);
-
-        // $series_json_decoded = json_decode($series_response, true);
-        $response = json_decode($series_response);
+        $response = json_decode($this->c($url), true);
 
         return $response;
-        // return json_encode($response);
     }
 
     public function tvSeasonEpisodes($id, $season)
     {
-        // series episode info
         $parameters = array(
             'api_key' => config('services.tmdb.token')
         );
 
-        $ch = curl_init();
+        $url = "https://api.themoviedb.org/3/tv/" . $id . "/season/". $season . "?" . http_build_query($parameters);
 
-        curl_setopt($ch, CURLOPT_URL, "https://api.themoviedb.org/3/tv/" . $id . "/season/". $season . "?" . http_build_query($parameters));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HEADER, FALSE);
-
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-          "Accept: application/json"
-        ));
-
-        $episodes_response = curl_exec($ch);
-        curl_close($ch);
-
-        $response = json_decode($episodes_response, true);
+        $response = json_decode($this->c($url), true);
 
         $episodes = array_only($response, 'episodes');
 
@@ -150,25 +101,15 @@ class SearchController extends Controller
             'q'         => $request->input('query')
         );
 
-        $ch = curl_init();
+        $url = "https://api.spotify.com/v1/search?" . http_build_query($parameters);
 
-        curl_setopt($ch, CURLOPT_URL, "https://api.spotify.com/v1/search?" . http_build_query($parameters));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HEADER, FALSE);
-
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-          "Accept: application/json"
-        ));
-
-        $response = curl_exec($ch);
-        curl_close($ch);
+        $response = $this->c($url);
 
         return $response;
     }
 
     public function musicAlbum(Request $request)
     {
-
         $parameters = array(
             'client_id' => config('services.tmdb.token'),
             'type'      => 'album',
@@ -177,20 +118,9 @@ class SearchController extends Controller
             'q'         => $request->input('query')
         );
 
-        $ch = curl_init();
+        $url = "https://api.spotify.com/v1/search?" . http_build_query($parameters);
 
-        curl_setopt($ch, CURLOPT_URL, "https://api.spotify.com/v1/search?" . http_build_query($parameters));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HEADER, FALSE);
-
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-          "Accept: application/json"
-        ));
-
-        $response = curl_exec($ch);
-        curl_close($ch);
-
-        $array = json_decode($response, true);
+        $array = json_decode($this->c($url), true);
 
         $music_album_array = array();
 
@@ -203,18 +133,20 @@ class SearchController extends Controller
 
     public function musicAlbumTracks($id)
     {
+        $url = "https://api.spotify.com/v1/albums/" . $id;
 
-        // $parameters = array(
-        //     'client_id' => config('services.tmdb.token'),
-        //     'type'      => 'album',
-        //     'limit'     => '8',
-        //     'market'    => 'US',
-        //     'q'         => $query
-        // );
+        $tracks_response = json_decode($this->c($url), true);
 
+        $tracks = array_only($tracks_response, 'tracks');
+
+        return $tracks['tracks']['items'];
+    }
+
+    public function c($url)
+    {
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, "https://api.spotify.com/v1/albums/" . $id);
+        curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -225,10 +157,6 @@ class SearchController extends Controller
         $response = curl_exec($ch);
         curl_close($ch);
 
-        $tracks_response = json_decode($response, true);
-
-        $tracks = array_only($tracks_response, 'tracks');
-
-        return $tracks['tracks']['items'];
+        return $response;
     }
 }

@@ -5,7 +5,7 @@
 <p>{{ $issue->content }}</p>
 
 {{-- Admin's can force update the thumbnail in case the plex server had the wrong art at the time of being added --}}
-@if(Auth::user()->hasRole('admin'))
+@if(Auth::user()->hasRole('admin') && $issue->type === 'issue')
 <a href="{{ route('update.plex.thumb.preview', ['ratingKey' => $issue->tmdb, 'thumbExtension' => $thumbExtension]) }}">
 	<img src="{{ $issue->poster_url }}" width="200px" alt="Click to refresh thumbnail from Plex">
 </a>
