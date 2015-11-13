@@ -97,7 +97,7 @@ class PlexController extends Controller
 
             // Check if the search element has an associated thumbnail, if so, save it.
             // We do this so images can be accessed later without plex server token authentication.
-            if(isset($item['thumb'])) {
+            if (isset($item['thumb'])) {
 
                 // Directly access the thumbnail on the Plex server and save it the URL as a variable.
                 $thumbPath = config('services.plex.url') . $item['thumb'] . '?X-Plex-Token='. config('services.plex.token');
@@ -109,7 +109,7 @@ class PlexController extends Controller
                 // $item['thumb'] = $base64 = 'data:image/' . $thumbType . ';base64,' . base64_encode($thumbData);
 
                 // Check if thumb has already been saved
-                if(!Storage::exists('plex/thumbs/'.$item['ratingKey'].$thumbExtension)) {
+                if (!Storage::exists('plex/thumbs/'.$item['ratingKey'].$thumbExtension)) {
                     // Save thumb to plex/thumbs/{ratingKey}.{extension}
                     Storage::put(
                         'plex/thumbs/'.$item['ratingKey'].$thumbExtension,

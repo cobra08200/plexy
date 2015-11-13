@@ -22,10 +22,10 @@ class SearchController extends Controller
     public function movie(Request $request)
     {
         $parameters = array(
-            'api_key'           => config('services.tmdb.token'),
-            'include_adult'     => 'false',
-            'search_type'       => 'ngram',
-            'query'             => $request->input('query')
+            'api_key'       => config('services.tmdb.token'),
+            'include_adult' => 'false',
+            'search_type'   => 'ngram',
+            'query'         => $request->input('query')
         );
 
         $url = "https://api.themoviedb.org/3/search/movie?" . http_build_query($parameters);
@@ -44,10 +44,10 @@ class SearchController extends Controller
     public function tv(Request $request)
     {
         $parameters = array(
-            'api_key'           => config('services.tmdb.token'),
-            'include_adult'     => 'false',
-            'search_type'       => 'ngram',
-            'query'             => $request->input('query')
+            'api_key'       => config('services.tmdb.token'),
+            'include_adult' => 'false',
+            'search_type'   => 'ngram',
+            'query'         => $request->input('query')
         );
 
         $url = "https://api.themoviedb.org/3/search/tv?" . http_build_query($parameters);

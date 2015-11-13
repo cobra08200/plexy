@@ -1,4 +1,4 @@
-@if(Request::path() === '/')
+@if (Request::path() === '/')
 <form class="" action="{{ route('search.submit') }}" method="post">
 {!! csrf_field() !!}
 <input id="title" name="title" type="hidden" value="">

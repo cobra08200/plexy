@@ -32,10 +32,10 @@ class MessageController extends Controller
 
         $validator = Validator::make($request->all(), $rules);
 
-        if($validator->fails())
+        if ($validator->fails())
         {
             // redirect our user back to the form with the errors from the validator
-            return Redirect::back()
+            return redirect()->back()
             ->with('warning', "Woops.  You did something wrong.  Let's see if you can figure it out.");
         }
         // create new message
@@ -46,12 +46,12 @@ class MessageController extends Controller
 
         $message->save();
 
-        if(env('APP_ENV') == 'production')
+        if (env('APP_ENV') == 'production')
         {
             $comment = $message;
             // send email to opposite end of conversation
             // assume user 1 is the main admin account
-            if(Auth::user()->id == 1)
+            if (Auth::user()->id == 1)
             //email user the message from the admin
             {
                 $user = User::find($request->input('user_id'));
@@ -67,7 +67,7 @@ class MessageController extends Controller
             }
         }
 
-        return Redirect::back();
+        return redirect()->back();
     }
 
     public function updateMessage($id, $messageId, Request $request)
@@ -75,7 +75,7 @@ class MessageController extends Controller
         $issue = Issue::find($id);
         $message = Message::find($messageId);
 
-        if($request->input('message_body') === $message->body)
+        if ($request->input('message_body') === $message->body)
         {
             return back()
                 ->with('warning', "If you want to update the message you need to actually change it!");
@@ -87,7 +87,7 @@ class MessageController extends Controller
 
         $validator = Validator::make($request->all(), $rules);
 
-        if($validator->fails())
+        if ($validator->fails())
         {
             return back()
                 ->with('warning', "You need to write a message!");

@@ -5,7 +5,7 @@
 <p>{{ $issue->content }}</p>
 
 {{-- Admin's can force update the thumbnail in case the plex server had the wrong art at the time of being added --}}
-@if(Auth::user()->hasRole('admin') && $issue->type === 'issue')
+@if (Auth::user()->hasRole('admin') && $issue->type === 'issue')
 <a href="{{ route('update.plex.thumb.preview', ['ratingKey' => $issue->tmdb, 'thumbExtension' => $thumbExtension]) }}">
 	<img src="{{ $issue->poster_url }}" width="200px" alt="Click to refresh thumbnail from Plex">
 </a>
@@ -13,20 +13,20 @@
 <img src="{{ $issue->poster_url }}" width="200px" alt="{{ $issue->content }}">
 @endif
 
-@if(Auth::user()->hasRole('admin'))
+@if (Auth::user()->hasRole('admin'))
 <form class="" action="{{ route('update.issue', ['id' => $issue->id]) }}" method="post">
 	{!! csrf_field() !!}
 	Status:
 	<select class="status_option" name="status" onchange="this.form.submit()">
-		@if($issue->status === 'open')
+		@if ($issue->status === 'open')
 		<option selected="selected">{{ ucwords($issue->status) }}</option>
 		<option>Pending</option>
 		<option>Closed</option>
-		@elseif($issue->status === 'pending')
+		@elseif ($issue->status === 'pending')
 		<option>Open</option>
 		<option selected="selected">{{ ucwords($issue->status) }}</option>
 		<option>Closed</option>
-		@elseif($issue->status === 'closed')
+		@elseif ($issue->status === 'closed')
 		<option>Open</option>
 		<option>Pending</option>
 		<option selected="selected">{{ ucwords($issue->status) }}</option>
@@ -43,24 +43,24 @@
 	Added: {{ ucwords($issue->created_at->diffForHumans()) }}
 </p>
 
-@if($issue->type === 'issue' && !empty($issue->report_option))
+@if ($issue->type === 'issue' && !empty($issue->report_option))
 <p>
 	Issue: {{ $issue->report_option}}
 </p>
 @endif
 
-@if($issue->type === 'issue' && !empty($issue->tv_season_number))
+@if ($issue->type === 'issue' && !empty($issue->tv_season_number))
 <div class="section group">
 	<div class="col span_1_of_2">
 		Season {{ $issue->tv_season_number }}
-		@if(!empty($issue->tv_episode_number))
+		@if (!empty($issue->tv_episode_number))
 			- Episode {{ $issue->tv_episode_number }}
 		@endif
 	</div>
 </div>
 @endif
 
-@if($issue->type === 'issue' && !empty($issue->album_track_number))
+@if ($issue->type === 'issue' && !empty($issue->album_track_number))
 <div class="section group">
 	<div class="col span_1_of_2">
 		Track: {{ $issue->album_track_number }}
@@ -68,39 +68,48 @@
 </div>
 @endif
 
+@if ($issue['user_id'] === Auth::id() || Auth::user()->hasRole('admin'))
 {{-- Messages--}}
 <p>Messages:</p>
-
-@if(!empty($issue->issue_description))
-<div class="view_message">
-	{{ $issue->created_at->diffForHumans() }} by {{ $issue->user->name }}: {{ $issue->issue_description }}
-	<button type="button" name="button" class="edit_message">Edit</button>
-</div>
-<form class="edit_message_input" action="{{ route('update.issue_description', ['id' => $issue->id]) }}" style="display: none;" method="post">
-	{!! csrf_field() !!}
-	<input type="text" name="issue_description" value="{{ $issue->issue_description }}">
-	<button type="submit" name="button">Submit</button>
-	<button type="button" name="button" class="cancel">Cancel</button>
-</form>
 @endif
 
-@if(!empty($messages))
-@foreach($messages as $message)
+@if (!empty($issue->issue_description))
 <div class="view_message">
-	{{ $message->created_at->diffForHumans() }} by {{ $message->user->name }}: {{ $message->body }}
-	@if($message['user_id'] === Auth::id() || Auth::user()->hasRole('admin'))
+	{{ $issue->created_at->diffForHumans() }} by {{ $issue->user->name }}: {{ $issue->issue_description }}
+	@if ($issue['user_id'] === Auth::id() || Auth::user()->hasRole('admin'))
 		<button type="button" name="button" class="edit_message">Edit</button>
 	</div>
-	<form class="edit_message_input" action="{{ route('update.message', ['id' => $issue->id, 'messageId' => $message->id]) }}" style="display: none;" method="post">
+	<form class="edit_message_input" action="{{ route('update.issue_description', ['id' => $issue->id]) }}" style="display: none;" method="post">
 		{!! csrf_field() !!}
-		<input type="text" name="message_body" value="{{ $message->body }}">
+		<input type="text" name="issue_description" value="{{ $issue->issue_description }}">
 		<button type="submit" name="button">Submit</button>
 		<button type="button" name="button" class="cancel">Cancel</button>
 	</form>
+	@else
+	</div>
 	@endif
-@endforeach
 @endif
 
+@if (!empty($messages))
+	@foreach($messages as $message)
+	<div class="view_message">
+		{{ $message->created_at->diffForHumans() }} by {{ $message->user->name }}: {{ $message->body }}
+		@if ($message['user_id'] === Auth::id() || Auth::user()->hasRole('admin'))
+			<button type="button" name="button" class="edit_message">Edit</button>
+		</div>
+		<form class="edit_message_input" action="{{ route('update.message', ['id' => $issue->id, 'messageId' => $message->id]) }}" style="display: none;" method="post">
+			{!! csrf_field() !!}
+			<input type="text" name="message_body" value="{{ $message->body }}">
+			<button type="submit" name="button">Submit</button>
+			<button type="button" name="button" class="cancel">Cancel</button>
+		</form>
+		@else
+		</div>
+		@endif
+	@endforeach
+@endif
+
+@if ($issue['user_id'] === Auth::id() || Auth::user()->hasRole('admin'))
 {{-- Add Message --}}
 <form class="" action="{{ route('message.add') }}" method="post">
 	{!! csrf_field() !!}
@@ -121,6 +130,7 @@
 	{!! csrf_field() !!}
 	<input type="submit" value="Delete This">
 </form>
+@endif
 
 @stop
 

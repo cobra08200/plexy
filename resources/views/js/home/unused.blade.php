@@ -79,7 +79,7 @@
 //
 // gallery.on('click', function(event){
 // 	/* detect click on .cd-gallery::before when the .cd-folding-panel is open */
-// 	if($(event.target).is('.cd-gallery') && $('.fold-is-open').length > 0 ) toggleContent(data, false);
+// 	if ($(event.target).is('.cd-gallery') && $('.fold-is-open').length > 0 ) toggleContent(data, false);
 // })
 //
 // $("#issue_button").on('click', function(e) {
@@ -156,7 +156,7 @@
 // }
 
 // function toggleContent(data, bool) {
-// 	if( bool ) {
+// 	if ( bool ) {
 // 		/* load and show new content */
 // 		var foldingContent = foldingPanel.find('.cd-fold-content');
 

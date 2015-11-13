@@ -1,6 +1,6 @@
 @if (Auth::check())
 You are: {{ Auth::user()->name }} -
-@if(Request::path() != '/')
+@if (Request::path() != '/')
 <a href="{{ route('home') }}">Home</a>
 @endif
 <a href="{{ route('logout') }}">Logout</a>

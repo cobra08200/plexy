@@ -27,92 +27,101 @@ class IssueController extends Controller {
 	{
 		// dd($request->all());
 
-		// This determines which submission round the request/issue is going through.
+		// Gathers submission round the request/issue is going through, be it first or advanced.
 		$round = $request->input('round');
 
-		// checker to see if they actually used a suggestion
-		$rules = array(
-			'tmdb'	=> 'required'
-		);
+		// Various validation boolean variables are built here that are used throughout the submission analysis.
+		// Verifies a search was chosen before submission.
+		$tmdbMissing = Validator::make($request->all(), [
+			'tmdb' => 'required'
+		]);
 
-		$validator = Validator::make($request->all(), $rules);
+		// Gathers uniqueness of submitted item.
+		$tmdbPostedAndUnique = Validator::make($request->all(), [
+			'tmdb' => 'required|unique:issues,tmdb'
+		]);
 
-		if($validator->fails())
+		// Gathers uniqueness of submitted item against current authenticated user.
+		$tmdbPostedAndUniqueToAuthenticatedUser = Validator::make($request->all(), [
+			'tmdb' => 'unique:issues,tmdb,NULL,NULL,user_id,' . Auth::id() . ''
+		]);
+
+		// Gathers uniqueness of TV season number submitted item.
+		$tvSeasonUnique = Validator::make($request->all(), [
+			'season' => 'sometimes|unique:issues,tv_season_number'
+		]);
+
+		// Gathers uniqueness of TV episode number submitted item.
+		$tvEpisodeUnique = Validator::make($request->all(), [
+			'episode' => 'sometimes|unique:issues,tv_episode_number'
+		]);
+
+		// Gathers uniqueness of music album track number submitted item.
+		$musicAlbumTrackUnique = Validator::make($request->all(), [
+			'track' => 'sometimes|unique:issues,album_track_number'
+		]);
+
+		//  Verifies an issue description was included before submission.
+		$issueDescriptionRequired = Validator::make($request->all(), [
+			'issue_description' => 'required'
+		]);
+
+		if ($tmdbMissing->fails())
 		{
-			// redirect our user back to the form with the errors from the validator
-			return Redirect::back()
-				->with('warning', "Woops.  You did something wrong.  Let's see if you can figure it out.");
+			return redirect()->back()
+				->with('warning', "Woops.  You need to search for something first.");
 		}
 
-		if($request->input('type') == 'issue')
+		// This section blocks multiple identical episode/track/movie requests in general.
+		if ($request->input('type') == 'request')
 		{
-			$report_checker = Issue::where('type', '=', 'issue')
-			->where('tmdb', '=', $request->input('tmdb'))
-			->where('status', '!=', 'closed')
-			->where('user_id', '=', Auth::id())
-			->count();
-
-			// redirect our user back to the form with the errors from the report_checker
-			// they already reported this
-			// if ($report_checker > 0)
-			// {
-			// 	return Redirect::back()
-			// 		->with('info', "You already have this report active, go check the status.");
-			// }
-		}
-
-		// skip unique check if type is issue, I allow multiple issues per unique tmdb object, but only one per user
-		if($request->input('type') == 'request')
-		{
-			$unique_rules = array(
-				'tmdb'	=> 'unique:issues'  // check tmdb to see if anyone else in plexy has requested it
-			);
-			$unique = Validator::make($request->all(), $unique_rules);
-		}
-
-		if(isset($unique) && $unique->fails())
-		{
-			$requester_checker_anyone = Issue::where('type', '=', 'request')
-			->where('tmdb', '=', $request->input('tmdb'))
-			->where('user_id', '!=', Auth::id())
-			->count();
-
-			$requester_checker_current_user = Issue::where('type', '=', 'request')
-			->where('tmdb', '=', $request->input('tmdb'))
-			->where('user_id', '=', Auth::id())
-			->count();
-
-			// redirect our user back to the form with the errors from the validator
-			// current user already requested this
-			if($requester_checker_current_user > 0) {
-				return Redirect::back()
-					->with('info', "You already requested this.");
+			if ($tmdbPostedAndUniqueToAuthenticatedUser->fails())
+			{
+				return redirect()->back()
+					->with('warning', "Woops.  You already requested this.")
+					->withInput();
 			}
 
-			// someone else requested this
-			if($requester_checker_anyone > 0) {
-				return Redirect::back()
-					->with('info', "Someone else already requested this, I'm working on it.");
+			elseif ($tmdbPostedAndUnique->fails())
+			{
+				return redirect()->back()
+					->with('warning', "Woops.  Someone else already requested this.")
+					->withInput();
 			}
 		}
 
-		$report_to_request_checker = Issue::where('type', '=', 'issue')
-			->where('tmdb', '=', $request->input('tmdb'))
-			->where('status', '!=', 'closed')
-			->where('user_id', '=', Auth::id())
-			->count();
+		// This section blocks multiple identical episode/track/movie reports from the same person.
+		if ($request->input('type') == 'issue')
+		{
+			if ($request->input('topic') == 'tv')
+			{
+				if ($tvSeasonUnique->fails() && $tvEpisodeUnique->fails() && $tmdbPostedAndUniqueToAuthenticatedUser->fails())
+				{
+					return redirect('/')
+						->with('warning', "Woops.  You already reported this exact same episode.")
+						->withInput();
+				}
+			}
+			if ($request->input('topic') == 'music')
+			{
+				if ($musicAlbumTrackUnique->fails() && $tmdbPostedAndUniqueToAuthenticatedUser-fails())
+				{
+					return redirect()->back()
+						->with('warning', "Woops.  You already reported this exact same track.")
+						->withInput();
+				}
+			}
+			if ($request->input('topic') == 'movie')
+			{
+				// This section is incomplete.
+			}
+		}
 
-		// if ($report_to_request_checker > 0)
-		// {
-		// return Redirect::back()
-		// 	->with('info', "You already decided to report this, find and update it with what you wish to report.");
-		// }
-
-		// create new issue
+		// Begin creating the object.
 		$issue = new Issue;
 		$issue->user_id = Auth::id();
-		// music album does not require year in title
-		if(strtolower($request->input('topic')) == 'music' || $round == 'advanced')
+		// Music album does not require year in title, nor does an object passing through for a second time.
+		if (strtolower($request->input('topic')) == 'music' || $round == 'advanced')
 		{
 			$issue->content = $request->input('title');
 		}
@@ -127,80 +136,66 @@ class IssueController extends Controller {
 		$issue->vote_average = $request->input('vote_average');
 		$issue->type = strtolower($request->input('type'));
 
-		if(isset($round) && $round == 'advanced')
+		// If an object is passing through for the advanced round, it append the additional details.
+		if (isset($round) && $round == 'advanced')
 		{
-			if($issue->type == 'issue')
+			if ($issue->type == 'issue')
 			{
-				$rules = array(
-					'issue_description'	=> 'required'
-				);
-
-				$validator = Validator::make($request->all(), $rules);
-
-				if($validator->fails())
+				if ($issueDescriptionRequired->fails())
 				{
-					if($issue->topic == 'tv') {
+					if ($issue->topic == 'tv') {
 						return $this->issue_tv($issue)
 							->with('warning', "Woops.  You need to describe the issue first.");
 					}
-					if($issue->topic == 'music') {
+					if ($issue->topic == 'music') {
 						return $this->issue_music($issue)
 							->with('warning', "Woops.  You need to describe the issue first.");
 					}
-					if($issue->topic == 'movies') {
+					if ($issue->topic == 'movies') {
 						return $this->issue_movie($issue)
 							->with('warning', "Woops.  You need to describe the issue first.");
 					}
 				}
+				else
+				{
+					$issue->report_option = $request->input('report_option');
+					$issue->issue_description = $request->input('issue_description');
+					if ($issue->topic == 'tv')
+					{
+						$issue->tv_season_number = $request->input('season');
 
-				$issue->report_option = $request->input('report_option');
-				$issue->issue_description = $request->input('issue_description');
-				// if tv show
-				if($issue->topic == 'tv')
-				{
-					// add extra details to reported issue
-					$issue->tv_season_number = $request->input('season');
-					if ($issue->report_option != 'Missing Episode') {
-						$issue->tv_episode_number = $request->input('episode');
+						if ($issue->report_option != 'Missing Episode') {
+							$issue->tv_episode_number = $request->input('episode');
+						}
+						// $issue->tv_episode_overview = $request->input('tv_episode_overview');
+						// $issue->tv_episode_still_path = $request->input('still_path');
+						// $issue->vote_average = $request->input('vote_average');
 					}
-					// $issue->tv_episode_overview = $request->input('tv_episode_overview');
-					// $issue->tv_episode_still_path = $request->input('still_path');
-					// $issue->vote_average = $request->input('vote_average');
-				}
-				if($issue->topic == 'music')
-				{
-					// add extra details to reported issue
-					if ($issue->report_option != 'Missing Track') {
-						$issue->album_track_number = $request->input('track');
+					if ($issue->topic == 'music')
+					{
+						if ($issue->report_option != 'Missing Track') {
+							$issue->album_track_number = $request->input('track');
+						}
 					}
 				}
 			}
 		}
 
-		// if($request->ajax())
+		// if ($request->ajax())
 		// {
-			// plexy advanced issue capture
-			// issue detector -> need to gather more info from user
-			if($issue->type == 'issue' && $round != 'advanced')
+			// First round report detection
+			if ($issue->type == 'issue' && $round != 'advanced')
 			{
-				// if tv show
-				if($issue->topic == 'tv')
+				if ($issue->topic == 'tv')
 				{
-					//return to view with current issue info and get season + episode
 					return $this->issue_tv($issue);
 				}
-
-				// if movie
-				if($issue->topic == 'movies')
+				if ($issue->topic == 'movies')
 				{
-					//return to view with current issue info and get season + episode
 					return $this->issue_movie($issue);
 				}
-
-				// if music
-				if($issue->topic == 'music')
+				if ($issue->topic == 'music')
 				{
-					//return to view with current issue info and get season + episode
 					return $this->issue_music($issue);
 				}
 			}
@@ -208,21 +203,21 @@ class IssueController extends Controller {
 
 		$issue->save();
 
-		if(env('APP_ENV') == 'production')
+		if (env('APP_ENV') == 'production')
 		{
 			$user = Auth::user();
 
 			// send pusher notification to admin
-			if(!empty(env('PUSHOVER_TOKEN')))
+			if (!empty(env('PUSHOVER_TOKEN')))
 			{
 				$push = new \App\Mailers\Pushover();
 				$push->setToken(config('services.pushover.token'));
 				$push->setUser(config('services.pushover.user'));
 
 				$push->setTitle('Plexy');
-				if($issue->type == 'issue') {
+				if ($issue->type == 'issue') {
 					$push->setMessage($user->name . " reported " . $issue->content);
-				} elseif($issue->type == 'request') {
+				} elseif ($issue->type == 'request') {
 					$push->setMessage($user->name . " requested " . $issue->content);
 				}
 				$push->setUrl(route('issue.id', ['id' => $issue->id]));
@@ -278,23 +273,19 @@ class IssueController extends Controller {
 
 	public function getIssueView($id)
 	{
-
 		// if ($request->ajax())
 		// {
 			$issue = Issue::find($id);
 
-			if(Issue::where('id', '=', $id)->exists())
+			if (Issue::where('id', '=', $id)->exists())
 			{
 				$issue = Issue::find($id);
 
-				// security to make sure logged in user is admin OR ticket owner
-				if(Auth::user()->hasRole('admin') || Auth::id() == $issue->user_id)
-				{
-					$messages = Message::where('issue_id', '=', $id)->get();
-					$thumbExtension = last(explode(".", $issue->poster_url));
+				$messages = Message::where('issue_id', '=', $id)->get();
 
-					return View::make('site/pages/issues', compact('issue', 'messages', 'thumbExtension'));
-				}
+				$thumbExtension = last(explode(".", $issue->poster_url));
+
+				return View::make('site/pages/issues', compact('issue', 'messages', 'thumbExtension'));
 			}
 		// }
 
@@ -304,30 +295,13 @@ class IssueController extends Controller {
 
 	public function getIndex()
 	{
-		$users 	= User::all();
-		$user 	= Auth::user();
-		$id 	= Auth::id();
 		$bodyClass = "dashboard";
 
-		if($user->hasRole('admin')) {
-			$movie_requests = Issue::where('type', '=', 'request')->where('topic', '=', 'movies')->where('status', '!=', 'closed')->get();
-			$movie_issues 	= Issue::where('type', '=', 'issue')->where('topic', '=', 'movies')->where('status', '!=', 'closed')->get();
-			$tv_requests 	= Issue::where('type', '=', 'request')->where('topic', '=', 'tv')->where('status', '!=', 'closed')->get();
-			$tv_issues 		= Issue::where('type', '=', 'issue')->where('topic', '=', 'tv')->where('status', '!=', 'closed')->get();
-			$music_requests = Issue::where('type', '=', 'request')->where('topic', '=', 'music')->where('status', '!=', 'closed')->get();
-			$music_issues 	= Issue::where('type', '=', 'issue')->where('topic', '=', 'music')->where('status', '!=', 'closed')->get();
-			$closed	= Issue::where('status', '=', 'closed')->paginate(4);
-		} else {
-			$movie_requests = Issue::where('user_id', '=', $id)->where('type', '=', 'request')->where('topic', '=', 'movies')->where('status', '!=', 'closed')->get();
-			$movie_issues	= Issue::where('user_id', '=', $id)->where('type', '=', 'issue')->where('topic', '=', 'movies')->where('status', '!=', 'closed')->get();
-			$tv_requests 	= Issue::where('user_id', '=', $id)->where('type', '=', 'request')->where('topic', '=', 'tv')->where('status', '!=', 'closed')->get();
-			$tv_issues		= Issue::where('user_id', '=', $id)->where('type', '=', 'issue')->where('topic', '=', 'tv')->where('status', '!=', 'closed')->get();
-			$music_requests = Issue::where('user_id', '=', $id)->where('type', '=', 'request')->where('topic', '=', 'music')->where('status', '!=', 'closed')->get();
-			$music_issues	= Issue::where('user_id', '=', $id)->where('type', '=', 'issue')->where('topic', '=', 'music')->where('status', '!=', 'closed')->get();
-			$closed	= Issue::where('user_id', '=', $id)->where('status', '=', 'closed')->paginate(4);
-		};
+		$tickets = Issue::where('status', '!=', 'closed')->get();
 
-		return View::make('site.pages.home', compact('search', 'users', 'user', 'id', 'movie_requests', 'tv_requests', 'movie_issues', 'tv_issues', 'music_requests', 'music_issues', 'closed', 'bodyClass'));
+		$closedTickets	= Issue::where('status', '=', 'closed')->simplePaginate(4);
+
+		return View::make('site.pages.home', compact('tickets', 'closedTickets', 'bodyClass'));
 	}
 
 	public function updateIssueStatus($id, Request $request)
@@ -344,7 +318,7 @@ class IssueController extends Controller {
 	{
 		$issue = Issue::find($id);
 
-		if($request->input('issue_description') === $issue->issue_description)
+		if ($request->input('issue_description') === $issue->issue_description)
 		{
 			return back()
 				->with('warning', "If you want to update the description of the issue you need to actually change it!");
@@ -356,7 +330,7 @@ class IssueController extends Controller {
 
 		$validator = Validator::make($request->all(), $rules);
 
-		if($validator->fails())
+		if ($validator->fails())
 		{
 			return back()
 				->with('warning', "You need to write a description of the issue!");

@@ -8,11 +8,6 @@ use App\Http\Controllers\Controller;
 
 class SetupController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function firstRun()
     {
         return view('site.pages.firstRun');

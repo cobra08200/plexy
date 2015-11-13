@@ -24,39 +24,13 @@
 
 <hr>
 
-@if(count($movie_requests) > 0 )
-    @include('site/layouts/partials/issue_request_module', ['module' => $movie_requests, 'header' => 'MOVIE REQUESTS'])
+@if (count($tickets) > 0 )
+    @include('site/layouts/partials/issue_request_module', ['module' => $tickets, 'header' => 'TICKETS'])
 @endif
 
-@if(count($tv_requests) > 0 )
-    @include('site/layouts/partials/issue_request_module', ['module' => $tv_requests, 'header' => 'TV REQUESTS'])
-@endif
-
-@if(count($music_requests) > 0 )
-    @include('site/layouts/partials/issue_request_module', ['module' => $music_requests, 'header' => 'MUSIC REQUESTS'])
-@endif
-
-@if(count($movie_issues) > 0 )
-    @include('site/layouts/partials/issue_request_module', ['module' => $movie_issues, 'header' => 'MOVIE ISSUES'])
-@endif
-
-@if(count($tv_issues) > 0 )
-    @include('site/layouts/partials/issue_request_module', ['module' => $tv_issues, 'header' => 'TV ISSUES'])
-@endif
-
-@if(count($music_issues) > 0 )
-    @include('site/layouts/partials/issue_request_module', ['module' => $music_issues, 'header' => 'MUSIC ISSUES'])
-@endif
-
-@if(count($closed) > 0)
-    @include('site/layouts/partials/issue_request_module', ['module' => $closed, 'header' => 'CLOSED'])
-	{{$closed->render()}}
-@endif
-
-
-
-@if(count($movie_requests) + count($movie_issues) + count($tv_requests) + count($tv_issues) + count($closed) == 0)
-    {{-- ADD SOMETHING --}}
+@if (count($closedTickets) > 0)
+    @include('site/layouts/partials/issue_request_module', ['module' => $closedTickets, 'header' => 'CLOSED'])
+    {!! $closedTickets->render() !!}
 @endif
 
 @stop

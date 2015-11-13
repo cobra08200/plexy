@@ -4,7 +4,7 @@
 
 <div class="cd-fold-content single-page">
 	<p>{{ $issue->content }}
-		{{-- @if($issue->topic == 'music')
+		{{-- @if ($issue->topic == 'music')
 			- {{ $tracks[0]['artists'][0]['name'] }}
 		@endif --}}
 	</p>
@@ -20,15 +20,15 @@
 		<div class="col span_1_of_2">
 			<select class="report_option" id="report_option" name="report_option">
 				<option>Playback Error</option>
-				@if($issue->topic == 'tv')
+				@if ($issue->topic == 'tv')
 				<option>Missing Episode</option>
 				@endif
-				@if($issue->topic == 'music')
+				@if ($issue->topic == 'music')
 				<option>Missing Track</option>
 				@endif
 				<option>Incorrect Information</option>
 				<option>Bad Quality</option>
-				@if($issue->topic != 'music')
+				@if ($issue->topic != 'music')
 				<option>Subtitles</option>
 				@endif
 				<option>Other</option>
@@ -41,7 +41,7 @@
 
 		{{-- TV --}}
 
-		@if($issue->topic == 'tv')
+		@if ($issue->topic == 'tv')
 
 		<div class="col span_1_of_2">
 			Which Season?
@@ -49,7 +49,7 @@
 		<div class="col span_1_of_2">
 			<select class="season_option" id="season_option" name="season">
 				@for ($i = $first_season_number; $i <= $last_season_number; $i++)
-					@if($i == 0)
+					@if ($i == 0)
 					<option value="{{ $i }}" label="Specials">
 					@else
 					<option value="{{ $i }}" label="Season {{ $i }}">
@@ -77,7 +77,7 @@
 
 		{{-- MUSIC --}}
 
-		@if($issue->topic == 'music')
+		@if ($issue->topic == 'music')
 		<div id="tracklist">
 			<div class="section group">
 				<div class="col span_1_of_2">

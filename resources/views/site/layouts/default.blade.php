@@ -3,7 +3,7 @@
 <head>
 	@include('site/layouts/partials/header')
 </head>
-@if(Auth::check())
+@if (Auth::check())
 <body class="no-js {{ $bodyClass or null }}">
 @else
 <body class="login no-js">
