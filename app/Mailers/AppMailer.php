@@ -39,6 +39,13 @@ class AppMailer
     protected $view;
 
     /**
+     * The subject for the email.
+     *
+     * @var string
+     */
+    protected $subject;
+
+    /**
      * The data associated with the view for the email.
      *
      * @var array
@@ -63,10 +70,10 @@ class AppMailer
      */
     public function sendEmailConfirmationTo(User $user)
     {
-        $this->to = $user->email;
-        $this->view = 'site.emails.confirm';
-        $this->data = compact('user');
-        $this->subject = 'Plexy - Email Confirmation';
+        $this->to       = $user->email;
+        $this->view     = 'site.emails.confirm';
+        $this->data     = compact('user');
+        $this->subject  = 'Plexy - Email Confirmation';
 
         $this->deliver();
     }
@@ -79,26 +86,26 @@ class AppMailer
      */
     public function sendNewRequestEmailTo(User $user, $issue)
     {
-        $this->to = $user->email;
-        $this->view = 'site.emails.newRequest';
-        $this->data = compact('user', 'issue');
-        $this->subject = 'Plexy - Ticket #'.$issue['id'];
+        $this->to       = $user->email;
+        $this->view     = 'site.emails.newRequest';
+        $this->data     = compact('user', 'issue');
+        $this->subject  = 'Plexy - Ticket #'.$issue['id'];
 
         $this->deliver();
     }
 
     /**
-     * Deliver the newly requested confirmation.
+     * Deliver the message to the opposite end of the conversation.
      *
      * @param  User $user
      * @return void
      */
     public function sendNewMessageEmailTo(User $user, $issue, $comment)
     {
-        $this->to = $user->email;
-        $this->view = 'site.emails.newMessage';
-        $this->data = compact('user', 'issue', 'comment');
-        $this->subject = 'Plexy - New Message - Ticket #'.$issue['id'];
+        $this->to       = $user->email;
+        $this->view     = 'site.emails.newMessage';
+        $this->data     = compact('user', 'issue', 'comment');
+        $this->subject  = 'Plexy - New Message - Ticket #'.$issue['id'];
 
         $this->deliver();
     }

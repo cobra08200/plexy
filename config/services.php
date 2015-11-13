@@ -48,6 +48,11 @@ return [
         'secret'    => env('SPOTIFY_SECRET'),
     ],
 
+    'pushover' => [
+        'token'     => env('PUSHOVER_TOKEN'),
+        'user'      => env('PUSHOVER_USER'),
+    ],
+
     'plex' => [
         'username'  => env('PLEX_USERNAME'),
         'password'  => env('PLEX_PASSWORD'),

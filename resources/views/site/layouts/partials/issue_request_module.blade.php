@@ -5,7 +5,7 @@
     </h2>
     <h2>{{ $unit->content }}</h2>
     <p>Status: {{ ucwords($unit->status) }}</p>
-    <a href="{{ URL::to('issue') }}/{{ $unit->id }}">
+    <a href="{{ route('issue.id', ['id' => $unit->id]) }}">
         <b>View Details</b>
     </a>
 @endforeach

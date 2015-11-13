@@ -9,9 +9,10 @@ use App\Issue;
 use App\User;
 use App\Message;
 use App\Mailers\AppMailer;
+use App\Mailers\AppPushover;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
@@ -61,7 +62,7 @@ class IssueController extends Controller {
 		}
 
 		// skip unique check if type is issue, I allow multiple issues per unique tmdb object, but only one per user
-		if ($request->input('type') == 'request')
+		if($request->input('type') == 'request')
 		{
 			$unique_rules = array(
 				'tmdb'	=> 'unique:issues'  // check tmdb to see if anyone else in plexy has requested it
@@ -69,7 +70,7 @@ class IssueController extends Controller {
 			$unique = Validator::make($request->all(), $unique_rules);
 		}
 
-		if (isset($unique) && $unique->fails())
+		if(isset($unique) && $unique->fails())
 		{
 			$requester_checker_anyone = Issue::where('type', '=', 'request')
 			->where('tmdb', '=', $request->input('tmdb'))
@@ -85,7 +86,7 @@ class IssueController extends Controller {
 			// current user already requested this
 			if ($requester_checker_current_user > 0) {
 				return Redirect::back()
-				->with('info', "You already requested this.");
+					->with('info', "You already requested this.");
 			}
 
 			// someone else requested this
@@ -202,31 +203,35 @@ class IssueController extends Controller {
 					//return to view with current issue info and get season + episode
 					return $this->issue_music($issue);
 				}
-
 			}
 		// }
 
 		$issue->save();
 
-		if (env('APP_ENV') == 'production')
+		if(env('APP_ENV') == 'production')
 		{
-			// send pusher notification to admin
-			// curl_setopt_array($ch = curl_init(), array(
-			// 	CURLOPT_URL => "https://api.pushover.net/1/messages.json",
-			// 	CURLOPT_POSTFIELDS => array(
-			// 		"token" => config('services.pushover.token'),
-			// 		"user" => config('services.pushover.user'),
-			// 		"message" => Auth::user()->username." added ". $issue->content,
-			// 	),
-			// 	CURLOPT_SAFE_UPLOAD => true,
-			// ));
-			// curl_exec($ch);
-			// curl_close($ch);
-
-			// send email
-
 			$user = Auth::user();
 
+			// send pusher notification to admin
+			if(!empty(env('PUSHOVER_TOKEN')))
+			{
+				$push = new \App\Mailers\Pushover();
+				$push->setToken(config('services.pushover.token'));
+				$push->setUser(config('services.pushover.user'));
+
+				$push->setTitle('Plexy');
+				if($issue->type == 'issue') {
+					$push->setMessage($user->name . " reported " . $issue->content);
+				} elseif($issue->type == 'request') {
+					$push->setMessage($user->name . " requested " . $issue->content);
+				}
+				$push->setUrl(route('issue.id', ['id' => $issue->id]));
+				$push->setUrlTitle($issue->content);
+
+				$go = $push->send();
+			}
+
+			// send email
 			$mailer->sendNewRequestEmailTo($user, $issue);
 
 		}
