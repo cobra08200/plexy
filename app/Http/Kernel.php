@@ -31,5 +31,6 @@ class Kernel extends HttpKernel
         'guest'         => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'first.run'     => \App\Http\Middleware\FirstRun::class,
         'blocked'       => \App\Http\Middleware\BlockedRoutes::class,
+        'ajax'          => \App\Http\Middleware\AjaxOnly::class,
     ];
 }

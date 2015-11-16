@@ -91,7 +91,7 @@
 @endif
 
 @if (!empty($messages))
-	@foreach($messages as $message)
+	@foreach ($messages as $message)
 	<div class="view_message">
 		{{ $message->created_at->diffForHumans() }} by {{ $message->user->name }}: {{ $message->body }}
 		@if ($message['user_id'] === Auth::id() || Auth::user()->hasRole('admin'))

@@ -34,7 +34,7 @@ class SearchController extends Controller
 
         $movie_array = array();
 
-        foreach($array['results'] as $item) {
+        foreach ($array['results'] as $item) {
             $movie_array[] = array_add($item, 'type', 'movies');
         }
 
@@ -56,7 +56,7 @@ class SearchController extends Controller
 
         $tv_array = array();
 
-        foreach($array['results'] as $item) {
+        foreach ($array['results'] as $item) {
             $tv_array[] = array_add($item, 'type', 'tv');
         }
 
@@ -124,7 +124,7 @@ class SearchController extends Controller
 
         $music_album_array = array();
 
-        foreach($array['albums']['items'] as $item) {
+        foreach ($array['albums']['items'] as $item) {
             $music_album_array[] = array_add($item, 'type', 'music');
         }
 

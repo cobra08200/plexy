@@ -66,16 +66,17 @@ class PlexController extends Controller
         return json_decode($this->c($url), true);
     }
 
-    public function plexServerSessions()
-    {
-        $parameters = array(
-            'X-Plex-Token' => config('services.plex.token')
-        );
-
-        $url = config('services.plex.url') . "status/sessions?" . http_build_query($parameters);
-
-        return json_decode($this->c($url), true);
-    }
+    // // This is currently not functioning
+    // public function plexServerSessions()
+    // {
+    //     $parameters = array(
+    //         'X-Plex-Token' => config('services.plex.token')
+    //     );
+    //
+    //     $url = config('services.plex.url') . "status/sessions?" . http_build_query($parameters);
+    //
+    //     return json_decode($this->c($url), true);
+    // }
 
     public function plexServerSearch(Request $request)
     {
@@ -91,7 +92,7 @@ class PlexController extends Controller
         // Add id key to array so Select2 can highlight and select.
         $id = 1;
 
-        foreach($array['_children'] as &$item) {
+        foreach ($array['_children'] as &$item) {
 
             // Check if the search element has an associated thumbnail, if so, save it.
             // We do this so images can be accessed later without plex server token authentication.

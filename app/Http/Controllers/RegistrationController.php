@@ -74,7 +74,7 @@ class RegistrationController extends Controller
         $mailer->sendEmailConfirmationTo($user);
 
         return redirect()->back()
-            ->with('info', "Please confirm your email address.");
+            ->with('info', "Please check your email confirm your account.");
     }
 
     /**

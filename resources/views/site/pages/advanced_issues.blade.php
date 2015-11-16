@@ -64,7 +64,7 @@
 			</div>
 			<div class="col span_1_of_2">
 				<select class="episode_option" id="episode_option" name="episode">
-						@foreach($series as $episode)
+						@foreach ($series as $episode)
 							@if ($first_season_number == $episode['parentIndex'])
 							<option value="{{ $episode['index'] }}" label="Episode {{ $episode['index'] }}">
 							@endif
