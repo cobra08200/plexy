@@ -6,6 +6,7 @@ You are: {{ Auth::user()->name }} -
 <a href="{{ route('logout') }}">Logout</a>
 @else
 <a href="{{ route('login') }}">Login</a>
+<a href="{{ route('password.email') }}">Forgot Password</a>
 <a href="{{ route('register') }}">Register</a>
 @endif
 

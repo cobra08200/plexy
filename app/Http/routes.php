@@ -21,6 +21,14 @@ Route::group(['middleware' => ['first.run']], function()
     Route::post('register', ['as' => 'register.post', 'uses' => 'RegistrationController@postRegister']);
     Route::get('register/confirm/{token}', ['as' => 'register.confirm', 'uses' => 'RegistrationController@confirmEmail']);
 
+    // Password reset link request routes...
+    Route::get('password/email', ['as' => 'password.email', 'uses' => 'Auth\PasswordController@getEmail']);
+    Route::post('password/email', ['as' => 'password.email.post', 'uses' => 'Auth\PasswordController@postEmail']);
+
+    // Password reset routes...
+    Route::get('password/reset/{token}', ['as' => 'password.reset', 'uses' => 'Auth\PasswordController@getReset']);
+    Route::post('password/reset', ['as' => 'password.reset.post', 'uses' => 'Auth\PasswordController@postReset']);
+
     // Routes That Require Authentication
     Route::group(['middleware' => ['auth']], function()
     {

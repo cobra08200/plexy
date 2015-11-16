@@ -71,7 +71,7 @@ class AppMailer
     public function sendEmailConfirmationTo(User $user)
     {
         $this->to       = $user->email;
-        $this->view     = 'site.emails.confirm';
+        $this->view     = 'emails.confirm';
         $this->data     = compact('user');
         $this->subject  = 'Plexy - Email Confirmation';
 
@@ -87,7 +87,7 @@ class AppMailer
     public function sendNewRequestEmailTo(User $user, $issue)
     {
         $this->to       = $user->email;
-        $this->view     = 'site.emails.newRequest';
+        $this->view     = 'emails.newRequest';
         $this->data     = compact('user', 'issue');
         $this->subject  = 'Plexy - Ticket #'.$issue['id'];
 
@@ -103,7 +103,7 @@ class AppMailer
     public function sendNewMessageEmailTo(User $user, $issue, $comment)
     {
         $this->to       = $user->email;
-        $this->view     = 'site.emails.newMessage';
+        $this->view     = 'emails.newMessage';
         $this->data     = compact('user', 'issue', 'comment');
         $this->subject  = 'Plexy - New Message - Ticket #'.$issue['id'];
 
