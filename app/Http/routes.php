@@ -13,12 +13,12 @@ Route::group(['middleware' => ['first.run']], function()
 {
     // Authentication routes...
     Route::get('login', ['as' => 'login', 'uses' => 'SessionsController@login']);
-    Route::post('login', 'SessionsController@postLogin');
+    Route::post('login', ['as' => 'login.post', 'uses' => 'SessionsController@postLogin']);
     Route::get('logout', ['as' => 'logout', 'uses' => 'SessionsController@logout']);
 
     // Registration routes...
     Route::get('register', ['as' => 'register', 'uses' => 'RegistrationController@register']);
-    Route::post('register', 'RegistrationController@postRegister');
+    Route::post('register', ['as' => 'register.post', 'uses' => 'RegistrationController@postRegister']);
     Route::get('register/confirm/{token}', ['as' => 'register.confirm', 'uses' => 'RegistrationController@confirmEmail']);
 
     // Routes That Require Authentication

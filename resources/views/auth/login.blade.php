@@ -2,7 +2,7 @@
 
 @section('content')
 
-<form method="POST" action="/login">
+<form method="POST" action="{{ route('login.post') }}">
     {!! csrf_field() !!}
 
     <div class="form-group">

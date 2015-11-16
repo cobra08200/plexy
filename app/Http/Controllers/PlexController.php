@@ -12,11 +12,9 @@ use Illuminate\Support\Facades\Response;
 class PlexController extends Controller
 {
 
-    public function plexAuthorize()
+    public function plexAuthorize($plexUsernameOrEmail, $plexPassword)
     {
         $host = "https://plex.tv/users/sign_in.json";
-        $username = config('services.plex.username');
-        $password = config('services.plex.password');
         $header = array(
             'Content-Type: application/json',
             'Content-Length: 0',
@@ -28,7 +26,7 @@ class PlexController extends Controller
         curl_setopt($process, CURLOPT_HTTPHEADER, $header);
         curl_setopt($process, CURLOPT_HEADER, 0);
         curl_setopt($process, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($process, CURLOPT_USERPWD, $username . ":" . $password);
+        curl_setopt($process, CURLOPT_USERPWD, $plexUsernameOrEmail . ":" . $plexPassword);
         curl_setopt($process, CURLOPT_TIMEOUT, 30);
         curl_setopt($process, CURLOPT_SSL_VERIFYPEER, 0);
         curl_setopt($process, CURLOPT_POST, 1);
@@ -52,9 +50,9 @@ class PlexController extends Controller
 
         $json = json_encode($xml);
 
-        $array = json_decode($json, true);
+        $friends = json_decode($json, true);
 
-        return $array['User'];
+        return $friends;
     }
 
     public function plexServerInfo()

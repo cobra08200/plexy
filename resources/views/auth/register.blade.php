@@ -2,22 +2,17 @@
 
 @section('content')
 
-<form method="POST" action="/register">
+<form method="POST" action="{{ route('register.post') }}">
     {!! csrf_field() !!}
 
     <div class="form-group">
-        <label for="name">Name:</label>
-        <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}">
+        <label for="name">Plex Username or Email:</label>
+        <input type="text" name="plex_username_or_email" id="name" class="form-control" value="{{ old('plex_username_or_email') }}">
     </div>
 
     <div class="form-group">
-        <label for="email">Email Address:</label>
-        <input type="text" name="email" id="email" class="form-control" value="{{ old('email') }}">
-    </div>
-
-    <div class="form-group">
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" class="form-control">
+        <label for="password">Plex Password:</label>
+        <input type="password" name="plex_password" id="password" class="form-control">
     </div>
 
     <div class="form-group">

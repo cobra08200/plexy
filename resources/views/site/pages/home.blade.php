@@ -24,11 +24,11 @@
 
 <hr>
 
-@if (count($tickets) > 0 )
+@if (!empty($tickets))
     @include('site/layouts/partials/issue_request_module', ['module' => $tickets, 'header' => 'TICKETS'])
 @endif
 
-@if (count($closedTickets) > 0)
+@if (!empty($closedTickets))
     @include('site/layouts/partials/issue_request_module', ['module' => $closedTickets, 'header' => 'CLOSED'])
     {!! $closedTickets->render() !!}
 @endif
