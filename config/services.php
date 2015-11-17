@@ -15,49 +15,49 @@ return [
     */
 
     'mailgun' => [
-        'domain'    => env('MAILGUN_DOMAIN'),
-        'secret'    => env('MAILGUN_SECRET'),
+        'domain'    => env('MAILGUN_DOMAIN', null),
+        'secret'    => env('MAILGUN_SECRET', null),
     ],
 
     'mandrill' => [
-        'secret'    => env('MANDRILL_SECRET'),
+        'secret'    => env('MANDRILL_SECRET', null),
     ],
 
     'ses' => [
-        'key'       => env('SES_KEY'),
-        'secret'    => env('SES_SECRET'),
+        'key'       => env('SES_KEY', null),
+        'secret'    => env('SES_SECRET', null),
         'region'    => 'us-east-1',
     ],
 
     'stripe' => [
         'model'     => App\User::class,
-        'key'       => env('STRIPE_KEY'),
-        'secret'    => env('STRIPE_SECRET'),
+        'key'       => env('STRIPE_KEY', null),
+        'secret'    => env('STRIPE_SECRET', null),
     ],
 
     'email' => [
-        'from'      => env('MAIL_FROM_ADDRESS'),
+        'from'      => env('MAIL_FROM_ADDRESS', null),
     ],
 
     'tmdb' => [
-        'token'     => env('TMDB_TOKEN'),
+        'token'     => env('TMDB_TOKEN', null),
     ],
 
     'spotify' => [
-        'id'        => env('SPOTIFY_ID'),
-        'secret'    => env('SPOTIFY_SECRET'),
+        'id'        => env('SPOTIFY_ID', null),
+        'secret'    => env('SPOTIFY_SECRET', null),
     ],
 
     'pushover' => [
-        'token'     => env('PUSHOVER_TOKEN'),
-        'user'      => env('PUSHOVER_USER'),
+        'token'     => env('PUSHOVER_TOKEN', null),
+        'user'      => env('PUSHOVER_USER', null),
     ],
 
     'plex' => [
-        'username'  => env('PLEX_USERNAME'),
-        'password'  => env('PLEX_PASSWORD'),
-        'token'     => env('PLEX_TOKEN'),
-        'url'       => env('PLEX_SERVER_URL'),
+        'username'  => env('PLEX_USERNAME', null),
+        'password'  => env('PLEX_PASSWORD', null),
+        'token'     => env('PLEX_TOKEN', null),
+        'url'       => env('PLEX_SERVER_URL', null),
     ],
 
 ];

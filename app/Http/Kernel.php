@@ -32,5 +32,7 @@ class Kernel extends HttpKernel
         'first.run'     => \App\Http\Middleware\FirstRun::class,
         'blocked'       => \App\Http\Middleware\BlockedRoutes::class,
         'ajax'          => \App\Http\Middleware\AjaxOnly::class,
+        'canInstall'    => \App\Http\Middleware\canInstall::class,
+        'canUpgrade'    => \App\Http\Middleware\canUpgrade::class,
     ];
 }

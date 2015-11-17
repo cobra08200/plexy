@@ -8,7 +8,7 @@ define('LARAVEL_START', microtime(true));
 |--------------------------------------------------------------------------
 */
 
-require __DIR__.'/../app/Http/helpers.php';
+require __DIR__.'/../app/Http/Helpers/global.php';
 
 /*
 |--------------------------------------------------------------------------

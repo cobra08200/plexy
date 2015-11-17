@@ -10,6 +10,6 @@ class SetupController extends Controller
 {
     public function firstRun()
     {
-        return view('site.pages.firstRun');
+        return view('installer.welcome');
     }
 }

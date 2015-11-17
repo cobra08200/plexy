@@ -85,9 +85,15 @@ class RegistrationController extends Controller
      */
     public function confirmEmail($token)
     {
-        User::whereToken($token)->firstOrFail()->confirmEmail();
+        $tokenExists = User::where('token', $token)->first();
 
-        return redirect('login')
-            ->with('info', "You are now confirmed. Please login.");
+        if ($tokenExists)
+        {
+            $tokenExists->confirmEmail();
+            return redirect('login')
+                ->with('info', "You are now confirmed. Please login.");
+        } else {
+            return redirect('login');
+        }
     }
 }

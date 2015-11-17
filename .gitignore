@@ -16,6 +16,7 @@
 /app/config/local
 /app/config/staging
 /app/config/production
+/storage/installed
 
 # Composer
 composer.phar

@@ -15,7 +15,9 @@ class DatabaseSeeder extends Seeder
         Model::unguard();
 
         $this->call(RoleTableSeeder::class);
-        $this->call(UserTableSeeder::class);
+
+        // When enabled, this creates an admin and a user account.
+        // $this->call(UserTableSeeder::class);
 
         Model::reguard();
     }

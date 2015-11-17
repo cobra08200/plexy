@@ -3,21 +3,19 @@
     Environment variables missing. Please check your .env file.
 </p>
 
-@if (env('TMDB_TOKEN') == null)
+@if (env('TMDB_TOKEN') == null || env('PLEX_TOKEN') == null || env('PLEX_SERVER_URL') == null)
 <ul>
-    <li>The Movie DB Token is missing.</li>
-</ul>
-@endif
+    @if (env('TMDB_TOKEN') == null)
+        <li>The Movie DB Token is missing.</li>
+    @endif
 
-@if (env('PLEX_TOKEN') == null)
-<ul>
-    <li>Plex Token is missing.</li>
-</ul>
-@endif
+    @if (env('PLEX_TOKEN') == null)
+        <li>Plex Token is missing.</li>
+    @endif
 
-@if (env('PLEX_SERVER_URL') == null)
-<ul>
-    <li>Plex Server URL is missing.</li>
+    @if (env('PLEX_SERVER_URL') == null)
+        <li>Plex Server URL is missing.</li>
+    @endif
 </ul>
 @endif
 
