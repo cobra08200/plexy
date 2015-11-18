@@ -13,6 +13,7 @@ Route::group(['middleware' => ['first.run']], function()
 {
     // Authentication routes...
     get('login', ['as' => 'login', 'uses' => 'SessionsController@login']);
+    // post('plex/verify/{usernameOrEmail}', ['as' => 'plex.verify.friend', 'middleware' => 'ajax', 'uses' => 'PlexController@plexVerifyFriend']);
     post('login', ['as' => 'login.post', 'uses' => 'SessionsController@postLogin']);
     get('logout', ['as' => 'logout', 'uses' => 'SessionsController@logout']);
 

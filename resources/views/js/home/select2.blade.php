@@ -234,12 +234,12 @@ function formatSearchSelection (data) {
     return data.title || data.name || data.text;
 }
 
-var $loading = $('#loadingDiv').hide();
+var $loading = $('#loadingDiv');
 
 $(document)
 .ajaxStart(function () {
-    $loading.show();
+    $loading.toggle();
 })
 .ajaxStop(function () {
-    $loading.hide();
+    $loading.toggle();
 });

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Storage;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -53,6 +54,37 @@ class PlexController extends Controller
         $friends = json_decode($json, true);
 
         return $friends;
+    }
+
+    public function plexVerifyFriend($usernameOrEmail)
+    {
+        $parameters = array(
+            'X-Plex-Token' => config('services.plex.token')
+        );
+
+        $url = "https://plex.tv/pms/friends/all?" . http_build_query($parameters);
+
+        $xml = simplexml_load_string($this->c($url));
+
+        $json = json_encode($xml);
+
+        $friends = json_decode($json, true);
+
+        // Check if the login attempt is a friend of the server owner or the server owner.
+        foreach ($friends['User'] as $f) {
+            foreach ($f['@attributes'] as $key => $value) {
+                // If the authenticated user is a friend of the server owner, add them as a user with their Plex credentials.
+                if ($key == 'email' && strtolower($value) == $usernameOrEmail) {
+                    return true;
+                } elseif ($key == 'username' && strtolower($value) == $usernameOrEmail) {
+                    return true;
+                } elseif (User::where('name', '=', $usernameOrEmail)->where('id', '=', 1)->exists() || User::where('email', '=', $usernameOrEmail)->where('id', '=', 1)->exists()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public function plexServerInfo()

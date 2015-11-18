@@ -11,6 +11,7 @@
 {{-- <body> --}}
 @include('site/layouts/partials/navigation')
 @include('notifications')
+@include('loading')
 @yield('content')
 {{-- @include('site/layouts/partials/modal') --}}
 @include('site/layouts/partials/footer')

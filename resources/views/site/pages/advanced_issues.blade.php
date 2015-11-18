@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="cd-fold-content single-page">
+<div>
 	<p>{{ $issue->content }}
 		{{-- @if ($issue->topic == 'music')
 			- {{ $tracks[0]['artists'][0]['name'] }}
