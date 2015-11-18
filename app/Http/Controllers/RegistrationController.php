@@ -71,10 +71,15 @@ class RegistrationController extends Controller
             }
         }
 
-        $mailer->sendEmailConfirmationTo($user);
+        if (isset($user)) {
+            $mailer->sendEmailConfirmationTo($user);
 
-        return redirect()->back()
-            ->with('info', "Please check your email confirm your account.");
+            return redirect()->back()
+                ->with('info', "Please check your email confirm your account.");
+        } else {
+            return redirect()->back()
+                ->with('danger', "Are you sure this Plex server is shared with you?");
+        }
     }
 
     /**
