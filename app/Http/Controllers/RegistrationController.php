@@ -37,9 +37,9 @@ class RegistrationController extends Controller
     public function postRegister(Request $request, AppMailer $mailer)
     {
         $this->validate($request, [
-            'plex_username_or_email' => 'required|unique:users,name',
-            'plex_username_or_email' => 'required|unique:users,email',
-            'plex_password' => 'required'
+            'plex_username_or_email'    => 'required|unique:users,name',
+            'plex_username_or_email'    => 'required|unique:users,email',
+            'plex_password'             => 'required'
         ]);
 
         $plexUsernameOrEmail = $request->input('plex_username_or_email');

@@ -36,7 +36,7 @@ class SessionsController extends Controller
     {
         $this->validate($request, [
             'username_or_email' => 'required',
-            'password' => 'required'
+            'password'          => 'required'
         ]);
 
         if ($this->verifyFriend($request) !== false) {
@@ -121,7 +121,7 @@ class SessionsController extends Controller
     protected function getCredentialsViaName(Request $request)
     {
         return [
-            'name'     => $request->input('username_or_email'),
+            'name'      => $request->input('username_or_email'),
             'password'  => $request->input('password'),
             'verified'  => true
         ];

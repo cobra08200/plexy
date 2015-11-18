@@ -58,17 +58,7 @@ class PlexController extends Controller
 
     public function plexVerifyFriend($usernameOrEmail)
     {
-        $parameters = array(
-            'X-Plex-Token' => config('services.plex.token')
-        );
-
-        $url = "https://plex.tv/pms/friends/all?" . http_build_query($parameters);
-
-        $xml = simplexml_load_string($this->c($url));
-
-        $json = json_encode($xml);
-
-        $friends = json_decode($json, true);
+        $friends = $this->plexFriends();
 
         // Check if the login attempt is a friend of the server owner or the server owner.
         foreach ($friends['User'] as $f) {
