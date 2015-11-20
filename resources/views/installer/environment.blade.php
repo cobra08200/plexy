@@ -17,18 +17,14 @@
             <form method="post" action="{{ route('LaravelInstaller::environmentSave') }}">
                 <div class="bs-component">
                     <ul class="list-group">
-                        <textarea name="envConfig" rows="32" cols="60">{{ $envConfig }}</textarea>
+                        <textarea name="envConfig" rows="33" cols="68">{{ $envConfig }}</textarea>
                     </ul>
                 </div>
                 @if (!isset($environment['errors']))
-                    @if (env('TMDB_TOKEN') == null || env('PLEX_TOKEN') == null || env('PLEX_SERVER_URL') == null)
+                    @if (env('TMDB_TOKEN') == null || env('PLEX_SERVER_URL') == null)
                         <ul>
                             @if (env('TMDB_TOKEN') == null)
                                 <li>The Movie DB Token is required.</li>
-                            @endif
-
-                            @if (env('PLEX_TOKEN') == null)
-                                <li>Plex Token is required.</li>
                             @endif
 
                             @if (env('PLEX_SERVER_URL') == null)

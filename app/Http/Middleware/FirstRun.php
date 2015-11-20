@@ -15,7 +15,7 @@ class FirstRun
      */
     public function handle($request, Closure $next)
     {
-        if (env('TMDB_TOKEN') == null || env('PLEX_TOKEN') == null || env('PLEX_SERVER_URL') == null) {
+        if (env('TMDB_TOKEN') == null || env('PLEX_SERVER_URL') == null) {
             return redirect('setup')->with('firstRun', 'triggered');
         }
 

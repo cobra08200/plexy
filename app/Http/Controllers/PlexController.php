@@ -19,9 +19,9 @@ class PlexController extends Controller
         $header = array(
             'Content-Type: application/json',
             'Content-Length: 0',
-            'X-Plex-Client-Identifier: 8334-8A72-4C28-FDAF-29AB-479E-4069-C3A3',
-            'X-Plex-Product: Test',
-            'X-Plex-Version: v1_06',
+            'X-Plex-Client-Identifier: ' . uniqid() . '',
+            'X-Plex-Product: Plexy',
+            'X-Plex-Version: v1.0',
             );
         $process = curl_init($host);
         curl_setopt($process, CURLOPT_HTTPHEADER, $header);
@@ -58,6 +58,10 @@ class PlexController extends Controller
 
     public function plexVerifyFriend($usernameOrEmail)
     {
+        if (User::where('name', '=', $usernameOrEmail)->where('id', '=', 1)->exists() || User::where('email', '=', $usernameOrEmail)->where('id', '=', 1)->exists()) {
+            return true;
+        }
+
         $friends = $this->plexFriends();
 
         // Check if the login attempt is a friend of the server owner or the server owner.
@@ -67,8 +71,6 @@ class PlexController extends Controller
                 if ($key == 'email' && strtolower($value) == $usernameOrEmail) {
                     return true;
                 } elseif ($key == 'username' && strtolower($value) == $usernameOrEmail) {
-                    return true;
-                } elseif (User::where('name', '=', $usernameOrEmail)->where('id', '=', 1)->exists() || User::where('email', '=', $usernameOrEmail)->where('id', '=', 1)->exists()) {
                     return true;
                 }
             }

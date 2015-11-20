@@ -13,14 +13,15 @@ class AccountManager
      *
      * @return array
      */
-    public function createAdmin($request)
+    public function createAdmin($request, $authenticationResponse)
     {
         try{
             $user = new User;
-            $user->name     = $request->input('username');
-            $user->email    = $request->input('email');
-            $user->password = $request->input('password');
+            $user->name     = $authenticationResponse['user']['username'];
+            $user->email    = $authenticationResponse['user']['email'];
+            $user->password = $request->input('plex_password');
             $user->verified = true;
+            $user->save();
             $user->makeRole('admin');
         }
         catch(Exception $e){

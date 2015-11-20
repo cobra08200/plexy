@@ -18,12 +18,18 @@ class EnvironmentManager
     private $envExamplePath;
 
     /**
+     * @var string
+     */
+    private $envTempPath;
+
+    /**
      * Set the .env and .env.example paths.
      */
     public function __construct()
     {
         $this->envPath = base_path('.env');
         $this->envExamplePath = base_path('.env.example');
+        $this->envTempPath = base_path('.env.tmp');
     }
 
     /**
@@ -56,6 +62,51 @@ class EnvironmentManager
 
         try {
             file_put_contents($this->envPath, $input->get('envConfig'));
+        }
+        catch(Exception $e) {
+            $message = trans('messages.environment.errors');
+        }
+
+        return $message;
+    }
+
+    /**
+     * Save the Plex token to the file.
+     *
+     * @param Request $input
+     * @return string
+     */
+    public function saveToken($authenticationResponse)
+    {
+        $message = trans('messages.environment.successToken');
+
+        try {
+            $reading = fopen($this->envPath, 'r');
+            $writing = fopen($this->envTempPath, 'w');
+
+            $replaced = false;
+
+            while (!feof($reading)) {
+                $line = fgets($reading);
+
+                if (stristr($line,'PLEX_TOKEN=')) {
+                $line = "PLEX_TOKEN=" . $authenticationResponse['user']['authentication_token'] . "\n";
+                $replaced = true;
+                }
+
+                fputs($writing, $line);
+            }
+
+            fclose($reading);
+            fclose($writing);
+
+            // If token was saved, save new .env
+            if ($replaced)
+            {
+                rename($this->envTempPath, $this->envPath);
+            } else {
+                unlink($this->envTempPath);
+            }
         }
         catch(Exception $e) {
             $message = trans('messages.environment.errors');

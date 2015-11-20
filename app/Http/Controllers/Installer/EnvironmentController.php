@@ -35,7 +35,6 @@ class EnvironmentController extends Controller
         return view('installer.environment', compact('envConfig'));
     }
 
-
     /**
      * Processes the newly saved environment configuration and redirects back.
      *
@@ -50,5 +49,4 @@ class EnvironmentController extends Controller
         return $redirect->route('LaravelInstaller::environment')
                         ->with(['message' => $message]);
     }
-
 }

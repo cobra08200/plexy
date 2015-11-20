@@ -39,19 +39,19 @@ class SessionsController extends Controller
             'password'          => 'required'
         ]);
 
-        if ($this->verifyFriend($request) !== false) {
-
-            if ($this->signIn($request)) {
-
-                return redirect()->intended('/home')
-                    ->with('info', "Welcome back!");
-            }
+        if ($this->verifyFriend($request) !== true) {
             return redirect()->back()
-                ->with('warning', "Could not verify friendship.");
+                             ->with('warning', "Could not verify friendship.");
+        }
+
+        if ($this->signIn($request)) {
+
+            return redirect()->intended('/home')
+                             ->with('info', "Welcome back!");
         }
 
         return redirect()->back()
-            ->with('warning', "Could not sign you in.");
+                         ->with('warning', "Could not sign you in.");
     }
 
     /**
