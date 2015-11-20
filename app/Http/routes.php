@@ -11,9 +11,12 @@ Route::group(['middleware' => ['blocked']], function()
 // First Run - Setup Environment Variables
 Route::group(['middleware' => ['first.run']], function()
 {
+    // get('plex/server/info', ['as' => 'plex.server.info', 'uses' => 'PlexController@plexServerInfo']);
+    // get('plex/server/sessions', ['as' => 'plex.server.sessions', 'uses' => 'PlexController@plexTranscodeSessions']);
+    // get('plex/server/sessions/delete/{transcodeSessionKey}', ['as' => 'plex.server.session.delete', 'uses' => 'PlexController@plexDeleteTranscodeSession']);
+
     // Authentication routes...
     get('login', ['as' => 'login', 'uses' => 'SessionsController@login']);
-    // post('plex/verify/{usernameOrEmail}', ['as' => 'plex.verify.friend', 'middleware' => 'ajax', 'uses' => 'PlexController@plexVerifyFriend']);
     post('login', ['as' => 'login.post', 'uses' => 'SessionsController@postLogin']);
     get('logout', ['as' => 'logout', 'uses' => 'SessionsController@logout']);
 

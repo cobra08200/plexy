@@ -19,9 +19,13 @@ class PlexController extends Controller
         $header = array(
             'Content-Type: application/json',
             'Content-Length: 0',
+            'X-Plex-Platform: Laravel',
+            'X-Plex-Platform-Version: 5.1',
             'X-Plex-Client-Identifier: ' . uniqid() . '',
             'X-Plex-Product: Plexy',
             'X-Plex-Version: v1.0',
+            'X-Plex-Device: PHP',
+            'X-Plex-Device-Name: Plexy',
             );
         $process = curl_init($host);
         curl_setopt($process, CURLOPT_HTTPHEADER, $header);
@@ -90,17 +94,28 @@ class PlexController extends Controller
         return json_decode($this->c($url), true);
     }
 
-    // // This is currently not functioning
-    // public function plexServerSessions()
-    // {
-    //     $parameters = array(
-    //         'X-Plex-Token' => config('services.plex.token')
-    //     );
-    //
-    //     $url = config('services.plex.url') . "status/sessions?" . http_build_query($parameters);
-    //
-    //     return json_decode($this->c($url), true);
-    // }
+    public function plexTranscodeSessions()
+    {
+        $parameters = array(
+            'X-Plex-Token' => config('services.plex.token')
+        );
+
+        $url = config('services.plex.url') . "/transcode/sessions?" . http_build_query($parameters);
+
+        return json_decode($this->c($url), true);
+    }
+
+    // This is not working via curl
+    public function plexDeleteTranscodeSession($transcodeSessionKey)
+    {
+        $parameters = array(
+            'X-Plex-Token'  => config('services.plex.token'),
+        );
+
+        $url = config('services.plex.url') . "/transcode/sessions/" . $transcodeSessionKey . "?" . http_build_query($parameters);
+
+        return json_decode($this->c_delete($url), true);
+    }
 
     public function plexServerSearch(Request $request)
     {
@@ -240,7 +255,7 @@ class PlexController extends Controller
 
     public function plexTVShowSeasonEpisodes($ratingKey, $seasonNumber)
     {
-        $seasonEpisodes = app('App\Http\Controllers\plexController')->plexTVShowEpisodes($ratingKey);
+        $seasonEpisodes = $this->plexTVShowEpisodes($ratingKey);
 
         foreach ($seasonEpisodes as $episode) {
             if ($episode['parentIndex'] == $seasonNumber) {
@@ -271,6 +286,25 @@ class PlexController extends Controller
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+          "Accept: application/json"
+        ));
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        return $response;
+    }
+
+    public function c_delete($url)
+    {
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_HEADER, FALSE);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
 
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
           "Accept: application/json"

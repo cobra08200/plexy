@@ -47,7 +47,7 @@ class SessionsController extends Controller
         if ($this->signIn($request)) {
 
             return redirect()->intended('/home')
-                             ->with('info', "Welcome back!");
+                             ->with('info', "Welcome!");
         }
 
         return redirect()->back()
