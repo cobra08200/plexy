@@ -1,29 +1,24 @@
 @extends( Request::ajax() ? 'site.layouts.ajax' : 'site.layouts.default' )
 
 @section('content')
-
-<form method="POST" action="{{ route('login.post') }}">
-    {!! csrf_field() !!}
-
-    <div class="form-group">
-        <label for="email">Username or Email Address:</label>
-        <input type="text" name="username_or_email" id="username_or_email" class="form-control" value="{{ old('username_or_email') }}">
+{{-- <h1 class="ui center aligned header">H1</h1> --}}
+<form class="ui form" method="post" action="{{ route('login.post') }}">
+  {!! csrf_field() !!}
+  <div class="field">
+    <label>Username or Email Address</label>
+    <input type="text" name="username_or_email" id="username_or_email" value="{{ old('username_or_email') }}">
+  </div>
+  <div class="field">
+    <label>Password</label>
+    <input type="password" name="password" id="password" >
+  </div>
+  <div class="field">
+    <div class="ui checkbox">
+      <input type="checkbox" tabindex="0" class="hidden" name="remember" id="remember" {{ old('remember') ? ' checked' : '' }}>
+      <label>Remember Me</label>
     </div>
-
-    <div class="form-group">
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" class="form-control">
-    </div>
-
-    <div class="checkbox">
-        <label>
-            <input type="checkbox" name="remember" id="remember" {{ old('remember') ? ' checked' : '' }}> Remember Me
-        </label>
-    </div>
-
-    <div class="form-group">
-        <button type="submit" id="submit_button" class="btn btn-default">Sign In</button>
-    </div>
+  </div>
+  <button class="ui button" type="submit" id="submit_button">Submit</button>
 </form>
 
 @stop
