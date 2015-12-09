@@ -2,19 +2,13 @@
 
 @section('content')
 
-<form method="POST" action="{{ route('password.email.post') }}">
-    {!! csrf_field() !!}
-
-    <div>
-        Email
-        <input type="email" name="email" value="{{ old('email') }}">
-    </div>
-
-    <div>
-        <button type="submit">
-            Send Password Reset Link
-        </button>
-    </div>
+<form class="ui form" method="post" action="{{ route('password.email.post') }}">
+  {!! csrf_field() !!}
+  <div class="field">
+    <label>Email Address</label>
+    <input type="email" name="email" value="{{ old('email') }}">
+  </div>
+  <button class="ui button" type="submit" id="submit_button">Send Password Reset Link</button>
 </form>
 
 @stop

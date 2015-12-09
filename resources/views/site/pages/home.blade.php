@@ -18,8 +18,6 @@
   <button type="button" id="cancel_request" name="button">Cancel</button>
 </div>
 
-<hr>
-
 @if (count($tickets) > 0)
 @include('site/layouts/partials/issue_request_module', ['module' => $tickets, 'header' => 'TICKETS'])
 @endif

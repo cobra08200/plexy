@@ -2,30 +2,22 @@
 
 @section('content')
 
-<form method="POST" action="{{ route('password.reset.post') }}">
-    {!! csrf_field() !!}
-    <input type="hidden" name="token" value="{{ $token }}">
-
-    <div>
-        Email
-        <input type="email" name="email" value="{{ old('email') }}">
-    </div>
-
-    <div>
-        Password
-        <input type="password" name="password">
-    </div>
-
-    <div>
-        Confirm Password
-        <input type="password" name="password_confirmation">
-    </div>
-
-    <div>
-        <button type="submit">
-            Reset Password
-        </button>
-    </div>
+<form class="ui form" method="post" action="{{ route('password.reset.post') }}">
+  {!! csrf_field() !!}
+  <input type="hidden" name="token" value="{{ $token }}">
+  <div class="field">
+    <label>Email Address</label>
+    <input type="email" name="email" value="{{ old('email') }}">
+  </div>
+  <div class="field">
+    <label>Password</label>
+    <input type="password" name="password">
+  </div>
+  <div class="field">
+    <label>Confirm Password</label>
+    <input type="password" name="password_confirmation">
+  </div>
+  <button class="ui button" type="submit" id="submit_button">Reset Password</button>
 </form>
 
 @stop
