@@ -13,7 +13,7 @@
                 <ul class="list-group">
                     @foreach($requirements['requirements'] as $element => $enabled)
                     <li class="list-group-item">
-                        @if($enabled)
+                        @if ($enabled)
                             <span class="badge badge-success">
                                 <i class="glyphicon glyphicon-ok"></i>
                             </span>
@@ -27,7 +27,7 @@
                     @endforeach
                 </ul>
             </div>
-            @if(!isset($requirements['errors']))
+            @if (!isset($requirements['errors']))
                 <a class="btn btn-success" href="{{ route('LaravelInstaller::permissions') }}">
                     {{ trans('messages.next') }}
                 </a>

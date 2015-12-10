@@ -15,7 +15,7 @@
   </div>
   <div class="field">
     <div class="ui checkbox">
-      <input type="checkbox" tabindex="0" class="hidden" name="remember" id="remember" {{ old('remember') ? ' checked' : '' }}>
+      <input type="checkbox" name="remember" {{ old('remember') ? ' checked' : '' }}>
       <label>Remember Me</label>
     </div>
   </div>

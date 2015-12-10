@@ -9,7 +9,7 @@
             </h3>
         </div>
         <div class="panel-body">
-            @if(isset($respond['errors']))
+            @if (isset($respond['errors']))
                 <div class="alert alert-danger">
                     {{ $respond['errors']['message'] }}
                 </div>
@@ -18,7 +18,7 @@
                     {{ trans('messages.database.success') }}
                 </p>
             @endif
-            @if(!isset($respond['errors']))
+            @if (!isset($respond['errors']))
                 <a class="btn btn-success" href="/">
                     {{ trans('messages.database.final') }}
                 </a>

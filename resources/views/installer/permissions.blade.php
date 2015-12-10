@@ -13,7 +13,7 @@
                 <ul class="list-group">
                     @foreach($permissions['permissions'] as $permission)
                         <li class="list-group-item">
-                            @if($permission['isSet'])
+                            @if ($permission['isSet'])
                                 <span class="badge badge-success">
                                     {{ $permission['permission'] }}
                                 </span>
@@ -27,7 +27,7 @@
                     @endforeach
                 </ul>
             </div>
-            @if(!isset($permissions['errors']))
+            @if (!isset($permissions['errors']))
                 <a class="btn btn-success" href="{{ route('LaravelInstaller::database') }}">
                     {{ trans('messages.next') }}
                 </a>
