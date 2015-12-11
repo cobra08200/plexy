@@ -7,7 +7,7 @@
       <div class="ui dimmer">
         <div class="content">
           <div class="center">
-            <a href="{{ route('issue.id', ['id' => $unit['id']]) }}">
+            <a class="launch modal" href="{{ route('issue.id', ['id' => $unit['id']]) }}" data-target="#modal">
               <div class="ui inverted button">View More</div>
             </a>
           </div>

@@ -6,10 +6,10 @@
 <body>
 	@include('site/layouts/partials/navigation')
 	<div class="ui container">
+		@include('site/layouts/partials/modal')
 		@include('notifications')
 		@yield('content')
 		{{-- @include('loading') --}}
-		{{-- @include('site/layouts/partials/modal') --}}
 	</div>
 	@include('site/layouts/partials/footer')
 </body>

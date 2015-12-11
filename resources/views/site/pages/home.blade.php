@@ -3,7 +3,6 @@
 @section('content')
 
 {{-- <header id="title_big">PLEXY</header> --}}
-
 {{-- select2 --}}
 <button type="button" id="show_report" name="button">Report</button>
 <button type="button" id="show_request" name="button">Request</button>
@@ -61,6 +60,11 @@ $(document).ready(function(){
     $("#request").hide();
   });
 });
+
+$('.ui.modal')
+  .modal('attach events', '.launch.modal', 'show')
+;
+
 @include('js/home/select2')
 
 </script>
