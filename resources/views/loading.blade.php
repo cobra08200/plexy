@@ -1,3 +1,3 @@
-<div id="loadingDiv" style="display: none;">
-    <img src="{{ asset('assets/img/01-progress.gif') }}" alt="" />
+<div class="ui active disabled dimmer" id="loadingDiv">
+  <div class="ui text loader">Loading</div>
 </div>

@@ -32,6 +32,27 @@
 
 <script>
 
+var $modalClose = $('[data-modal-close]');
+  $modalContent = $('[data-modal-content]');
+  $modalLoading = $('[data-modal-loading]');
+  $modalHeader  = $('[data-modal-header]');
+
+$(document)
+
+.ajaxStart(function () {
+  $modalLoading.show();
+  $modalClose.hide();
+  $modalContent.hide();
+  $modalHeader.hide();
+})
+
+.ajaxStop(function () {
+  $modalLoading.hide();
+  $modalClose.fadeIn();
+  $modalContent.fadeIn();
+  $modalHeader.fadeIn();
+});
+
 $(document).ready(function(){
   $("#show_report").click(function(){
     $("#report").show();

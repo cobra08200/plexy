@@ -7,9 +7,11 @@ $('.message .close')
     ;
   })
 ;
+
 $('.label.ticket')
   .popup()
 ;
+
 $('.special.cards .image').dimmer({
   on: 'hover'
 });
@@ -28,8 +30,8 @@ $(document).ready(function () {
       .empty()
       .load(issueURL)
     .end()
-      .modal();
-    console.log($modal.find('.content'));
-      return false;
+      .modal({ observeChanges:true }).modal('refresh');
+    // console.log($modal.find('.content'));
+      // return false;
   });
 });
