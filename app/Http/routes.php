@@ -44,7 +44,7 @@ Route::group(['middleware' => ['first.run']], function()
 
         // Search Movies, TV Shows, and Music
         // Reports
-        get('search/report', ['as' => 'report.search.select2', 'middleware' => 'ajax', 'uses' => 'SearchController@search']);
+        get('search/report', ['as' => 'report.search.select2', 'uses' => 'SearchController@search']);
         // Requests
         get('search/request', ['as' => 'request.search.select2', 'middleware' => 'ajax', 'uses' => 'SearchController@search']);
 

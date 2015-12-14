@@ -27,11 +27,11 @@
                     @endforeach
                 </ul>
             </div>
-            @if (!isset($permissions['errors']))
+            {{-- @if (!isset($permissions['errors'])) --}}
                 <a class="btn btn-success" href="{{ route('LaravelInstaller::database') }}">
                     {{ trans('messages.next') }}
                 </a>
-            @endif
+            {{-- @endif --}}
         </div>
     </div>
 @stop
