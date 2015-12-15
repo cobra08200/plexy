@@ -18,12 +18,12 @@
 </div>
 {{-- semantic-ui search --}}
 
-{{-- <div class="ui search">
+<div class="ui search">
   <div class="ui left icon input">
-    <input class="prompt" type="text" placeholder="Search GitHub">
-    <i class="github icon"></i>
+    <input class="prompt" type="text" placeholder="Request Content">
+    <i class="film icon"></i>
   </div>
-</div> --}}
+</div>
 
 @if (count($tickets) > 0)
 @include('site/layouts/partials/issue_request_module', ['module' => $tickets, 'header' => 'TICKETS'])
@@ -94,11 +94,13 @@ $('.ui.modal')
   .modal('attach events', '.launch.modal', 'show')
 ;
 
-{{-- Request Search Semantic UI
+// Request Search Semantic UI
 $('.ui.search')
   .search({
     type          : 'category',
     minCharacters : 3,
+    cache         : true,
+    searchDelay   : 300,
     apiSettings   : {
       onResponse: function(requestResults) {
         var
@@ -106,37 +108,74 @@ $('.ui.search')
             results : {}
           }
         ;
-        // translate GitHub API response to work with search
+        // translate API response to work with search
         $.each(requestResults.results, function(index, results) {
           var
             type = results.type || 'Unknown',
-            maxResults = 8
+            maxResults = 20
           ;
           if (index >= maxResults) {
             return false;
           }
-          if (results.release_date && results.poster_path) {
-            return false;
+          if (results.thumb || results.poster_path) {
+            // return false;
+            // create new language category
+            if (response.results[type] === undefined) {
+              response.results[type] = {
+                name    : type,
+                results : []
+              };
+            }
+            // add result to category
+            if (results.results_from  == 'plex_server') {
+              if (results.type == 'movie') {
+                response.results[type].results.push({
+                  title       : results.title + ' - ' + results.year,
+                  image       : results.thumb
+                });
+              }
+              if (results.type == 'show') {
+                response.results[type].results.push({
+                  title       : results.title + ' - ' + results.year,
+                  image       : results.thumb
+                });
+              }
+              if (results.type == 'album') {
+                response.results[type].results.push({
+                  title       : results.title,
+                  image       : results.thumb
+                });
+              }
+            } else {
+              if (results.type == 'movies') {
+                response.results[type].results.push({
+                  title       : results.title + ' - ' + (results.release_date.substr(0, 4)),
+                  image       : 'https://image.tmdb.org/t/p/w780' + results.poster_path
+                });
+              }
+              if (results.type == 'tv') {
+                response.results[type].results.push({
+                  title       : results.name + ' - ' + (results.first_air_date.substr(0, 4)),
+                  image       : 'https://image.tmdb.org/t/p/w780' + results.poster_path
+                });
+              }
+              if (results.type == 'album') {
+                response.results[type].results.push({
+                  title       : results.name,
+                  image       : results.images[0].url
+                });
+              }
+            }
           }
-          // create new language category
-          if (response.results[type] === undefined) {
-            response.results[type] = {
-              name    : type,
-              results : []
-            };
-          }
-          // add result to category
-          response.results[type].results.push({
-            title       : results.title + ' - ' + (results.release_date.substr(0, 4)),
-            image       : 'https://image.tmdb.org/t/p/w780' + results.poster_path
-
-          });
         });
         return response;
       },
       url: '{{ route('request.search.select2') }}?query={query}'
+    },
+    onSelect: function(result, response) {
+        // alert(result ? result.title : 'null');
     }
-  }) --}}
+  })
 
 @include('js/home/select2')
 

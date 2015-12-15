@@ -8,12 +8,12 @@
 @if (env('APP_ENV') == 'production')
 {{-- <link rel="stylesheet" href="{{ elixir('css/app.css') }}"> --}}
 <link rel="stylesheet" href="{{secure_asset('assets/css/semantic.min.css')}}">
-<link rel="stylesheet" href="{{secure_asset('assets/css/select2.min.css')}}">
+<link rel="stylesheet" href="{{secure_asset('assets/css/select2.css')}}">
 <link rel="stylesheet" href="{{secure_asset('assets/css/custom.css')}}">
 @else
 {{-- <link rel="stylesheet" href="{{ elixir('css/app.css') }}"> --}}
 <link rel="stylesheet" href="{{asset('assets/css/semantic.min.css')}}">
-<link rel="stylesheet" href="{{asset('assets/css/select2.min.css')}}">
+<link rel="stylesheet" href="{{asset('assets/css/select2.css')}}">
 <link rel="stylesheet" href="{{asset('assets/css/custom.css')}}">
 @endif
 @yield('styles')
