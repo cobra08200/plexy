@@ -1,4 +1,7 @@
-<header>{{ $header }}</header>
+<h4 class="ui horizontal divider header">
+  <i class="ticket icon"></i>
+  {{ $header }}
+</h4>
 
 <div class="ui four stackable special cards">
   @foreach ($module->all() as $unit)

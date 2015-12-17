@@ -271,10 +271,10 @@ class IssueController extends Controller {
 		return View::make('site/pages/advanced_issues', compact('issue', 'album'));
 	}
 
-	public function getIssueView($id)
+	public function getIssueView($id, Request $request)
 	{
-		// if ($request->ajax())
-		// {
+		if ($request->ajax())
+		{
 			$issue = Issue::find($id);
 
 			if (Issue::where('id', '=', $id)->exists())
@@ -287,7 +287,7 @@ class IssueController extends Controller {
 
 				return View::make('site/pages/issues', compact('issue', 'messages', 'thumbExtension'));
 			}
-		// }
+		}
 
 		return Redirect::to('/');
 
