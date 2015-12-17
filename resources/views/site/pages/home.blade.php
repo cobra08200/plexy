@@ -18,7 +18,7 @@
 </div>
 {{-- semantic-ui search --}}
 
-<div class="ui category search">
+<div class="ui search">
   <div class="ui left icon input">
     <input class="prompt" type="text" placeholder="Request Content">
     <i class="film icon"></i>
@@ -98,8 +98,8 @@ $('.ui.modal')
 $('.ui.search')
   .search({
     type          : 'category',
-    minCharacters : 2,
-    cache         : false,
+    minCharacters : 3,
+    cache         : true,
     searchDelay   : 300,
     apiSettings   : {
       onResponse: function(requestResults) {
@@ -112,13 +112,14 @@ $('.ui.search')
         $.each(requestResults.results, function(index, results) {
           var
             type = results.type || 'Unknown',
-            maxResults = 12
+            maxResults = 20
           ;
           if (index >= maxResults) {
             return false;
           }
-          if (results.thumb || results.poster_path || results.images ) {
-            // create new category
+          if (results.thumb || results.poster_path) {
+            // return false;
+            // create new language category
             if (response.results[type] === undefined) {
               response.results[type] = {
                 name    : type,
@@ -129,51 +130,39 @@ $('.ui.search')
             if (results.results_from  == 'plex_server') {
               if (results.type == 'movie') {
                 response.results[type].results.push({
-                  id            : results.ratingKey,
-                  title         : results.title,
-                  image         : results.thumb,
-                  description   : results.year,
+                  title       : results.title + ' - ' + results.year,
+                  image       : results.thumb
                 });
               }
               if (results.type == 'show') {
                 response.results[type].results.push({
-                  id            : results.ratingKey,
-                  title         : results.title,
-                  image         : results.thumb,
-                  description   : results.year,
+                  title       : results.title + ' - ' + results.year,
+                  image       : results.thumb
                 });
               }
               if (results.type == 'album') {
                 response.results[type].results.push({
-                  id            : results.ratingKey,
-                  title         : results.title,
-                  image         : results.thumb,
-                  description   : results.year,
+                  title       : results.title,
+                  image       : results.thumb
                 });
               }
             } else {
               if (results.type == 'movies') {
                 response.results[type].results.push({
-                  id            : results.id,
-                  title         : results.title,
-                  image         : 'https://image.tmdb.org/t/p/w780' + results.poster_path,
-                  description   : results.release_date.substr(0, 4),
+                  title       : results.title + ' - ' + (results.release_date.substr(0, 4)),
+                  image       : 'https://image.tmdb.org/t/p/w780' + results.poster_path
                 });
               }
               if (results.type == 'tv') {
                 response.results[type].results.push({
-                  id            : results.id,
-                  title         : results.name,
-                  image         : 'https://image.tmdb.org/t/p/w780' + results.poster_path,
-                  description   : results.first_air_date.substr(0, 4),
+                  title       : results.name + ' - ' + (results.first_air_date.substr(0, 4)),
+                  image       : 'https://image.tmdb.org/t/p/w780' + results.poster_path
                 });
               }
               if (results.type == 'album') {
                 response.results[type].results.push({
-                  id            : results.id,
-                  title         : results.name,
-                  image         : results.images[0].url,
-                  description   : results.release_date.substr(0, 4),
+                  title       : results.name,
+                  image       : results.images[0].url
                 });
               }
             }
@@ -181,7 +170,6 @@ $('.ui.search')
         });
         return response;
       },
-      // url: '{{ route('plex.server.search') }}?query={query}'
       url: '{{ route('request.search.select2') }}?query={query}'
     },
     onSelect: function(result, response) {
