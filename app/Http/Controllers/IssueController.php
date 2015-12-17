@@ -293,15 +293,13 @@ class IssueController extends Controller {
 
 	}
 
-	public function getIndex()
+	public function getIndex(Request $request)
 	{
-		$bodyClass = "dashboard";
-
 		$tickets = Issue::where('status', '!=', 'closed')->get();
 
 		$closedTickets	= Issue::where('status', '=', 'closed')->simplePaginate(4);
 
-		return View::make('site.pages.home', compact('tickets', 'closedTickets', 'bodyClass'));
+		return View::make('site.pages.home', compact('tickets', 'closedTickets'));
 	}
 
 	public function updateIssueStatus($id, Request $request)

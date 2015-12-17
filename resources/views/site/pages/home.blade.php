@@ -3,26 +3,18 @@
 @section('content')
 
 {{-- <header id="title_big">PLEXY</header> --}}
-{{-- select2 --}}
-<button type="button" id="show_report" name="button">Report</button>
-<button type="button" id="show_request" name="button">Request</button>
+{{-- semantic ui search --}}
+<button class="ui button" type="button" id="show_report" name="button">Report</button>
+<button class="ui button" type="button" id="show_request" name="button">Request</button>
 
 <div id="report" style="display: none;">
-  @include('site/layouts/partials/select2_report_search')
-  <button type="button" id="cancel_report" name="button">Cancel</button>
+  @include('site/layouts/partials/semantic_report_search')
+  <button class="ui button" type="button" id="cancel_report" name="button">Cancel</button>
 </div>
 
 <div id="request" style="display: none;">
-  @include('site/layouts/partials/select2_request_search')
-  <button type="button" id="cancel_request" name="button">Cancel</button>
-</div>
-{{-- semantic-ui search --}}
-
-<div class="ui search">
-  <div class="ui left icon input">
-    <input class="prompt" type="text" placeholder="Request Content">
-    <i class="film icon"></i>
-  </div>
+  @include('site/layouts/partials/semantic_request_search')
+  <button class="ui button" type="button" id="cancel_request" name="button">Cancel</button>
 </div>
 
 @if (count($tickets) > 0)
@@ -31,7 +23,7 @@
 
 @if (count($closedTickets) > 0)
 @include('site/layouts/partials/issue_request_module', ['module' => $closedTickets, 'header' => 'CLOSED'])
-{!! $closedTickets->render() !!}
+{!! $closedTickets->appends(Input::only('issues', 'requests'))->render() !!}
 @endif
 
 @stop
@@ -98,8 +90,8 @@ $('.ui.modal')
 $('.ui.search')
   .search({
     type          : 'category',
-    minCharacters : 3,
-    cache         : true,
+    minCharacters : 2,
+    cache         : false,
     searchDelay   : 300,
     apiSettings   : {
       onResponse: function(requestResults) {
@@ -112,14 +104,13 @@ $('.ui.search')
         $.each(requestResults.results, function(index, results) {
           var
             type = results.type || 'Unknown',
-            maxResults = 20
+            maxResults = 12
           ;
           if (index >= maxResults) {
             return false;
           }
-          if (results.thumb || results.poster_path) {
-            // return false;
-            // create new language category
+          if (results.thumb || results.poster_path || results.images) {
+            // create new topic category
             if (response.results[type] === undefined) {
               response.results[type] = {
                 name    : type,
@@ -130,39 +121,61 @@ $('.ui.search')
             if (results.results_from  == 'plex_server') {
               if (results.type == 'movie') {
                 response.results[type].results.push({
-                  title       : results.title + ' - ' + results.year,
-                  image       : results.thumb
+                  id            : results.ratingKey,
+                  topic         : 'movies',
+                  title         : results.title,
+                  image         : results.thumb,
+                  description   : results.year,
                 });
               }
               if (results.type == 'show') {
                 response.results[type].results.push({
-                  title       : results.title + ' - ' + results.year,
-                  image       : results.thumb
+                  id            : results.ratingKey,
+                  topic         : 'tv',
+                  title         : results.title,
+                  image         : results.thumb,
+                  description   : results.year,
                 });
               }
               if (results.type == 'album') {
                 response.results[type].results.push({
-                  title       : results.title,
-                  image       : results.thumb
+                  id            : results.ratingKey,
+                  topic         : 'music',
+                  title         : results.title,
+                  image         : results.thumb,
+                  description   : results.year,
                 });
               }
             } else {
               if (results.type == 'movies') {
                 response.results[type].results.push({
-                  title       : results.title + ' - ' + (results.release_date.substr(0, 4)),
-                  image       : 'https://image.tmdb.org/t/p/w780' + results.poster_path
+                  id            : results.id,
+                  topic         : 'movies',
+                  vote_average  : results.vote_average,
+                  title         : results.title,
+                  image         : 'https://image.tmdb.org/t/p/w780' + results.poster_path,
+                  backdrop_path : 'https://image.tmdb.org/t/p/w780' + results.backdrop_path,
+                  description   : results.release_date.substr(0, 4),
                 });
               }
               if (results.type == 'tv') {
                 response.results[type].results.push({
-                  title       : results.name + ' - ' + (results.first_air_date.substr(0, 4)),
-                  image       : 'https://image.tmdb.org/t/p/w780' + results.poster_path
+                  id            : results.id,
+                  topic         : 'tv',
+                  vote_average  : results.vote_average,
+                  title         : results.name,
+                  image         : 'https://image.tmdb.org/t/p/w780' + results.poster_path,
+                  backdrop_path : 'https://image.tmdb.org/t/p/w780' + results.backdrop_path,
+                  description   : results.first_air_date.substr(0, 4),
                 });
               }
               if (results.type == 'album') {
                 response.results[type].results.push({
-                  title       : results.name,
-                  image       : results.images[0].url
+                  id            : results.id,
+                  topic         : 'music',
+                  title         : results.name,
+                  image         : results.images[0].url,
+                  description   : results.year,
                 });
               }
             }
@@ -170,10 +183,65 @@ $('.ui.search')
         });
         return response;
       },
+      // url: '{{ route('plex.server.search') }}?query={query}'
       url: '{{ route('request.search.select2') }}?query={query}'
     },
     onSelect: function(result, response) {
+      if (result.result_from == 'plex_server') {
+          if (result.type == 'movie') {
+              document.getElementById("title").value        = result.title ;
+              document.getElementById("year").value         = result.year;
+              document.getElementById("tmdb").value         = result.ratingKey;
+              document.getElementById("poster").value       = result.thumb;
+              // document.getElementById("backdrop").value  = 'https://image.tmdb.org/t/p/w780' + result.backdrop_path;
+              document.getElementById("topic").value        = 'movies';
+              document.getElementById("vote_average").value = result.rating;
+          }
+          if (result.type == 'show') {
+              document.getElementById("title").value        = result.title;
+              document.getElementById("year").value         = result.year;
+              document.getElementById("tmdb").value         = result.ratingKey;
+              document.getElementById("poster").value       = result.thumb;
+              // document.getElementById("backdrop").value  = 'https://image.tmdb.org/t/p/w780' + result.backdrop_path;
+              document.getElementById("topic").value        = 'tv';
+              document.getElementById("vote_average").value = result.rating;
+          }
+          if (result.type == 'album') {
+              document.getElementById("title").value        = result.title;
+              document.getElementById("tmdb").value         = result.ratingKey;
+              document.getElementById("poster").value       = result.thumb;
+              document.getElementById("topic").value        = 'music';
+          }
+      } else {
+          if (result.type == 'movies') {
+              document.getElementById("title").value        = result.title ;
+              document.getElementById("year").value         = result.release_date.substr(0, 4);
+              document.getElementById("tmdb").value         = result.id;
+              document.getElementById("poster").value       = 'https://image.tmdb.org/t/p/w780' + result.poster_path;
+              document.getElementById("backdrop").value     = 'https://image.tmdb.org/t/p/w780' + result.backdrop_path;
+              document.getElementById("topic").value        = result.type;
+              document.getElementById("vote_average").value = result.vote_average;
+          }
+          if (result.type == 'tv') {
+              document.getElementById("title").value        = result.name;
+              document.getElementById("year").value         = result.first_air_date.substr(0, 4);
+              document.getElementById("tmdb").value         = result.id;
+              document.getElementById("poster").value       = 'https://image.tmdb.org/t/p/w780' + result.poster_path;
+              document.getElementById("backdrop").value     = 'https://image.tmdb.org/t/p/w780' + result.backdrop_path;
+              document.getElementById("topic").value        = result.type;
+              document.getElementById("vote_average").value = result.vote_average;
+          }
+          if (result.type == 'album') {
+              document.getElementById("title").value        = result.name;
+              document.getElementById("tmdb").value         = result.id;
+              document.getElementById("poster").value       = result.images[0].url;
+              document.getElementById("topic").value        = 'music';
+          }
+      }
         // alert(result ? result.title : 'null');
+        // console.log(result)
+            // return false;
+
     }
   })
 
