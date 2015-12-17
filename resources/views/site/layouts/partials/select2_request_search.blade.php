@@ -17,6 +17,4 @@
 
 <button type="submit" name="type" value="request">Request</button>
 </form>
-
-
 @endif

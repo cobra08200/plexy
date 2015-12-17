@@ -17,6 +17,4 @@
 
 <button type="submit" name="type" value="issue">Report</button>
 </form>
-
-
 @endif
