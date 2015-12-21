@@ -9,7 +9,7 @@
   <input id="topic" name="topic" type="hidden" value="">
   <input id="vote_average" name="vote_average" type="hidden" value="">
 
-  <div class="ui search input">
+  <div class="ui search report input">
     <div class="ui left icon input">
       <input class="prompt" type="text" placeholder="Search...">
       <i class="search icon"></i>

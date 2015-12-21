@@ -233,13 +233,3 @@ function formatSearchSelection (data) {
     }
     return data.title || data.name || data.text;
 }
-
-var $loading = $('#loadingDiv');
-
-$(document)
-.ajaxStart(function () {
-    $loading.toggle();
-})
-.ajaxStop(function () {
-    $loading.toggle();
-});

@@ -3,7 +3,7 @@
   {{ $header }}
 </h4>
 
-<div class="ui four stackable special cards">
+<div class="ui four doubling special cards">
   @foreach ($module->all() as $unit)
   <div class="card">
     <div class="blurring dimmable image">

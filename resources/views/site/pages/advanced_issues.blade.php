@@ -2,23 +2,23 @@
 
 @section('content')
 
-<div>
-	<p>{{ $issue->content }}
-		{{-- @if ($issue->topic == 'music')
-			- {{ $tracks[0]['artists'][0]['name'] }}
-		@endif --}}
-	</p>
-	<img src="{{ $issue->poster_url }}" width="200px" alt="{{ $issue->content }}">
+<form class="" action="{{ route('search.submit') }}" method="post">
 
-	<form class="" action="{{ route('search.submit') }}" method="post">
-	{!! csrf_field() !!}
+	<div class="ui card">
 
-	<div class="section group">
-		<div class="col span_1_of_2">
-			What's up?
-		</div>
-		<div class="col span_1_of_2">
-			<select class="report_option" id="report_option" name="report_option">
+	  <div class="content">
+			<p class="header">{{ $issue->content }}</p>
+	  </div>
+
+	  <div class="image">
+	    <img src="{{ $issue->poster_url }}" alt="{{ $issue->content }}">
+	  </div>
+
+		{!! csrf_field() !!}
+
+	  <div class="content">
+			<select name="report_option" class="ui fluid dropdown report_option" id="report_option">
+			  <option value="">What's up?</option>
 				<option>Playback Error</option>
 				@if ($issue->topic == 'tv')
 				<option>Missing Episode</option>
@@ -33,21 +33,20 @@
 				@endif
 				<option>Other</option>
 			</select>
-		</div>
-		<div class="col span_1_of_2">
-			Describe it.
-		</div>
-		<textarea class="textarea-message" rows="3" name="issue_description" placeholder="Type message here..." minlength="2"></textarea>
+	  </div>
+
+		<div class="extra content">
+	    <div class="ui large transparent input">
+	      <input type="text" name="issue_description" placeholder="Describe it..." minlength="2">
+	    </div>
+	  </div>
 
 		{{-- TV --}}
 
 		@if ($issue->topic == 'tv')
-
-		<div class="col span_1_of_2">
-			Which Season?
-		</div>
-		<div class="col span_1_of_2">
-			<select class="season_option" id="season_option" name="season">
+		<div class="extra content">
+			<select name="season" class="ui fluid dropdown season_option" id="season_option">
+			  <option value="">Which Season?</option>
 				@for ($i = $first_season_number; $i <= $last_season_number; $i++)
 					@if ($i == 0)
 					<option value="{{ $i }}" label="Specials">
@@ -57,65 +56,69 @@
 					</option>
 				@endfor
 			</select>
-		</div>
-		<div id="episodes">
-			<div class="col span_1_of_2">
-				Which Episode?
-			</div>
-			<div class="col span_1_of_2">
-				<select class="episode_option" id="episode_option" name="episode">
-						@foreach ($series as $episode)
-							@if ($first_season_number == $episode['parentIndex'])
-							<option value="{{ $episode['index'] }}" label="Episode {{ $episode['index'] }}">
-							@endif
-							</option>
-						@endforeach
-				</select>
-			</div>
+	  </div>
+		<div class="extra content">
+			<select name="episode" class="ui fluid dropdown episode_option" id="episode_option">
+				<option value="">Which Season?</option>
+				@foreach ($series as $episode)
+					@if ($first_season_number == $episode['parentIndex'])
+					<option value="{{ $episode['index'] }}" label="Episode {{ $episode['index'] }}">
+					@endif
+					</option>
+				@endforeach
+			</select>
 		</div>
 		@endif
 
 		{{-- MUSIC --}}
 
 		@if ($issue->topic == 'music')
-		<div id="tracklist">
-			<div class="section group">
-				<div class="col span_1_of_2">
-					Which track?
-				</div>
-				<div class="col span_1_of_2">
-					<select class="tracklist_option" id="tracklist_option" name="track">
-						@foreach ($album as $track)
-							<option value="{{ $track['index'] }}" label="{{ $track['index'] }}. {{ $track['title'] }}">
-						@endforeach
-					</select>
-				</div>
-			</div>
+		<div class="extra content">
+			<select name="track" class="ui fluid dropdown tracklist_option" id="tracklist_option">
+				<option value="">Which track?</option>
+				@foreach ($album as $track)
+					<option value="{{ $track['index'] }}" label="{{ $track['index'] }}. {{ $track['title'] }}">
+				@endforeach
+			</select>
 		</div>
 		@endif
 
-	</div>
-
-	<input type="hidden" name="title" 			value="{{ $issue->content }}">
-	<input type="hidden" name="tmdb" 			value="{{ $issue->tmdb }}">
-	<input type="hidden" name="poster" 			value="{{ $issue->poster_url }}">
-	<input type="hidden" name="backdrop" 		value="{{ $issue->backdrop_url }}">
-	<input type="hidden" name="topic" 			value="{{ $issue->topic }}">
-	<input type="hidden" name="vote_average" 	value="{{ $issue->vote_average }}">
-	<input type="hidden" name="round" 			value="advanced">
-	<div class="search__request__full">
-	    <button type="submit" id="submit_button" name="type" value="issue" class="btn">Report</button>
-	</div>
-
-</form>
+		<input type="hidden" name="title" 				value="{{ $issue->content }}">
+		<input type="hidden" name="tmdb" 					value="{{ $issue->tmdb }}">
+		<input type="hidden" name="poster" 				value="{{ $issue->poster_url }}">
+		<input type="hidden" name="backdrop" 			value="{{ $issue->backdrop_url }}">
+		<input type="hidden" name="topic" 				value="{{ $issue->topic }}">
+		<input type="hidden" name="vote_average" 	value="{{ $issue->vote_average }}">
+		<input type="hidden" name="round" 				value="advanced">
+		<div class="search__request__full">
+			<button type="submit" id="submit_button" name="type" value="issue" class="btn">Report</button>
+		</div>
 
 </div>
+
+</form>
 
 @stop
 
 @section('scripts')
 
 <script>
+$('#report_option')
+  .dropdown()
+;
+
+$('#season_option')
+  .dropdown()
+;
+
+$('#episode_option')
+  .dropdown()
+;
+
+$('#tracklist_option')
+  .dropdown()
+;
+
 var $episodes = $('#episodes');
 var $tracks = $('#tracklist');
 

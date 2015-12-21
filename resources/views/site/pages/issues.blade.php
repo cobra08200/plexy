@@ -18,54 +18,90 @@
 		@endif
 	</div>
 	<div class="description">
-		@if (Auth::user()->hasRole('admin'))
-		<form class="" action="{{ route('update.issue', ['id' => $issue->id]) }}" method="post">
-			{!! csrf_field() !!}
-			Status:
-			<select class="status_option" name="status" onchange="this.form.submit()">
-				@if ($issue->status === 'open')
-				<option selected="selected">{{ ucwords($issue->status) }}</option>
-				<option>Pending</option>
-				<option>Closed</option>
-				@elseif ($issue->status === 'pending')
-				<option>Open</option>
-				<option selected="selected">{{ ucwords($issue->status) }}</option>
-				<option>Closed</option>
-				@elseif ($issue->status === 'closed')
-				<option>Open</option>
-				<option>Pending</option>
-				<option selected="selected">{{ ucwords($issue->status) }}</option>
-				@endif
-			</select>
-		</form>
-		@else
-		<p>
-			Status: {{ ucwords($issue->status) }}
-		</p>
-		@endif
-		<p>
-			Added: {{ ucwords($issue->created_at->diffForHumans()) }}
-		</p>
-		@if ($issue->type === 'issue' && !empty($issue->report_option))
-		<p>
-			Issue: {{ $issue->report_option}}
-		</p>
-		@endif
-		@if ($issue->type === 'issue' && !empty($issue->tv_season_number))
-		<div class="section group">
-			<div class="col span_1_of_2">
-				Season {{ $issue->tv_season_number }}
-				@if (!empty($issue->tv_episode_number))
-				- Episode {{ $issue->tv_episode_number }}
-				@endif
-			</div>
+		<div class="ui three steps">
+			<div class="step">
+		    <i class="info icon"></i>
+		    <div class="content">
+		      <div class="title">
+						@if ($issue->type === 'issue')
+						Report
+						@else
+						Request
+						@endif
+					</div>
+		    </div>
+		  </div>
+			<div class="step">
+		    <i class="wait icon"></i>
+		    <div class="content">
+					<div class="title">Added</div>
+		      <div class="description">{{ ucwords($issue->created_at->diffForHumans()) }}</div>
+		    </div>
+		  </div>
+		  <div class="step">
+		    <i class="ticket icon"></i>
+		    <div class="content">
+					<div class="title">Status</div>
+		      <div class="description">
+						@if (Auth::user()->hasRole('admin'))
+						<form class="" action="{{ route('update.issue', ['id' => $issue->id]) }}" method="post">
+							{!! csrf_field() !!}
+							<select class="status_option" name="status" onchange="this.form.submit()">
+								@if ($issue->status === 'open')
+								<option selected="selected">{{ ucwords($issue->status) }}</option>
+								<option>Pending</option>
+								<option>Closed</option>
+								@elseif ($issue->status === 'pending')
+								<option>Open</option>
+								<option selected="selected">{{ ucwords($issue->status) }}</option>
+								<option>Closed</option>
+								@elseif ($issue->status === 'closed')
+								<option>Open</option>
+								<option>Pending</option>
+								<option selected="selected">{{ ucwords($issue->status) }}</option>
+								@endif
+							</select>
+						</form>
+						@else
+						{{ ucwords($issue->status) }}
+						@endif
+					</div>
+		    </div>
+		  </div>
 		</div>
+
+		@if ($issue->type === 'issue' && !empty($issue->report_option))
+		@if (!empty($issue->tv_season_number) || !empty($issue->album_track_number))
+		<div class="ui two steps">
+		@else
+		<div class="ui steps">
 		@endif
-		@if ($issue->type === 'issue' && !empty($issue->album_track_number))
-		<div>
-			<div
-				Track: {{ $issue->album_track_number }}
-			</div>
+		  <div class="step">
+		    <i class="frown icon"></i>
+		    <div class="content">
+					<div class="title">Description</div>
+		      <div class="description">{{ $issue->report_option}}</div>
+		    </div>
+		  </div>
+			@if (!empty($issue->tv_season_number) || !empty($issue->album_track_number))
+		  <div class="step">
+		    <i class="remove icon"></i>
+		    <div class="content">
+					<div class="title">Details</div>
+		      <div class="description">
+						@if (!empty($issue->tv_season_number))
+						Season {{ $issue->tv_season_number }}
+						@if (!empty($issue->tv_episode_number))
+						- Episode {{ $issue->tv_episode_number }}
+						@endif
+						@endif
+						@if (!empty($issue->album_track_number))
+						Track {{ $issue->album_track_number }}
+						@endif
+					</div>
+		    </div>
+		  </div>
+			@endif
 		</div>
 		@endif
 
@@ -85,7 +121,7 @@
 						{{ $issue->issue_description }}
 					</div>
 
-					@if ($issue['user_id'] === Auth::id() || Auth::user()->hasRole('admin'))
+					{{-- @if ($issue['user_id'] === Auth::id() || Auth::user()->hasRole('admin'))
 					<div class="actions">
 						<a class="reply edit_message">Edit</a>
 						<form class="edit_message_input" action="{{ route('update.issue_description', ['id' => $issue->id]) }}" style="display: none;" method="post">
@@ -95,7 +131,7 @@
 							<button type="button" name="button" class="cancel">Cancel</button>
 						</form>
 					</div>
-					@endif
+					@endif --}}
 
 				</div>
 			</div>
@@ -116,7 +152,7 @@
 						{{ $message->body }}
 					</div>
 
-					@if ($message['user_id'] === Auth::id() || Auth::user()->hasRole('admin'))
+					{{-- @if ($message['user_id'] === Auth::id() || Auth::user()->hasRole('admin'))
 					<div class="actions">
 						<a class="reply edit_message">Edit</a>
 						<form class="edit_message_input" action="{{ route('update.message', ['id' => $issue->id, 'messageId' => $message->id]) }}" style="display: none;" method="post">
@@ -126,7 +162,7 @@
 							<button type="button" name="button" class="cancel">Cancel</button>
 						</form>
 					</div>
-					@endif
+					@endif --}}
 
 				</div>
 			</div>
@@ -152,6 +188,7 @@
 	</div>
 </div>
 
+@if ($issue['user_id'] === Auth::id() || Auth::user()->hasRole('admin'))
 <div class="actions">
 	<form class="" action="{{ route('delete.issue', ['id' => $issue->id]) }}" method="post">
 		{!! method_field('DELETE') !!}
@@ -161,6 +198,7 @@
 		</button>
 	</form>
 </div>
+@endif
 
 <script>
 
