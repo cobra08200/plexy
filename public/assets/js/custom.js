@@ -1,3 +1,17 @@
+// Laravel Ajax CSRF
+$.ajaxSetup({
+  headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  }
+});
+
+// Variables
+var $modalLinks   = '[data-target="#modal"]',
+  $modal          = $('[data-modal]'),
+  $noRemove       = $modal.find('[data-modal-loading]'),
+  $modalBasic     = $('[data-modal-basic]'),
+  $noRemoveBasic  = $modalBasic.find('[data-modal-basic-loading]');
+
 // Semantic UI Calls
 $('.message .close')
   .on('click', function() {
@@ -16,24 +30,18 @@ $('.special.cards .image').dimmer({
   on: 'hover'
 });
 
+$('.ui.dropdown')
+  .dropdown()
+;
+
 // Modal Loader
 $(document).ready(function () {
-  var $modalLinks = '[data-target="#modal"]',
-    $modal = $('[data-modal]'),
-    $noRemove = $modal.find('[data-modal-loading]');
-  // Open modal link
   $(document).on('click', $modalLinks, function(e) {
-    e.preventDefault(); // Prevent default click
+    e.preventDefault();
     var $issue = $(this),
       issueURL = $issue.attr('href');
     $modal.html($noRemove)
-      // .find('.content')
-      // .empty()
-      // $modal
       .load(issueURL)
-    // .end()
       .modal({ observeChanges:true }).modal('refresh');
-    // console.log($modal.find('.content'));
-      // return false;
   });
 });

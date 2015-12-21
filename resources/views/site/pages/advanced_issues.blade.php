@@ -2,23 +2,23 @@
 
 @section('content')
 
-<form class="" action="{{ route('search.submit') }}" method="post">
+<form class="ui form advanced" action="{{ route('search.submit') }}" method="post">
 
-	<div class="ui card">
+	<div class="ui centered card">
+
+		<div class="image">
+			<img src="{{ $issue->poster_url }}" alt="{{ $issue->content }}">
+		</div>
 
 	  <div class="content">
-			<p class="header">{{ $issue->content }}</p>
-	  </div>
-
-	  <div class="image">
-	    <img src="{{ $issue->poster_url }}" alt="{{ $issue->content }}">
+			<p class="center aligned header">{{ $issue->content }}</p>
 	  </div>
 
 		{!! csrf_field() !!}
 
 	  <div class="content">
 			<select name="report_option" class="ui fluid dropdown report_option" id="report_option">
-			  <option value="">What's up?</option>
+			  <option value="">What is the issue?</option>
 				<option>Playback Error</option>
 				@if ($issue->topic == 'tv')
 				<option>Missing Episode</option>
@@ -36,12 +36,12 @@
 	  </div>
 
 		<div class="extra content">
-	    <div class="ui large transparent input">
-	      <input type="text" name="issue_description" placeholder="Describe it..." minlength="2">
-	    </div>
+			<div class="field">
+		    <textarea rows="2" name="issue_description" placeholder="Describe the issue..." minlength="2"></textarea>
+		  </div>
 	  </div>
 
-		{{-- TV --}}
+		{{-- TV
 
 		@if ($issue->topic == 'tv')
 		<div class="extra content">
@@ -68,9 +68,9 @@
 				@endforeach
 			</select>
 		</div>
-		@endif
+		@endif  --}}
 
-		{{-- MUSIC --}}
+		{{-- MUSIC
 
 		@if ($issue->topic == 'music')
 		<div class="extra content">
@@ -81,7 +81,7 @@
 				@endforeach
 			</select>
 		</div>
-		@endif
+		@endif --}}
 
 		<input type="hidden" name="title" 				value="{{ $issue->content }}">
 		<input type="hidden" name="tmdb" 					value="{{ $issue->tmdb }}">
@@ -90,89 +90,87 @@
 		<input type="hidden" name="topic" 				value="{{ $issue->topic }}">
 		<input type="hidden" name="vote_average" 	value="{{ $issue->vote_average }}">
 		<input type="hidden" name="round" 				value="advanced">
-		<div class="search__request__full">
-			<button type="submit" id="submit_button" name="type" value="issue" class="btn">Report</button>
+		<div class="extra content">
+			<button type="submit" class="fluid ui button" id="submit_button" name="type" value="issue">Report</button>
 		</div>
 
-</div>
+	</div>
 
 </form>
 
-@stop
-
-@section('scripts')
-
 <script>
-$('#report_option')
+$('.ui.dropdown')
   .dropdown()
 ;
-
-$('#season_option')
-  .dropdown()
+$('.ui.form.advanced')
+  .form({
+    fields: {
+      issue_description: {
+        identifier: 'issue_description',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Please describe the issue.'
+          }
+        ]
+      }
+    }
+  })
 ;
-
-$('#episode_option')
-  .dropdown()
-;
-
-$('#tracklist_option')
-  .dropdown()
-;
-
-var $episodes = $('#episodes');
-var $tracks = $('#tracklist');
-
-$('.report_option').on('change',function() {
-	if ($(this).val() == 'Missing Episode' || $(this).val() == 'Missing Track') {
-		$episodes.hide();
-		$tracks.hide();
-	} else {
-		$episodes.show();
-		$tracks.show();
-	}
-});
-
-$.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-});
-$('.season_option').on('change',function() {
-	var selectedSeason=$(this).find('option:selected').val();
-	$.ajax({
-		url:'{{ url('plex/tv/') }}/{{ $issue->tmdb }}/season/'+selectedSeason+'/episodes',
-		type:'POST',
-		dataType:'json',
-		contentType: "application/json",
-		data: JSON.stringify(selectedSeason),
-		success: function (data) {
-			$('#episode_option').empty();
-			for (var key in data) {
-				if (data.hasOwnProperty(key)) {
-					var obj = data[key];
-					for (var prop in obj) {
-						if (obj.hasOwnProperty(prop)) {
-							if (prop == 'index') {
-								$('#episode_option').append('<option value="' + obj[prop] + '">Episode ' + obj[prop] + '</option>');
-							}
-						}
-					}
-				}
-			}
-		},
-		error: function (data) {
-		}
-	});
-});
-$(document)
-    .ajaxStart(function () {
-        $("#episode_option").prop("disabled", true);
-        $("#submit_button").prop("disabled", true);
-    })
-    .ajaxStop(function () {
-        $("#episode_option").prop("disabled", false);
-        $("#submit_button").prop("disabled", false);
-    });
+// var $episodes = $('#episodes');
+// var $tracks = $('#tracklist');
+//
+// $('.report_option').on('change',function() {
+// 	if ($(this).val() == 'Missing Episode' || $(this).val() == 'Missing Track') {
+// 		$episodes.hide();
+// 		$tracks.hide();
+// 	} else {
+// 		$episodes.show();
+// 		$tracks.show();
+// 	}
+// });
+//
+// $.ajaxSetup({
+//         headers: {
+//             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//         }
+// });
+// $('.season_option').on('change',function() {
+// 	var selectedSeason=$(this).find('option:selected').val();
+// 	$.ajax({
+// 		url:'{{ url('plex/tv/') }}/{{ $issue->tmdb }}/season/'+selectedSeason+'/episodes',
+// 		type:'POST',
+// 		dataType:'json',
+// 		contentType: "application/json",
+// 		data: JSON.stringify(selectedSeason),
+// 		success: function (data) {
+// 			$('#episode_option').empty();
+// 			for (var key in data) {
+// 				if (data.hasOwnProperty(key)) {
+// 					var obj = data[key];
+// 					for (var prop in obj) {
+// 						if (obj.hasOwnProperty(prop)) {
+// 							if (prop == 'index') {
+// 								$('#episode_option').append('<option value="' + obj[prop] + '">Episode ' + obj[prop] + '</option>');
+// 							}
+// 						}
+// 					}
+// 				}
+// 			}
+// 		},
+// 		error: function (data) {
+// 		}
+// 	});
+// });
+// $(document)
+//     .ajaxStart(function () {
+//         $("#episode_option").prop("disabled", true);
+//         $("#submit_button").prop("disabled", true);
+//     })
+//     .ajaxStop(function () {
+//         $("#episode_option").prop("disabled", false);
+//         $("#submit_button").prop("disabled", false);
+//     });
 </script>
 
 @endsection

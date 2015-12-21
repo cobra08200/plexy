@@ -9,6 +9,7 @@
 		{{-- @include('loading') --}}
 		@include('notifications')
 		@yield('content')
+		@include('site/layouts/partials/modalBasic')
 		@include('site/layouts/partials/modal')
 	</div>
 	@include('site/layouts/partials/footer')

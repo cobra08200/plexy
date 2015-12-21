@@ -71,7 +71,7 @@ $('.ui.search.report')
   },
   onSelect: function(result, response) {
     if (result.topic == 'movies') {
-      console.log("plex movie");
+      // console.log("plex movie");
       document.getElementById("title").value        = result.title ;
       document.getElementById("year").value         = result.description;
       document.getElementById("tmdb").value         = result.id;
@@ -81,7 +81,7 @@ $('.ui.search.report')
       document.getElementById("vote_average").value = result.rating;
     }
     if (result.topic == 'tv') {
-      console.log("plex tv");
+      // console.log("plex tv");
       document.getElementById("title").value        = result.title;
       document.getElementById("year").value         = result.description;
       document.getElementById("tmdb").value         = result.id;
@@ -91,11 +91,13 @@ $('.ui.search.report')
       document.getElementById("vote_average").value = result.rating;
     }
     if (result.topic == 'music') {
-      console.log("plex music");
+      // console.log("plex music");
       document.getElementById("title").value        = result.title;
       document.getElementById("tmdb").value         = result.id;
       document.getElementById("poster").value       = result.image;
       document.getElementById("topic").value        = 'music';
     }
+  $report_search_icon.toggle();
+  $report_checkmark_icon.toggle();
   }
 })

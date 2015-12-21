@@ -19,7 +19,7 @@
       <img src="{{ $unit['poster_url'] }}">
     </div>
     <div class="content">
-      <p class="header">{{ $unit['content'] }}</p>
+      <p class="center aligned header">{{ $unit['content'] }}</p>
       <div class="meta">
         <span class="date">
           <i class="ticket icon"></i>

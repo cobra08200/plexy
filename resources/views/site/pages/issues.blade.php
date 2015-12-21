@@ -3,9 +3,7 @@
 @section('content')
 
 <i class="close icon"></i>
-<div class="header">
-	{{ $issue->content }}
-</div>
+<div class="header">{{ $issue->content }}</div>
 <div class="image content">
 	<div class="ui medium image">
 		{{-- Admin's can force update the thumbnail in case the plex server had the wrong art at the time of being added --}}
@@ -18,7 +16,7 @@
 		@endif
 	</div>
 	<div class="description">
-		<div class="ui three steps">
+		<div class="ui fluid three steps">
 			<div class="step">
 		    <i class="info icon"></i>
 		    <div class="content">
@@ -72,9 +70,9 @@
 
 		@if ($issue->type === 'issue' && !empty($issue->report_option))
 		@if (!empty($issue->tv_season_number) || !empty($issue->album_track_number))
-		<div class="ui two steps">
+		<div class="ui fluid two steps">
 		@else
-		<div class="ui steps">
+		<div class="ui fluid steps">
 		@endif
 		  <div class="step">
 		    <i class="frown icon"></i>
@@ -141,13 +139,10 @@
 			@foreach ($messages as $message)
 			<div class="comment">
 				<div class="content">
-
 					<a class="author">{{ $message->user->name }}</a>
-
 					<div class="metadata">
 						<span class="date">{{ $message->created_at->diffForHumans() }}</span>
 					</div>
-
 					<div class="text">
 						{{ $message->body }}
 					</div>
@@ -190,10 +185,10 @@
 
 @if ($issue['user_id'] === Auth::id() || Auth::user()->hasRole('admin'))
 <div class="actions">
-	<form class="" action="{{ route('delete.issue', ['id' => $issue->id]) }}" method="post">
+	<form class="ui form" action="{{ route('delete.issue', ['id' => $issue->id]) }}" method="post">
 		{!! method_field('DELETE') !!}
 		{!! csrf_field() !!}
-		<button type="submit" class="ui secondary button">
+		<button type="submit" class="ui black button">
 			Delete This
 		</button>
 	</form>
@@ -202,19 +197,19 @@
 
 <script>
 
-$(function() {
-	$(".edit_message").on('click', function() {
-		$(this).parent().toggle();
-		$(this).parent().next(".edit_message_input").toggle();
-	});
-})
-
-$(function() {
-	$(".cancel").on('click', function() {
-		$(this).parent().toggle();
-		$(this).parent().prev(".view_message").toggle();
-	});
-})
+// $(function() {
+// 	$(".edit_message").on('click', function() {
+// 		$(this).parent().toggle();
+// 		$(this).parent().next(".edit_message_input").toggle();
+// 	});
+// })
+//
+// $(function() {
+// 	$(".cancel").on('click', function() {
+// 		$(this).parent().toggle();
+// 		$(this).parent().prev(".view_message").toggle();
+// 	});
+// })
 
 </script>
 

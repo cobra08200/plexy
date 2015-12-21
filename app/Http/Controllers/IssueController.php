@@ -104,7 +104,7 @@ class IssueController extends Controller {
 			}
 			if ($request->input('topic') == 'music')
 			{
-				if ($musicAlbumTrackUnique->fails() && $tmdbPostedAndUniqueToAuthenticatedUser-fails())
+				if ($musicAlbumTrackUnique->fails() && $tmdbPostedAndUniqueToAuthenticatedUser->fails())
 				{
 					return redirect()->back()
 						->with('warning', "Woops.  You already reported this exact same track.")
@@ -181,8 +181,8 @@ class IssueController extends Controller {
 			}
 		}
 
-		// if ($request->ajax())
-		// {
+		if ($request->ajax())
+		{
 			// First round report detection
 			if ($issue->type == 'issue' && $round != 'advanced')
 			{
@@ -199,7 +199,7 @@ class IssueController extends Controller {
 					return $this->issue_music($issue);
 				}
 			}
-		// }
+		}
 
 		$issue->save();
 

@@ -5,9 +5,16 @@
   @endif
   <div class="right menu">
     <a class="item {{ Request::path() == '/' ? 'active' : '' }}" href="{{ route('home') }}">Home</a>
-    <a class="item" href="{{ route('logout') }}">Logout</a>
-    <a class="item" target="_blank" href="https://cash.me/$ehumps">Donate</a>
+    <div class="ui dropdown item">
+      Donate
+      <i class="dropdown icon"></i>
+      <div class="menu">
+        <a class="item" target="_blank" href="https://cash.me/$ehumps">Square Cash</a>
+        <a class="item" target="_blank" href="https://venmo.com/ehumps">Venmo</a>
+      </div>
+    </div>
   </div>
+  <a class="item" href="{{ route('logout') }}">Logout</a>
   @else
   <div class="right menu">
     <a class="item {{ Request::path() == 'login' ? 'active' : '' }}" href="{{ route('login') }}">Login</a>

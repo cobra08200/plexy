@@ -46,7 +46,7 @@ Route::group(['middleware' => ['first.run']], function()
         // Reports
         // get('search/report', ['as' => 'report.search.select2', 'middleware' => 'ajax', 'uses' => 'SearchController@search']);
         // Requests
-        get('search/request', ['as' => 'request.search', 'uses' => 'SearchController@search']);
+        get('search/request', ['as' => 'request.search', 'middleware' => 'ajax', 'uses' => 'SearchController@search']);
 
         // // Search Movies
         // // Typeahead
@@ -100,7 +100,7 @@ Route::group(['middleware' => ['first.run']], function()
         // // Plex Server Sessions
         // get('plex/server/sessions', ['as' => 'plex.server.sessions', 'uses' => 'PlexController@plexServerSessions']);
         // Plex Server Search
-        get('plex/server/search', ['as' => 'plex.server.search', 'uses' => 'PlexController@plexServerSearch']);
+        get('plex/server/search', ['as' => 'plex.server.search', 'middleware' => 'ajax', 'uses' => 'PlexController@plexServerSearch']);
         // Plex Thumb Preview
         get('plex/thumbs/{ratingKey}.{thumbExtension}', ['as' => 'plex.thumb.preview', 'uses' => 'PlexController@previewPlexThumb']);
         // Force update Plex Thumb Image on Server
