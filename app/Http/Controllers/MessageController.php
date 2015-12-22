@@ -56,14 +56,18 @@ class MessageController extends Controller
             {
                 $user = User::find($request->input('user_id'));
 
-                $mailer->sendNewMessageEmailTo($user, $issue, $comment);
+                $from = User::find(1);
+
+                $mailer->sendNewMessageEmailTo($user, $from, $issue, $comment);
             }
             else
             // email admin the message from the user
             {
                 $user = User::find(1);
 
-                $mailer->sendNewMessageEmailTo($user, $issue, $comment);
+                $from = User::find($request->input('user_id'));
+
+                $mailer->sendNewMessageEmailTo($user, $from, $issue, $comment);
             }
         }
 

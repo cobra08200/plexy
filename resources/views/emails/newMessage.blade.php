@@ -110,11 +110,11 @@
 									url
 								</a>
 								--}}
-								<center>
+								{{-- <center>
 									<img src="{{ $issue['poster_url'] }}">
 								</center>
-								<br><br>
-								<h2>{{ $user['name'] }} said: {{ $comment['body'] }}</h2>
+								<br><br> --}}
+								<h2>{{ $from['name'] }} said: {{ $comment['body'] }}</h2>
 								<br><br>
 							</div>
 

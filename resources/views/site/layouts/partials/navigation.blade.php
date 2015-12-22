@@ -13,8 +13,14 @@
         <a class="item" target="_blank" href="https://venmo.com/ehumps">Venmo</a>
       </div>
     </div>
+    <div class="ui dropdown item">
+      {{ Auth::user()->name }}
+      <i class="dropdown icon"></i>
+      <div class="menu">
+        <a class="item" href="{{ route('logout') }}">Logout</a>
+      </div>
+    </div>
   </div>
-  <a class="item" href="{{ route('logout') }}">Logout</a>
   @else
   <div class="right menu">
     <a class="item {{ Request::path() == 'login' ? 'active' : '' }}" href="{{ route('login') }}">Login</a>

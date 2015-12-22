@@ -100,11 +100,11 @@ class AppMailer
      * @param  User $user
      * @return void
      */
-    public function sendNewMessageEmailTo(User $user, $issue, $comment)
+    public function sendNewMessageEmailTo(User $user, $from, $issue, $comment)
     {
         $this->to       = $user->email;
         $this->view     = 'emails.newMessage';
-        $this->data     = compact('user', 'issue', 'comment');
+        $this->data     = compact('user', 'from', 'issue', 'comment');
         $this->subject  = 'Plexy - New Message - Ticket #'.$issue['id'];
 
         $this->deliver();

@@ -34,5 +34,6 @@ class Kernel extends HttpKernel
         'ajax'          => \App\Http\Middleware\AjaxOnly::class,
         'canInstall'    => \App\Http\Middleware\canInstall::class,
         'canUpgrade'    => \App\Http\Middleware\canUpgrade::class,
+        'httpsProtocol' => \App\Http\Middleware\httpsProtocol::class,
     ];
 }

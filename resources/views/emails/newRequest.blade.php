@@ -110,10 +110,10 @@
 									url
 								</a>
 								--}}
-								<center>
+								{{-- <center>
 									<img src="{{ $issue['poster_url'] }}">
 								</center>
-								<br><br>
+								<br><br> --}}
 								{{--
 								farewell
 								<br><br>
