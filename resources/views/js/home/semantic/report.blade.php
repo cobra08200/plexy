@@ -99,5 +99,6 @@ $('.ui.search.report')
     }
   $report_search_icon.toggle();
   $report_checkmark_icon.toggle();
+  $report_search_button.removeClass("disabled");
   }
 })

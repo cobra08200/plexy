@@ -44,6 +44,8 @@ $request_search_icon    = $('#request_search_icon');
 $request_checkmark_icon = $('#request_checkmark_icon');
 $report_search_icon     = $('#report_search_icon');
 $report_checkmark_icon  = $('#report_checkmark_icon');
+$report_search_button   = $('#report_search_button');
+$request_search_button  = $('#request_search_button');
 
 $(document)
 
@@ -57,6 +59,8 @@ $(document)
   $request_checkmark_icon.hide();
   $report_search_icon.show();
   $report_checkmark_icon.hide();
+  $report_search_button.addClass("disabled");
+  $request_search_button.addClass("disabled");
 })
 
 .ajaxStop(function () {
@@ -68,23 +72,27 @@ $(document)
 });
 
 $("#show_report").click(function(){
+  $report_search_button.addClass("disabled");
   $("#report").show();
   $("#report").insertBefore("#request");
   $("#request").hide();
   $("#question").hide();
 });
 $("#show_request").click(function(){
+  $request_search_button.addClass("disabled");
   $("#request").show();
   $("#request").insertBefore("#report");
   $("#report").hide();
   $("#question").hide();
 });
 $("#cancel_report").click(function(){
+  $report_search_button.addClass("disabled");
   $("#question").show();
   $("#report").hide();
   $("#request").hide();
 });
 $("#cancel_request").click(function(){
+  $request_search_button.addClass("disabled");
   $("#question").show();
   $("#report").hide();
   $("#request").hide();

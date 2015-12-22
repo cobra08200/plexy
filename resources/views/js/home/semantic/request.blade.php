@@ -102,5 +102,6 @@ $('.ui.search.request')
     }
   $request_search_icon.toggle();
   $request_checkmark_icon.toggle();
+  $request_search_button.removeClass("disabled");
   }
 })

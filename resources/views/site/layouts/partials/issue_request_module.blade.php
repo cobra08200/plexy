@@ -20,15 +20,11 @@
     </div>
     <div class="content">
       <p class="center aligned header">{{ $unit['content'] }}</p>
-      <div class="meta">
-        <span class="date">
-          <i class="ticket icon"></i>
-          {{ ucwords($unit['status']) }}
-        </span>
-        <span class="date">
-          @if ($unit['topic'] === 'movies')
-          @endif
-          @if ($unit['topic'] === 'tv')
+      {{-- <div class="meta"> --}}
+        {{-- <span class="date"> --}}
+          {{-- @if ($unit['topic'] === 'movies')
+          @endif --}}
+          {{-- @if ($unit['topic'] === 'tv')
             @if (isset($unit['tv_season_number']))
             <p>
               <i class="film icon"></i>
@@ -38,17 +34,17 @@
               - Episode {{ $unit['tv_episode_number'] }}
             </p>
             @endif
-          @endif
-          @if ($unit['topic'] === 'music')
+          @endif --}}
+          {{-- @if ($unit['topic'] === 'music')
             @if (isset($unit['tv_season_number']))
             <p>
               <i class="music icon"></i>
               Track {{ $unit['album_track_number'] }}
             </p>
             @endif
-          @endif
-        </span>
-      </div>
+          @endif --}}
+        {{-- </span> --}}
+      {{-- </div> --}}
     </div>
     @if ($unit['user_id'] === Auth::id())
     <a class="ui red right corner label ticket" data-content="This is your ticket" data-position="left center">
@@ -56,12 +52,16 @@
     </a>
     @endif
     <div class="extra content">
-        <i class="tag icon"></i>
-        @if ($unit['type'] === 'issue')
-        Issue
-        @elseif($unit['type'] === 'request')
-        Request
-        @endif
+      <span class="right floated">
+        <i class="ticket icon"></i>
+        {{ ucwords($unit['status']) }}
+      </span>
+      <i class="tag icon"></i>
+      @if ($unit['type'] === 'issue')
+      Issue
+      @elseif($unit['type'] === 'request')
+      Request
+      @endif
     </div>
   </div>
   @endforeach

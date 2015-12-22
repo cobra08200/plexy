@@ -1,5 +1,5 @@
 @if (Request::path() === '/')
-<form class="ui form" action="{{ route('search.submit') }}" id="report_submit" method="post">
+<form class="ui form report" action="{{ route('search.submit') }}" id="report_submit" method="post">
   {!! csrf_field() !!}
   <input id="title" name="title" type="hidden" value="">
   <input id="year" name="year" type="hidden" value="">
@@ -16,14 +16,14 @@
       <div class="ui basic segment">
         <div class="ui fluid category search report">
           <div class="ui left icon input">
-            <input class="prompt" type="text" placeholder="Search...">
+            <input class="prompt" type="text" id="validation" placeholder="Search...">
             <i class="search icon" id="report_search_icon"></i>
             <i class="green checkmark icon" id="report_checkmark_icon" style="display: none;"></i>
           </div>
         </div>
         <div class="ui hidden divider"></div>
         <div class="ui buttons report request">
-          <button class="ui button" type="submit" name="type" value="issue">Report</button>
+          <button class="ui button" type="submit" name="type" id="report_search_button" value="issue">Report</button>
           <div class="or"></div>
           <button class="ui button" type="button" id="cancel_report" name="button">Cancel</button>
         </div>
