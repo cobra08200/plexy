@@ -16,7 +16,7 @@ $('.ui.search.request')
       $.each(requestResults.results, function(index, results) {
         var
         type = results.type || 'Unknown',
-        maxResults = 12
+        maxResults = 30
         ;
         if (index >= maxResults) {
           return false;

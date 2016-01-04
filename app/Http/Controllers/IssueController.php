@@ -297,7 +297,7 @@ class IssueController extends Controller {
 	{
 		$tickets = Issue::where('status', '!=', 'closed')->get();
 
-		$closedTickets	= Issue::where('status', '=', 'closed')->simplePaginate(4);
+		$closedTickets	= Issue::where('status', '=', 'closed')->orderBy('updated_at', 'desc')->simplePaginate(4);
 
 		return View::make('site.pages.home', compact('tickets', 'closedTickets'));
 	}
