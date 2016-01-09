@@ -24,7 +24,7 @@
   @else
   <div class="right menu">
     <a class="item {{ Request::path() == 'login' ? 'active' : '' }}" href="{{ route('login') }}">Login</a>
-    <a class="item {{ Request::path() == 'password/email' ? 'active' : '' }}" href="{{ route('password.email') }}">Forgot Password</a>
+    <a class="item {{ Request::path() == 'password/email' ? 'active' : '' }}" href="{{ route('password.email') }}">Forgot</a>
     <a class="item {{ Request::path() == 'register' ? 'active' : '' }}" href="{{ route('register') }}">Register</a>
   </div>
   @endif
