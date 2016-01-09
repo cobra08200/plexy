@@ -3,7 +3,7 @@
 @section('content')
 
 {{-- <h1 class="ui center aligned header">H1</h1> --}}
-<form class="ui form" method="post" action="{{ route('login.post') }}">
+<form class="ui form" method="post" action="{{ route('login.post') }}" novalidate>
   {!! csrf_field() !!}
   <div class="field">
     <label>Username or Email Address</label>

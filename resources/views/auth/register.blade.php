@@ -2,7 +2,7 @@
 
 @section('content')
 
-<form class="ui form" method="post" action="{{ route('register.post') }}">
+<form class="ui form" method="post" action="{{ route('register.post') }}" novalidate>
   {!! csrf_field() !!}
   <div class="field">
     <label>Plex Username or Plex Email Address</label>
