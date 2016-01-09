@@ -7,7 +7,7 @@
   {!! csrf_field() !!}
   <div class="field">
     <label>Username or Email Address</label>
-    <input type="email" name="username_or_email" id="username_or_email" value="{{ old('username_or_email') }} autocorrect="off" autocapitalize="none"">
+    <input type="email" name="username_or_email" id="username_or_email" value="{{ old('username_or_email') }}" autocorrect="off" autocapitalize="none">
   </div>
   <div class="field">
     <label>Password</label>
