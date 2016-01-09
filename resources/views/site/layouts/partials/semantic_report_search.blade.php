@@ -16,7 +16,7 @@
       <div class="ui basic segment">
         <div class="ui fluid category search report">
           <div class="ui left icon input">
-            <input class="prompt" type="text" id="validation" placeholder="Search...">
+            <input class="prompt" type="text" id="validation" placeholder="Search..." autocorrect="off" autocapitalize="none">
             <i class="search icon" id="report_search_icon"></i>
             <i class="green checkmark icon" id="report_checkmark_icon" style="display: none;"></i>
           </div>

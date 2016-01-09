@@ -5,8 +5,8 @@
 <form class="ui form" method="post" action="{{ route('register.post') }}">
   {!! csrf_field() !!}
   <div class="field">
-    <label>Plex Username or Email Address</label>
-    <input type="text" name="plex_username_or_email" id="plex_username_or_email" value="{{ old('plex_username_or_email') }}">
+    <label>Plex Username or Plex Email Address</label>
+    <input type="email" name="plex_username_or_email" id="plex_username_or_email" value="{{ old('plex_username_or_email') }}" autocorrect="off" autocapitalize="none">
   </div>
   <div class="field">
     <label>Plex Password</label>

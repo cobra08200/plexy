@@ -7,7 +7,7 @@
   <input type="hidden" name="token" value="{{ $token }}">
   <div class="field">
     <label>Email Address</label>
-    <input type="email" name="email" value="{{ old('email') }}">
+    <input type="email" name="email" value="{{ old('email') }}" autocorrect="off" autocapitalize="none">
   </div>
   <div class="field">
     <label>Password</label>

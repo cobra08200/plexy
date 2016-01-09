@@ -6,7 +6,7 @@
   {!! csrf_field() !!}
   <div class="field">
     <label>Email Address</label>
-    <input type="email" name="email" value="{{ old('email') }}">
+    <input type="email" name="email" value="{{ old('email') }}" autocorrect="off" autocapitalize="none">
   </div>
   <button class="ui button" type="submit" id="submit_button">Send Password Reset Link</button>
 </form>
