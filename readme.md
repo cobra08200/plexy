@@ -12,6 +12,8 @@ You can view a live demo of Plexy [here](https://plexydemo.ehumps.me). The demo 
 
 * In order to follow the installation steps below you must be using Laravel [Homestead](https://laravel.com/docs/5.1/homestead) which uses [vagrant](https://www.vagrantup.com/) for local development.
 
+---
+
 #### Part 1
 
 1. Clone the project.
@@ -20,13 +22,13 @@ You can view a live demo of Plexy [here](https://plexydemo.ehumps.me). The demo 
 
 3. Once the virtual machine is provisioned, run `vagrant ssh`.
 
-4. Change directory to the git repository being shared to the VM. This is going to be unique to how you configured homestead during step 2.
+4. Change directory to the git repository being shared to the VM. This is going to be unique to how you configured homestead during step 2. For me it is `cd code/plexy/`
 
 5. Install composer dependencies `sudo composer install`.
 
-6. Migrate and seed the database `php artisan migrate --seed`.
+6. Ensure the homestead virtual machine has a MySQL database named `plexy`.
 
-  * If you enabled the [UserTableSeeder](https://github.com/ehumps/plexy/blob/master/database/seeds/DatabaseSeeder.php) in step 6, two accounts are created by default. These are the same accounts active for the demo:
+  * Note: You can enable the [UserTableSeeder](https://github.com/ehumps/plexy/blob/master/database/seeds/DatabaseSeeder.php) in step 6. This will create two accounts that are useful for local development. If enabled, it is recommended to not run the installer in part 2. You can skip the installer by configuring the `.env` file as well as placing a text file named `installed` inside the storage directory with the contents of `1.0`. These are the same accounts active for the demo:
 
 | Username      | Password      |
 | :-----------: |:-------------:|
@@ -34,7 +36,7 @@ You can view a live demo of Plexy [here](https://plexydemo.ehumps.me). The demo 
 | user          | user          |
 
 
-7. Browse to your hosts custom domain created with Homestead or `http://localhost:8000/`.
+7. Browse to your hosts custom domain created with Homestead, your virtual machine IP address (`192.168.10.10` for me), or `http://localhost:8000/`.
 
 The current config/database.php file expects a MySQL database connection using the following name and credentials.  You may update these to suit your own setup if you choose to not run the vagrant steps above:
 
@@ -44,6 +46,8 @@ The current config/database.php file expects a MySQL database connection using t
 
 
 The config/mail.php file has been set to `'pretend' => false` - so SMTP settings are required.
+
+---
 
 #### Part 2 - First Run Installation Guide
 
@@ -69,21 +73,22 @@ The config/mail.php file has been set to `'pretend' => false` - so SMTP settings
   ![Step 4](https://plexydemo.ehumps.me/assets/img/4.png)
 
 5. Plexy will now register itself as a "Device" to your Plex account.  This allows Plexy to access your servers for the issue reporting function of Plexy.
-  * Every device you register to your account generates a unique API key for use with your Plex server. You can see that Plexy added a new line to your .env file next to Plex Token if all file permissions are correct on your server.
-  * Note: This step also creates your admin account using the same credentials at the time of registration.
-    * If you happen to change you Plex credentials at a later time, Plexy will only remember your credentials when you first registered.
-    
+  * In general, every device you register to your account generates a unique API key for use with your Plex server. You can see that Plexy added a new line to your .env file next to Plex Token if all file permissions are correct on your server.
+  * Note: This step also creates your admin account using the same credentials as your Plex account at the time of registration.
+    * Warning: If you happen to change you Plex credentials at a later time, Plexy will only remember your credentials at the time of account creation on Plexy.
+
   ![Step 5](https://plexydemo.ehumps.me/assets/img/5.png)
 
-6. Once you reach the finished page, your Plexy admin account is successfully created and ready to go.
+6. If you reach the finished page, then your Plexy admin account is successfully created and ready to go.
   ![Step 6](https://plexydemo.ehumps.me/assets/img/6.png)
 
-7. Clicking finish brings you to the main login page all users will see from now on.
+7. Clicking finish brings you to the main login page which all users will see from now on.
   ![Step 7](https://plexydemo.ehumps.me/assets/img/7.png)
 
-8. This is an example of what Plexy looks like as a device connected to your Plex server.
-  ![Step 8](https://plexydemo.ehumps.me/assets/img/8.png)
+---
 
+1. This is an example of what Plexy looks like as a device connected to your Plex server.
+  ![Step 8](https://plexydemo.ehumps.me/assets/img/8.png)
 
 
 ## Dependencies
