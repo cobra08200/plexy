@@ -45,7 +45,7 @@ The current config/database.php file expects a MySQL database connection using t
 | plexy         | homestead     | secret        |
 
 
-The config/mail.php file has been set to `'pretend' => false` - so SMTP settings are required.
+The config/mail.php file has been set to `'pretend' => false` - so SMTP settings are required. If you are using Mandrill as your email provider, then all you need is an API key and to set you `.env` mail driver to `mandrill` instead of `smtp`.
 
 ---
 
