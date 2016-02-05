@@ -1,6 +1,12 @@
 # Plexy
 
-An issue and request ticketing system to supplement [Plex](https://plex.tv/). Tools used in the project include Laravel PHP framework, MySQL, JQuery, and Semantic-UI CSS framework. The project name is not final.
+An issue and request ticketing system to supplement [Plex](https://plex.tv/). Tools used in the project include Laravel PHP framework, MySQL, JQuery, and Semantic-UI CSS framework.
+
+The main features of Plexy are to report current issues with content on a Plex server, and to request new content to be added to a Plex server.  Reporting accesses your Plex server so users can accurately pull live information on about your server that may have errors, such as unplayable content or mismatches. Requesting accesses The Movie DB to pull movie and TV information that users can request.
+
+User registration is based off your [Plex friends list](https://app.plex.tv/web/app#!/settings/users/friends). If they are your Plex friend, they can register and log in.  If you remove them as a friend after they have already registered, they will be locked out of logging in.
+
+Plexy does not automate downloading any content. The current version of Plexy is strictly a ticketing system where users can report and request content, then the administrator can deliver updates via email messages back to the user on the status of their report or request. Users can communicate on and only see communication on tickets that they created, but they can see all current requests and reports.
 
 
 ## Demo
