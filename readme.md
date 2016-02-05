@@ -28,19 +28,19 @@ You can view a live demo of Plexy [here](https://plexydemo.ehumps.me). The demo 
 
   * If you enabled the [UserTableSeeder](https://github.com/ehumps/plexy/blob/master/database/seeds/DatabaseSeeder.php) in step 6, two accounts are created by default. These are the same accounts active for the demo:
 
-> | Username      | Password      |
-  | :-----------: |:-------------:|
-  | admin         | admin         |
-  | user          | user          |
+| Username      | Password      |
+| :-----------: |:-------------:|
+| admin         | admin         |
+| user          | user          |
 
 
 7. Browse to your hosts custom domain created with Homestead or `http://localhost:8000/`.
 
 The current config/database.php file expects a MySQL database connection using the following name and credentials.  You may update these to suit your own setup if you choose to not run the vagrant steps above:
 
-> | Database      | Username      | Password      |
-  |:-------------:|:-------------:|:-------------:|
-  | plexy         | homestead     | secret        |
+| Database      | Username      | Password      |
+|:-------------:|:-------------:|:-------------:|
+| plexy         | homestead     | secret        |
 
 
 The config/mail.php file has been set to `'pretend' => false` - so SMTP settings are required.
@@ -72,6 +72,7 @@ The config/mail.php file has been set to `'pretend' => false` - so SMTP settings
   * Every device you register to your account generates a unique API key for use with your Plex server. You can see that Plexy added a new line to your .env file next to Plex Token if all file permissions are correct on your server.
   * Note: This step also creates your admin account using the same credentials at the time of registration.
     * If you happen to change you Plex credentials at a later time, Plexy will only remember your credentials when you first registered.
+    
   ![Step 5](https://plexydemo.ehumps.me/assets/img/5.png)
 
 6. Once you reach the finished page, your Plexy admin account is successfully created and ready to go.
