@@ -1,27 +1,55 @@
-## Laravel PHP Framework
+# Plexy
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+A scalable mobile ready room scheduling and appointment management web based application. Tools used in the project include Laravel PHP framework, MySQL, JQuery, and Semantic-UI CSS framework.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+## Demo
 
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+You can view a live demo of Plexy [here](https://plexydemo.ehumps.me).
 
-## Official Documentation
+##Requirements and Installation
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
+* In order to follow the installation steps below you must be using [vagrant](https://www.vagrantup.com/) for local development.  Included in this repository is a [Vagrantfile](https://github.com/ehumps/rendezview/blob/master/Vagrantfile) and an [installation script](https://github.com/ehumps/rendezview/blob/master/install.sh) to mostly automate the setup of your local development environment.
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+1. Clone the project.
 
-## Security Vulnerabilities
+2. In the cloned directory, run `vagrant up`.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+3. Once the virtual machine is provisioned, run `vagrant ssh`.
 
-### License
+4. Change directory to the git repository being shared to the VM `cd ../../vagrant`.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+5. Install composer dependencies `sudo composer install`.
+
+6. Migrate and seed the database `php artisan migrate --seed`.
+
+7. Duplicate the .htaccess examples `cp .htaccess.example .htaccess` & `cp public/.htaccess.example public/.htaccess`.
+
+8. Browse to `http://localhost:8080/`.
+
+Two accounts are created by default:
+
+| Username      | Password      |
+| :-----------: |:-------------:|
+| admin         | admin         |
+| user          | user          |
+
+The current app/config/database.php file expects a MySQL database connection using the following name and credentials.  You may update these to suit your own setup if you choose to not run the vagrant steps above:
+
+| Database      | Username      | Password      |
+|:-------------:|:-------------:|:-------------:|
+| rendezview    | root          | root          |
+
+
+The app/config/mail.php file has been set to `'pretend' => false` - so SMTP settings are required.
+
+## Dependencies
+
+This project utilizes several external dependencies as seen in the composer.json file as well as the frameworks and technologies mentioned above:
+
+* [way/generators](https://github.com/JeffreyWay/Laravel-4-Generators/)
+
+## License
+
+Plexy is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
