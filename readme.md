@@ -30,7 +30,7 @@ You can view a live demo of Plexy [here](https://plexydemo.ehumps.me). The demo 
 
 4. Change directory to the git repository being shared to the VM. This is going to be unique to how you configured homestead during step 2. For me the command is `cd code/plexy/`.
 
-5. Install composer dependencies `sudo composer install`.
+5. Install composer dependencies `sudo composer install --no-scripts`.
 
 6. Ensure your homestead virtual machine has a MySQL database named `plexy`.
 
